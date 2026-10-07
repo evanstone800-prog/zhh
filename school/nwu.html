@@ -1449,9 +1449,9 @@ function updateLabels() {
   for (const l of LABELS) {
     _v.copy(l.p).project(camera);
     const dist = camera.position.distanceTo(l.p);
-    const vis = _v.z < 1 && Math.abs(_v.x) < 1.1 && Math.abs(_v.y) < 1.1 && dist < 1300 && dist > 8;
+    const maxD = S.mode === 'orbit' ? Math.max(300, ORB.r * 1.6) : 260; const vis = _v.z < 1 && Math.abs(_v.x) < 1.1 && Math.abs(_v.y) < 1.1 && dist < maxD && dist > 8;
     if (!vis) { if (l.on !== false) { l.el.style.opacity = 0; l.on = false; } continue; }
-    l.on = true; l.el.style.opacity = clamp((1300 - dist) / 300, 0, 1);
+    l.on = true; l.el.style.opacity = clamp((maxD - dist) / (maxD * .25), 0, 1);
     l.el.style.transform = `translate(${(_v.x * .5 + .5) * w}px,${(-_v.y * .5 + .5) * h}px) translate(-50%,-100%)`;
   }
 }
