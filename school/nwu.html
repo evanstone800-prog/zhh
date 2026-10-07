@@ -886,11 +886,11 @@ function lake() {
   const shape = new THREE.Shape(); const cr = new THREE.SplineCurve(pts.concat([pts[0]]).map(([a, b]) => new THREE.Vector2(a, b)));
   const sp = cr.getPoints(80); shape.setFromPoints(sp);
   const geo = new THREE.ShapeGeometry(shape, 24); geo.rotateX(Math.PI / 2); const nn = geo.attributes.normal; for (let i = 0; i < nn.count; i++) nn.setXYZ(i, 0, 1, 0);
-  const pp = geo.attributes.position; for (let i = 0; i < pp.count; i++) pp.setY(i, -.35);
-  LAKE = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({ color: 0x3d6f80, specular: 0xd8f0ff, shininess: 140, side: THREE.DoubleSide }));
+  const pp = geo.attributes.position; for (let i = 0; i < pp.count; i++) pp.setY(i, .08);
+  LAKE = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({ color: 0x5b97ad, specular: 0xe8f6ff, shininess: 160, side: THREE.DoubleSide }));
   LAKE.receiveShadow = true; scene.add(LAKE);
   // stone edge and reeds
-  const edge = []; for (let i = 0; i < sp.length; i++) { const a = sp[i], b = sp[(i + 1) % sp.length], L = Math.hypot(b.x - a.x, b.y - a.y); edge.push({ x: (a.x + b.x) / 2, y: -.4, z: (a.y + b.y) / 2, ry: -Math.atan2(b.y - a.y, b.x - a.x), sx: L + .4, sy: .7, sz: 1.1 }); }
+  const edge = []; for (let i = 0; i < sp.length; i++) { const a = sp[i], b = sp[(i + 1) % sp.length], L = Math.hypot(b.x - a.x, b.y - a.y); edge.push({ x: (a.x + b.x) / 2, y: -.2, z: (a.y + b.y) / 2, ry: -Math.atan2(b.y - a.y, b.x - a.x), sx: L + .4, sy: .7, sz: 1.1 }); }
   inst(BOXB, M.granite, edge);
   const reeds = []; for (let i = 0; i < 260; i++) { const k = Math.random() * sp.length | 0, a = sp[k]; reeds.push({ x: a.x + rand(-1.5, 1.5), y: 0, z: a.y + rand(-1.5, 1.5), sx: .05, sy: rand(.6, 1.4), sz: .05, c: hsl(rand(70, 95), 40, rand(30, 45)) }); }
   inst(BOXB, lam({ color: 0xffffff }), reeds);
@@ -1125,7 +1125,7 @@ function trees() {
   const plane = (x, z, s = 1) => { s *= rand(.9, 1.2); T1.push({ x, y: 0, z, sx: s * 1.1, sy: 4.2 * s, sz: s * 1.1 }); C1.push({ x, y: 4.6 * s + 2 * s, z, sx: 3.6 * s, sy: 2.8 * s, sz: 3.6 * s, ry: rand(0, 6), c: hsl(96 + rand(-8, 8), 40 + rand(-6, 6), 30 + rand(-4, 5)) }); C1.push({ x: x + rand(-1.4, 1.4) * s, y: 4.2 * s + 3.4 * s, z: z + rand(-1.4, 1.4) * s, sx: 2.4 * s, sy: 2 * s, sz: 2.4 * s, ry: rand(0, 6), c: hsl(100 + rand(-8, 8), 42, 35 + rand(-4, 4)) }); };
   const ginkgo = (x, z) => { const s = rand(.9, 1.15); T1.push({ x, y: 0, z, sx: s * .8, sy: 4 * s, sz: s * .8 }); C2.push({ x, y: 5.6 * s, z, sx: 2.1 * s, sy: 3.2 * s, sz: 2.1 * s, ry: rand(0, 6), c: hsl(46 + rand(-5, 4), 80 + rand(-10, 8), 52 + rand(-6, 6)) }); };
   const pine = (x, z) => { const s = rand(.8, 1.15); T1.push({ x, y: 0, z, sx: s * .7, sy: 1.2 * s, sz: s * .7 }); C3.push({ x, y: 1 * s, z, sx: 1.6 * s, sy: 6 * s, sz: 1.6 * s, ry: rand(0, 6), c: hsl(140 + rand(-6, 6), 30, 22 + rand(-3, 3)) }); };
-  const willow = (x, z) => { const s = rand(.9, 1.2); T1.push({ x, y: 0, z, sx: s, sy: 3 * s, sz: s }); W.push({ x, y: 2.2 * s, z, sx: 3 * s, sy: 3.6 * s, sz: 3 * s, ry: rand(0, 6), c: hsl(80 + rand(-6, 6), 45, 42 + rand(-4, 4)) }); };
+  const willow = (x, z) => { const s = rand(.9, 1.2); T1.push({ x, y: 0, z, sx: s, sy: 3 * s, sz: s }); W.push({ x, y: 2.2 * s, z, sx: 2.6 * s, sy: 3.4 * s, sz: 2.6 * s, ry: rand(0, 6), c: hsl(95 + rand(-6, 6), 40, 40 + rand(-4, 4)) }); };
   // plane trees (梧桐) along the main roads and the south boulevard
   for (let x = -490; x < 500; x += 11) { if (x < -485 || (x > -275 && Math.abs(x) > 8)) { plane(x, 308); plane(x, 335.5); } plane(x, -196, .95); plane(x, -217, .95); }
   for (let z = -455; z < 575; z += 11) { plane(-313, z, .95); plane(313, z, .95); plane(-288, z, .9); }
@@ -1137,12 +1137,12 @@ function trees() {
   // willows round the lake
   for (let i = 0; i < 30; i++) { const a = i / 30 * Math.PI * 2; willow(393 + Math.cos(a) * 100 + rand(-4, 4), -110 + Math.sin(a) * 92 + rand(-4, 4)); }
   // groves in courtyards and spare lawns
-  for (let i = 0; i < 160; i++) { const x = rand(-470, 470), z = rand(-450, 570); if (freeSpot(x, z)) plane(x, z, rand(.7, 1)); }
+  for (let i = 0; i < 700; i++) { const x = rand(-490, 490), z = rand(-455, 575); if (freeSpot(x, z)) { if (Math.random() < .2) ginkgo(x, z); else if (Math.random() < .15) pine(x, z); else plane(x, z, rand(.7, 1)); } }
   inst(trunk, lam({ color: 0x5a4632 }), T1, { cast: true });
   inst(crown, lam({ color: 0xffffff, flatShading: true }), C1, { cast: true });
   inst(crown, lam({ color: 0xffffff, flatShading: true }), C2, { cast: true });
   inst(cone, lam({ color: 0xffffff, flatShading: true }), C3, { cast: true });
-  inst(cone.clone().rotateX(Math.PI).translate(0, 1, 0), lam({ color: 0xffffff, flatShading: true }), W, { cast: true });
+  inst(crown, lam({ color: 0xffffff, flatShading: true }), W.map(w => Object.assign(w, { y: w.y + 1.6, sy: w.sy * .9 })), { cast: true });
   // bamboo round 文渊楼四段 ("hidden among tall bamboo")
   const bam = []; for (let i = 0; i < 900; i++) { const x = rand(266, 285), z = rand(90, 150); bam.push({ x, y: 0, z, sx: .08, sy: rand(5, 9), sz: .08, c: hsl(rand(85, 110), 45, rand(28, 42)) }); }
   for (let i = 0; i < 500; i++) { const x = rand(176, 262), z = rand(130, 150); bam.push({ x, y: 0, z, sx: .08, sy: rand(5, 9), sz: .08, c: hsl(rand(85, 110), 45, rand(28, 42)) }); }
