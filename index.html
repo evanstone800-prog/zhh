@@ -48,6 +48,7 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 #board .tm.poss::after{content:"";position:absolute;bottom:-7px;left:50%;width:22px;height:4px;margin-left:-11px;background:var(--chalk);border-radius:2px;transform:skewX(12deg)}
 #board .mid{background:#141722;padding:2px 18px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:skewX(-12deg);min-width:86px}
 #board .mid>*{transform:skewX(12deg)}
+#clock.ot{color:var(--cyan)}
 #clock{font-family:var(--f-num);font-size:34px;line-height:.95;font-weight:600;font-variant-numeric:tabular-nums}
 #shot{font-family:var(--f-num);font-size:20px;line-height:1;color:var(--gold);font-variant-numeric:tabular-nums}
 #shot.warn{color:var(--away)}
@@ -67,6 +68,10 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .tmr .nm{font-family:var(--f-cn);font-size:16px;line-height:1.1}
 .tmr .cdb{height:3px;background:rgba(255,255,255,.15);border-radius:2px;width:64px;overflow:hidden;margin-top:3px}
 .tmr .cdb i{display:block;height:100%;background:var(--cyan);width:100%}
+.tmr .enb{height:3px;background:rgba(255,255,255,.15);border-radius:2px;width:64px;overflow:hidden;margin-top:2px}
+.tmr .enb i{display:block;height:100%;background:var(--gold);width:0}
+.tmr .enb.full i{background:#fff;box-shadow:0 0 6px var(--gold)}
+.tmr.ult .nm{color:var(--gold)}
 .tmr.me{border-color:var(--cyan)}
 .tmr.fire .nm{color:#ff9a3c}
 .tmr.ball{background:rgba(255,200,61,.22)}
@@ -99,6 +104,11 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 #meter.hit .zone{stroke:#c8ffe0;filter:drop-shadow(0 0 6px var(--good))}
 #meter.miss .fill{stroke:var(--away)}
 
+#mLbl{position:absolute;transform:translate(-50%,-100%);font-family:var(--f-cn);font-size:17px;letter-spacing:.06em;padding:2px 9px;border-radius:3px;background:rgba(10,12,18,.8);white-space:nowrap}
+#mLbl.good{color:var(--good)}#mLbl.white{color:var(--chalk)}#mLbl.warn{color:var(--gold)}#mLbl.bad{color:var(--away)}
+#comm{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 64px);transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:rgba(10,12,18,.78);border:1px solid var(--line);border-radius:18px;padding:5px 14px 5px 5px;font-size:15px;white-space:nowrap;animation:feIn .25s both}
+#comm .mic{font-family:var(--f-cn);font-size:13px;background:var(--gold);color:#1b1405;border-radius:12px;padding:2px 8px}
+@media (max-aspect-ratio:1/1){#comm{bottom:auto;top:calc(env(safe-area-inset-top,0px) + 120px)}}
 #cutin{position:absolute;left:0;right:0;top:36%;height:110px;pointer-events:none;overflow:visible}
 .cut{position:absolute;left:-8%;right:-8%;top:0;height:92px;display:flex;align-items:center;gap:18px;padding:0 18%;box-sizing:border-box;transform:skewY(-4deg);animation:cutL 1.15s cubic-bezier(.2,.9,.25,1) forwards}
 .cut.l{background:linear-gradient(90deg,rgba(255,200,61,0),rgba(255,200,61,.95) 18%,rgba(255,200,61,.95) 70%,rgba(255,200,61,0));color:#1b1405}
@@ -107,6 +117,15 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .cut .tx{display:flex;flex-direction:column;transform:skewY(4deg)}
 .cut .who{font-family:var(--f-num);font-size:20px;letter-spacing:.12em;opacity:.8;line-height:1}
 .cut .sn{font-family:var(--f-cn);font-size:clamp(34px,6vw,54px);line-height:1;letter-spacing:.06em}
+.ultc{position:absolute;left:-10%;right:-10%;top:-30px;height:150px;display:flex;align-items:center;gap:22px;padding:0 16%;box-sizing:border-box;transform:skewY(-5deg);animation:cutL 1.6s cubic-bezier(.2,.9,.25,1) forwards;background:linear-gradient(90deg,rgba(12,10,4,0),rgba(12,10,4,.92) 14%,rgba(12,10,4,.92) 74%,rgba(12,10,4,0));border-top:4px solid var(--gold);border-bottom:4px solid var(--gold)}
+.ultc.r{flex-direction:row-reverse;animation-name:cutR;border-color:var(--away)}
+.ultc img{height:220px;margin-top:-50px;transform:skewY(5deg);filter:drop-shadow(0 0 18px rgba(255,200,61,.8))}
+.ultc.r img{filter:drop-shadow(0 0 18px rgba(255,75,92,.8))}
+.ultc .tx{display:flex;flex-direction:column;transform:skewY(5deg);gap:2px}
+.ultc .who{font-family:var(--f-num);font-size:22px;letter-spacing:.2em;color:var(--gold);line-height:1}
+.ultc.r .who{color:#ff8a95}
+.ultc .sn{font-family:var(--f-cn);font-size:clamp(44px,8vw,78px);line-height:1;letter-spacing:.08em;color:#fff;-webkit-text-stroke:2px #000;paint-order:stroke fill}
+.ultc .ds{font-size:14px;color:var(--dim)}
 @keyframes cutL{0%{transform:translateX(-105%) skewY(-4deg)}16%{transform:translateX(0) skewY(-4deg)}80%{transform:translateX(3%) skewY(-4deg);opacity:1}100%{transform:translateX(105%) skewY(-4deg);opacity:0}}
 @keyframes cutR{0%{transform:translateX(105%) skewY(-4deg)}16%{transform:translateX(0) skewY(-4deg)}80%{transform:translateX(-3%) skewY(-4deg);opacity:1}100%{transform:translateX(-105%) skewY(-4deg);opacity:0}}
 
@@ -114,7 +133,7 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 #joyBase{position:absolute;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:rgba(10,12,18,.3)}
 #joyKnob{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:rgba(255,255,255,.75)}
 
-#btns{position:absolute;right:calc(env(safe-area-inset-right,0px) + 18px);bottom:calc(env(safe-area-inset-bottom,0px) + 18px);width:250px;height:220px;pointer-events:none}
+#btns{position:absolute;right:calc(env(safe-area-inset-right,0px) + 18px);bottom:calc(env(safe-area-inset-bottom,0px) + 18px);width:262px;height:268px;pointer-events:none}
 .b{position:absolute;border-radius:50%;pointer-events:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(14,16,24,.62);border:2px solid rgba(255,255,255,.55);color:var(--chalk);touch-action:none;-webkit-tap-highlight-color:transparent;transition:transform .06s;overflow:hidden}
 .b .lbl{font-family:var(--f-cn);font-size:19px;letter-spacing:.04em;line-height:1.1;white-space:nowrap;position:relative}
 .b kbd{font-family:var(--f-num);font-size:14px;opacity:.6;line-height:1;position:relative}
@@ -124,6 +143,18 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .b-shoot .lbl{font-size:26px}
 .b-pass{right:112px;bottom:4px;width:70px;height:70px}
 .b-burst{right:10px;bottom:110px;width:70px;height:70px}
+.b-tac{right:194px;bottom:20px;width:64px;height:64px}
+.b-tac .lbl{font-size:16px}
+.b-sw{right:200px;bottom:104px;width:52px;height:52px}
+.b-sw .lbl{font-size:15px}
+.b-ult{right:16px;bottom:188px;width:76px;height:76px;border-color:var(--gold);--en:0}
+.b-ult img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4}
+.b-ult::after{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(255,200,61,.5) calc(var(--en)*360deg),rgba(0,0,0,.55) 0);pointer-events:none}
+.b-ult .lbl{font-size:14px;max-width:70px;white-space:normal;text-align:center;-webkit-text-stroke:3px rgba(10,12,18,.8);paint-order:stroke fill;z-index:1}
+.b-ult kbd{z-index:1}
+.b-ult.ready{animation:ultGlow 1s ease-in-out infinite}
+.b-ult.on{border-color:#fff;box-shadow:0 0 0 4px rgba(255,200,61,.6),0 0 26px rgba(255,200,61,.9)}
+@keyframes ultGlow{50%{box-shadow:0 0 0 5px rgba(255,200,61,.45),0 0 26px rgba(255,200,61,.85)}}
 .b-skill{right:100px;bottom:90px;width:78px;height:78px;border-color:var(--cyan);--cd:0}
 .b-skill img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
 .b-skill::after{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(0,0,0,.7) calc(var(--cd)*360deg),transparent 0);pointer-events:none}
@@ -168,6 +199,7 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .skills{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .sk{border-left:3px solid var(--cyan);padding:2px 0 2px 10px}
 .sk.d{border-color:var(--away)}
+.sk.u{border-color:var(--gold);grid-column:1/-1}
 .sk .k{font-size:11px;color:var(--dim);letter-spacing:.1em}
 .sk .t{font-family:var(--f-cn);font-size:20px;line-height:1.2}
 .sk .x{font-size:12px;color:var(--dim);line-height:1.5}
@@ -236,6 +268,9 @@ td.n{font-family:var(--f-cn);font-size:17px}
 td.n img{width:24px;height:24px;border-radius:50%;vertical-align:middle;margin-right:6px;background:#2a2d3a}
 td{font-family:var(--f-num);font-size:18px;font-variant-numeric:tabular-nums}
 tr.me td{color:var(--cyan)}
+tr.away td.n{color:#ffb3bb}
+td.g{font-weight:700}td.gS{color:var(--gold)}td.gA{color:var(--good)}td.gB{color:var(--chalk)}td.gC,td.gD{color:var(--dim)}
+.teamline{font-size:13px;color:var(--dim);line-height:1.7}.teamline .h{color:var(--gold)}.teamline .a{color:#ff8a95}
 
 #err{position:absolute;inset:0;display:grid;place-items:center;padding:0 16px;text-align:center;font-size:15px;line-height:1.7;color:var(--dim)}
 
@@ -296,20 +331,25 @@ tr.me td{color:var(--cyan)}
     <span id="rotHint" class="chip" hidden>横屏体验更佳</span>
     <div id="cutin"></div>
     <div id="callouts"></div>
+    <div id="comm" hidden><span class="mic">解说</span><span id="commT"></span></div>
     <div id="floats"></div>
     <svg id="meter" width="46" height="124" viewBox="0 0 46 124" hidden>
       <path class="trk" d="M10,116 Q40,62 10,8" pathLength="100"/>
       <path class="zone" d="M10,116 Q40,62 10,8" pathLength="100"/>
       <path class="fill" d="M10,116 Q40,62 10,8" pathLength="100"/>
     </svg>
+    <div id="mLbl" hidden></div>
     <div id="joy"><div id="joyBase" hidden><div id="joyKnob"></div></div></div>
     <div id="btns">
       <button class="b b-skill" data-b="I"><img id="skillImg" alt=""><span class="lbl" id="lblI">技能</span><kbd>I</kbd></button>
       <button class="b b-burst" data-b="L"><span class="lbl" id="lblL">突破</span><kbd>L</kbd></button>
       <button class="b b-pass" data-b="K"><span class="lbl" id="lblK">传球</span><kbd>K</kbd></button>
       <button class="b b-shoot" data-b="J"><span class="lbl" id="lblJ">投篮</span><kbd>J</kbd></button>
+      <button class="b b-tac" data-b="H"><span class="lbl" id="lblH">挡拆</span><kbd>H</kbd></button>
+      <button class="b b-ult" data-b="O"><img id="ultImg" alt=""><span class="lbl" id="lblO">大招</span><kbd>O</kbd></button>
+      <button class="b b-sw" data-b="Q"><span class="lbl">切换</span><kbd>Q</kbd></button>
     </div>
-    <div id="keys"><b>WASD</b>移动 · <b>J</b>投篮/盖帽 · <b>K</b>传球/抢断 · <b>L</b>突破/冲刺 · <b>I</b>技能 · <b>P</b>暂停</div>
+    <div id="keys"><b>WASD</b>移动 · <b>J</b>投篮/盖帽/抢板 · <b>K</b>传球/抢断/要球 · <b>L</b>突破/冲刺 · <b>H</b>挡拆/背打/张手/卡位 · <b>I</b>技能 · <b>O</b>大招 · <b>Q</b>切换 · <b>P</b>暂停</div>
     <div id="flash"></div>
   </div>
 
@@ -324,7 +364,7 @@ tr.me td{color:var(--cyan)}
     <div class="panel slab">
       <header class="brand">
         <h1>街头王者</h1><span class="plate">3V3</span>
-        <p class="tag">半场三对三。先拿 21 分，或时间结束时领先的一方获胜。</p>
+        <p class="tag">半场三对三。先拿到目标分数，或时间结束时领先的一方获胜；平局进入 1 分钟加时。</p>
       </header>
       <div>
         <h2 class="sec">选择你的球员</h2>
@@ -333,7 +373,9 @@ tr.me td{color:var(--cyan)}
       <div id="detail" class="detail"></div>
       <div class="opts">
         <div class="seg" id="diffSeg"><span class="lab">难度</span><button data-v="easy" id="dEasy">新手</button><button data-v="normal" id="dNormal" class="on">老手</button><button data-v="hard" id="dHard">街球王</button></div>
+        <div class="seg" id="modeSeg"><span class="lab">赛制</span><button data-v="11" id="m11" class="on">11 分赛</button><button data-v="21" id="m21">21 分赛</button></div>
         <div class="seg" id="durSeg"><span class="lab">时长</span><button data-v="180" id="t3" class="on">3 分钟</button><button data-v="300" id="t5">5 分钟</button></div>
+        <div class="seg" id="adSeg"><span class="lab">防守</span><button data-v="true" id="adOn" class="on">自动跟防</button><button data-v="false" id="adOff">手动</button></div>
         <button id="startBtn" class="cta">开始比赛</button>
       </div>
     </div>
@@ -347,12 +389,17 @@ tr.me td{color:var(--cyan)}
         <dt>J 投篮</dt><dd>按住起跳，弧形指针走到<b style="color:var(--good)">绿色区域</b>时松开 = 完美出手。篮下自动上篮或扣篮。<b>轻点</b>是投篮假动作</dd>
         <dt>K 传球</dt><dd>传给摇杆方向的队友；队友在篮下时自动传<b>空接</b>。队友持球时按 K 要球；防守时是抢断</dd>
         <dt>L 突破</dt><dd>持球时变向（胯下、背后、交叉随机），可能晃倒防守人；无球时按住冲刺</dd>
+        <dt>H 战术</dt><dd>持球在篮下 5 米内<b>按住</b>是背打（往篮筐方向推、J 转身投、L 转身过人），更远是<b>叫挡拆</b>；无球时去给持球人<b>挡拆</b>；防守时按住<b>张手</b>干扰；球在空中时<b>卡位</b>（太早按会僵直）</dd>
         <dt>I 技能</dt><dd>每名球员一个进攻技能、一个防守技能，冷却后可再用</dd>
-        <dt>J 盖帽</dt><dd>防守时起跳封盖，对手出手前起跳最容易成功</dd>
+        <dt>O 大招</dt><dd>得分、助攻、抢断、盖帽、篮板、完美出手都会攒士气，满了按 O 释放，持续 8–10 秒</dd>
+        <dt>J 盖帽</dt><dd>防守时起跳封盖，对手出手前起跳最容易成功；抢篮板在球开始下落时起跳最好，地上的白圈是落点</dd>
+        <dt>Q 切换</dt><dd>切换到离球最近的队友。默认无输入时自动跟防，可在选人界面改成手动</dd>
       </dl>
       <ul class="rules">
+        <li><b>11 分赛</b>：3 分钟内先拿 11 分获胜，时间到领先者胜；平局加时 1 分钟，再平则先得分者胜</li>
         <li><b>清球</b>：抢到对手的篮板或断球后，必须先把球带出三分线，否则进球不算</li>
-        <li><b>进攻时限 12 秒</b>，球碰框后重置</li>
+        <li><b>进攻时限</b>：11 分赛 20 秒，21 分赛 12 秒，球碰框后重置</li>
+        <li>投篮时的绿色完美区间看<b>空位程度</b>：空位明显变宽，被贴身干扰会变窄</li>
         <li>三分线外命中得 3 分，线内 2 分；连中 3 球进入<b>火热</b>状态</li>
       </ul>
       <button id="tutGo" class="cta">我知道了</button>
@@ -372,7 +419,8 @@ tr.me td{color:var(--cyan)}
       <p class="res" id="resTitle">胜利</p>
       <div class="final"><span class="s h" id="fH">21</span><span class="dash">—</span><span class="s a" id="fA">15</span></div>
       <div class="mvp"><img id="mvpImg" alt=""><div><span class="badge">MVP</span><div class="who" id="mvpName"></div><div class="line" id="mvpLine"></div></div></div>
-      <div class="tbl"><table><thead><tr><th>球员</th><th>得分</th><th>篮板</th><th>助攻</th><th>抢断</th><th>盖帽</th><th>命中</th></tr></thead><tbody id="statBody"></tbody></table></div>
+      <div class="tbl"><table><thead><tr><th>球员</th><th>得分</th><th>篮板</th><th>助攻</th><th>抢断</th><th>盖帽</th><th>命中</th><th>三分</th><th>评分</th></tr></thead><tbody id="statBody"></tbody></table></div>
+      <div class="teamline" id="teamLine"></div>
       <div class="row2"><button id="againBtn" class="cta">再来一局</button><button id="pickBtn" class="ghost">换个球员</button></div>
     </div>
   </section>
@@ -428,27 +476,33 @@ const ROSTER = [
   { id: 'flash', name: '闪电', en: 'FLASH', pos: '控球后卫', pk: 'PG', num: 3, h: 1.88, bulk: .94, skin: '#8d5524', hair: 'fade', hairC: '#17110c', shoe: '#22d3ee', acc: '#ff4b5c', items: ['headband', 'sleeveR', 'wristL'],
     st: { spd: .96, hnd: .96, three: .74, mid: .72, lay: .82, dunk: .45, blk: .25, stl: .82, reb: .3, str: .35 },
     off: { name: '鬼魅变向', desc: '持球大幅变向加速，贴身防守人很可能被晃倒', cd: 9 },
-    def: { name: '贴身紧逼', desc: '5 秒内抢断成功率大幅提升，移动更快', cd: 12 } },
+    def: { name: '贴身紧逼', desc: '5 秒内抢断成功率大幅提升，移动更快', cd: 12 },
+    ult: { name: '极速风暴', desc: '8 秒内移速大增，每次变向都很可能晃倒对手', T: 8 } },
   { id: 'ace', name: '神射', en: 'ACE', pos: '得分后卫', pk: 'SG', num: 30, h: 1.91, bulk: .96, skin: '#e0ac69', hair: 'cap', hairC: '#20160f', shoe: '#f8fafc', acc: '#14213d', items: ['wristR', 'wristL'],
     st: { spd: .8, hnd: .78, three: .97, mid: .86, lay: .62, dunk: .35, blk: .3, stl: .55, reb: .32, str: .35 },
     off: { name: '后撤步三分', desc: '后撤一步拉开空间再起跳，完美区间翻倍。起跳后再按投篮出手', cd: 10 },
-    def: { name: '极速封堵', desc: '冲到持球人面前，3 秒内干扰效果大幅提升', cd: 10 } },
+    def: { name: '极速封堵', desc: '冲到持球人面前，3 秒内干扰效果大幅提升', cd: 10 },
+    ult: { name: '无限射程', desc: '8 秒内完美区间翻倍，超远三分不衰减，几乎不受干扰', T: 8 } },
   { id: 'sky', name: '飞人', en: 'SKY', pos: '小前锋', pk: 'SF', num: 23, h: 2.01, bulk: 1.0, skin: '#6b3e26', hair: 'bald', hairC: '#120c08', shoe: '#ff4b5c', acc: '#ff4b5c', items: ['headband', 'legSleeveL', 'wristR', 'goatee'],
     st: { spd: .86, hnd: .72, three: .62, mid: .76, lay: .9, dunk: .99, blk: .62, stl: .55, reb: .56, str: .62 },
     off: { name: '战斧暴扣', desc: '距篮 6 米内直接腾空暴扣，极难被封盖', cd: 11 },
-    def: { name: '追身大帽', desc: '向球冲刺并高高跃起，封盖能力大幅提升', cd: 11 } },
+    def: { name: '追身大帽', desc: '向球冲刺并高高跃起，封盖能力大幅提升', cd: 11 },
+    ult: { name: '扣篮大赛', desc: '8 秒内 6.5 米内即可起飞暴扣，扣篮几乎无法封盖', T: 8 } },
   { id: 'tower', name: '铁塔', en: 'TOWER', pos: '中锋', pk: 'C', num: 34, h: 2.16, bulk: 1.13, skin: '#4a2c1a', hair: 'short', hairC: '#0d0907', shoe: '#facc15', acc: '#f8fafc', items: ['kneeL', 'kneeR', 'wristR', 'beard', 'hightop'],
     st: { spd: .55, hnd: .42, three: .2, mid: .55, lay: .86, dunk: .86, blk: .98, stl: .3, reb: .98, str: .96 },
     off: { name: '背身勾手', desc: '距篮 4.8 米内高弧度勾手，几乎无法封盖', cd: 9 },
-    def: { name: '禁区之王', desc: '6 秒内封盖范围、高度和篮板能力大幅提升', cd: 13 } },
+    def: { name: '禁区之王', desc: '6 秒内封盖范围、高度和篮板能力大幅提升', cd: 13 },
+    ult: { name: '禁区霸主', desc: '10 秒内封盖与篮板范围暴涨，对手篮下命中率下降', T: 10 } },
   { id: 'rhino', name: '野兽', en: 'RHINO', pos: '大前锋', pk: 'PF', num: 1, h: 2.06, bulk: 1.16, skin: '#c68642', hair: 'mohawk', hairC: '#3a1f12', shoe: '#a3e635', acc: '#a3e635', items: ['tattoo', 'wristL', 'wristR', 'hightop'],
     st: { spd: .7, hnd: .56, three: .42, mid: .66, lay: .85, dunk: .9, blk: .7, stl: .4, reb: .86, str: .99 },
     off: { name: '野蛮冲撞', desc: '低头冲向篮下，撞开路线上的防守人，到篮下直接扣篮', cd: 10 },
-    def: { name: '卡位抢板', desc: '6 秒内篮板范围与优先级大幅提升', cd: 12 } },
+    def: { name: '卡位抢板', desc: '6 秒内篮板范围与优先级大幅提升', cd: 12 },
+    ult: { name: '蛮牛冲撞', desc: '8 秒内持球突破会撞开防守人，扣篮范围变大', T: 8 } },
   { id: 'ghost', name: '鬼手', en: 'GHOST', pos: '锋卫摇摆', pk: 'G/F', num: 7, h: 1.96, bulk: .97, skin: '#f1c27d', hair: 'braids', hairC: '#1a120c', shoe: '#c084fc', acc: '#c084fc', items: ['sleeveL', 'legSleeveR', 'wristR'],
     st: { spd: .86, hnd: .82, three: .7, mid: .93, lay: .72, dunk: .56, blk: .46, stl: .98, reb: .46, str: .5 },
     off: { name: '急停跳投', desc: '急停拔起中投，完美区间翻倍、受干扰减半。起跳后再按投篮出手', cd: 9 },
-    def: { name: '鬼手抢断', desc: '闪身贴到 3.5 米内的持球人身前掏球，对控球差的人更容易得手', cd: 12 } },
+    def: { name: '鬼手抢断', desc: '闪身贴到 3.5 米内的持球人身前掏球，对控球差的人更容易得手', cd: 12 },
+    ult: { name: '幻影之手', desc: '8 秒内抢断与断球能力暴涨，移速提升', T: 8 } },
 ];
 const STAT_LABELS = [['spd', '速度'], ['hnd', '控球'], ['three', '三分'], ['mid', '中投'], ['dunk', '扣篮'], ['blk', '盖帽'], ['stl', '抢断'], ['reb', '篮板']];
 const TEAM = [
@@ -715,7 +769,7 @@ const decor = { billboard: null, speakers: [], neon: [] };
   };
   banner('街头王者杯', '3V3 STREET CUP', '#14213d', '#ffc83d', -5.5, 1.2, -2.45, 0);
   banner('KINGS', '王者 · 主场', '#ffc83d', '#14213d', 5.5, 1.2, -2.45, 0);
-  banner('21 分制', 'FIRST TO 21', '#e8364f', '#ffffff', -9.55, 1.2, 4.5, Math.PI / 2);
+  banner('街球之夜', 'STREETBALL NIGHT', '#e8364f', '#ffffff', -9.55, 1.2, 4.5, Math.PI / 2);
   banner('篮球不止', 'BALL IS LIFE', '#1f2937', '#6ff3ff', 9.55, 1.2, 4.5, -Math.PI / 2);
   // graffiti wall
   const wallTex = canvasTex(2048, 512, (g, w, h) => {
@@ -1046,8 +1100,9 @@ class Player {
     this.spot = null; this.spotT = 0; this.cutT = 0; this.cutTo = { x: 0, z: 2 }; this.stealTry = 1;
     this.dribPh = rand(0, TAU); this.dribB = 1; this.dribHand = 1; this.prevCos = 1;
     this.buff = { stl: 0, blk: 0, reb: 0, contest: 0 };
+    this.energy = 0; this.ult = 0; this.handsUp = false; this.screenedT = 0; this.scr = null; this.screening = false; this.post = null; this.boxT = 0; this.boxLag = 0; this.rebT = 0; this.screenCd = rand(2, 5); this.bumpT = 0; this.chargeHit = new Map();
     this.streak = 0; this.onFire = false; this.fireT = 0;
-    this.stats = { pts: 0, reb: 0, ast: 0, stl: 0, blk: 0, fgm: 0, fga: 0 };
+    this.stats = { pts: 0, reb: 0, ast: 0, stl: 0, blk: 0, fgm: 0, fga: 0, tpm: 0, tpa: 0 };
     this.assistFrom = null; this.assistT = -99;
     this.match = null; this.runPh = rand(0, TAU); this.pose = basePose(); this.hang = false;
     this.pose.anL = this.pose.anR = 0;
@@ -1158,11 +1213,11 @@ class Player {
     this.applyPose(this.pose);
   }
   updateTag() {
-    const s = (this.isUser ? '你 · ' : '') + this.def.name + (this.onFire ? ' · 火热' : '');
+    const s = (this.isUser ? '你 · ' : '') + this.def.name + (this.ult > 0 ? ' · 爆发' : this.onFire ? ' · 火热' : '');
     if (s === this.tagState) return;
     this.tagState = s;
     if (this.tag.material.map) this.tag.material.map.dispose();
-    this.tag.material.map = tagTex(s, this.onFire ? '#ff9a3c' : this.isUser ? '#6ff3ff' : this.team === 0 ? '#ffe7a3' : '#ffd1d6');
+    this.tag.material.map = tagTex(s, this.ult > 0 ? '#ffe066' : this.onFire ? '#ff9a3c' : this.isUser ? '#6ff3ff' : this.team === 0 ? '#ffe7a3' : '#ffd1d6');
     this.tag.material.needsUpdate = true;
   }
   dispose() {
@@ -1228,7 +1283,10 @@ function computePose(p, T, dt, ctx) {
     T.spX = .05 + br * .015; T.hipRz = Math.sin(ctx.time * .7 + p.slot * 2) * .03; T.hipY = br * .006;
     T.aLx = .04 + br * .02; T.aRx = .04 - br * .02;
   }
-  if (p.stance && p.y < .05 && !A) {
+  if (p.handsUp && p.y < .05 && !A && !has) {
+    T.hipY = -.14; T.thL = T.thR = -.45; T.knL = T.knR = .75; T.thLz = .22; T.thRz = -.22; T.spX = .12;
+    T.aLx = T.aRx = -2.95; T.aLz = .28; T.aRz = -.28; T.eL = T.eR = -.08; T.wL = T.wR = .2;
+  } else if (p.stance && p.y < .05 && !A) {
     const shf = Math.sin(ph * .9);
     T.hipY = -.2; T.thL = -.7 + T.thL * .25; T.thR = -.7 + T.thR * .25; T.knL = 1.15; T.knR = 1.15;
     T.thLz = .2 + (sp > .5 ? shf * .12 : 0); T.thRz = -.2 + (sp > .5 ? shf * .12 : 0);
@@ -1249,6 +1307,10 @@ function computePose(p, T, dt, ctx) {
       T.spX = Math.max(T.spX, .3); T.hipY = Math.min(T.hipY, -.08); T.spZ = -.06 * p.dribHand;
     }
   }
+  if (p.screening && !A) { T.hipY = -.08; T.thLz = .2; T.thRz = -.2; T.knL = T.knR = .35; T.thL = T.thR = -.2; T.aLx = -.75; T.aLz = -.35; T.eL = -1.7; T.aRx = -.75; T.aRz = .35; T.eR = -1.7; T.spX = .12; }
+  if (p.boxT > 0 && !A && p.y < .05) { T.hipY = -.26; T.thL = T.thR = -.85; T.knL = T.knR = 1.3; T.thLz = .38; T.thRz = -.38; T.spX = .55; T.aLx = -.55; T.aLz = 1.25; T.eL = -.55; T.aRx = -.55; T.aRz = -1.25; T.eR = -.55; }
+  if (p.post && has && !A) { T.hipY = -.2; T.thL = T.thR = -.7; T.knL = T.knR = 1.05; T.thLz = .25; T.thRz = -.25; T.spX = .45; if (p.dribHand === 1) { T.aLx = .55; T.aLz = .55; T.eL = -.35; } else { T.aRx = .55; T.aRz = -.55; T.eR = -.35; } }
+  if (p.screenedT > 0 && !A) { T.spX = -.25; T.hipY = -.06; T.aLx = -.6; T.aRx = -.6; T.aLz = .5; T.aRz = -.5; T.eL = T.eR = -.4; }
   if (A) actionPose(p, A, T, ctx);
   if (p.stunT > 0) {
     const f = 1 - p.stunT / 1.15;
@@ -1347,6 +1409,7 @@ function actionPose(p, A, T, ctx) {
       else { T.aRx = -.35 - .3 * low; T.aLx = -.35 - .3 * low; T.eL = T.eR = -.6; T.aRz = -.45 + .3 * low; T.aLz = .45 - .3 * low; }
       T._rate = 24; break;
     }
+    case 'spin': { const f = clamp(A.t / A.T, 0, 1); T.spin = -Math.sign(A.dir.x * 1 + .0001) * smooth(f) * TAU * .5; T._snap = ['spin']; T.hipY = -.18; T.spX = .4; T.knL = T.knR = .9; T.thL = -.6; T.thR = .2; T._rate = 24; break; }
     case 'stepback': holdChest(T); T.spX = -.12; T.hipY = -.1; T.thL = -.3; T.thR = .5; T.knL = T.knR = .8; T._rate = 22; break;
     case 'charge': T.spX = .65; T.hipY = -.12; T.aLx = -.3; T.aLz = .7; T.eL = -.9; break;
     case 'celebrate': celebrate(p, A, T, ctx); break;
@@ -1429,6 +1492,9 @@ const SFX = {
   perfect: () => { tone(1320, .12, 'triangle', .08); tone(1980, .2, 'triangle', .06, null, .06); },
   whoosh: () => noise(.5, .16, 'bandpass', 900, .8, 0, .2),
   skill: () => { noise(.4, .14, 'highpass', 1800, .7, 0, .05); tone(440, .25, 'sawtooth', .05, 880); },
+  ult: () => { tone(110, .9, 'sawtooth', .12, 440); tone(220, .7, 'square', .05, 880, .1); noise(.9, .2, 'highpass', 1500, .6, 0, .2); tone(55, .7, 'sine', .5, 30); },
+  ready: () => { tone(988, .1, 'triangle', .08); tone(1319, .1, 'triangle', .08, null, .08); tone(1976, .18, 'triangle', .07, null, .16); },
+  bump: () => { tone(90, .12, 'sine', .3, 55); noise(.08, .12, 'lowpass', 600); },
 };
 function startBeat() {
   const ctx = AU.ctx, spb = 60 / 88 / 2; let next = ctx.currentTime + .1, step = 0;
@@ -1460,7 +1526,7 @@ const sfx = (name, ...args) => { SFX[name](...args); recEvent(() => SFX[name](..
    Game state
    ========================================================= */
 const S = {
-  phase: 'menu', time: 0, clock: 180, dur: 180, target: 21, shotClock: 12, score: [0, 0], poss: 0, cleared: true,
+  phase: 'menu', time: 0, clock: 180, dur: 180, target: 11, mode: '11', scMax: 20, sudden: false, autoDef: true, shotClock: 20, score: [0, 0], poss: 0, cleared: true,
   players: [], user: null, diff: 'normal', sel: 0, ot: false, clockExpired: false,
   deadT: 0, deadCb: null, checkT: 0, liveT: 0, slowT: 0, slowK: .38, shake: 0, paused: false, auto: false, hype: 0, ending: false,
   introT: 0, replay: null, replayReq: null, lastReplay: -99, ev: {},
@@ -1490,8 +1556,8 @@ const isUserTeam = t => S.user && t === S.user.team;
 /* ---------- HUD helpers ---------- */
 const ui = {
   sH: $('#sH'), sA: $('#sA'), clock: $('#clock'), shot: $('#shot'), tmH: $('#tmH'), tmA: $('#tmA'), clearChip: $('#clearChip'), banner: $('#bannerChip'),
-  callouts: $('#callouts'), floats: $('#floats'), meter: $('#meter'), mZone: $('#meter .zone'), mFill: $('#meter .fill'),
-  lbl: { J: $('#lblJ'), K: $('#lblK'), L: $('#lblL'), I: $('#lblI') }, skillBtn: $('.b-skill'), skillImg: $('#skillImg'),
+  callouts: $('#callouts'), floats: $('#floats'), meter: $('#meter'), mLbl: $('#mLbl'), mZone: $('#meter .zone'), mFill: $('#meter .fill'),
+  lbl: { J: $('#lblJ'), K: $('#lblK'), L: $('#lblL'), I: $('#lblI'), H: $('#lblH'), O: $('#lblO') }, skillBtn: $('.b-skill'), skillImg: $('#skillImg'), ultBtn: $('.b-ult'), ultImg: $('#ultImg'), swBtn: $('.b-sw'), landRing: null,
   team: $('#team'), feed: $('#feed'), cutin: $('#cutin'), flash: $('#flash'), hud: $('#hud'),
 };
 const cache = new Map();
@@ -1520,6 +1586,39 @@ function feed(p, verb, q, extra) {
   ui.feed.prepend(d); setTimeout(() => d.remove(), 3900);
   while (ui.feed.children.length > 4) ui.feed.lastChild.remove();
 }
+function ultCutin(p) {
+  const mine = isUserTeam(p.team);
+  const d = document.createElement('div'); d.className = 'ultc ' + (mine ? 'l' : 'r');
+  d.innerHTML = `<img src="${p.portrait}" alt=""><div class="tx"><span class="who">ULTIMATE · ${p.def.en}</span><span class="sn">${p.def.ult.name}</span><span class="ds">${p.def.ult.desc}</span></div>`;
+  ui.cutin.innerHTML = ''; ui.cutin.appendChild(d); setTimeout(() => d.remove(), 1600);
+  sfx('ult');
+}
+const COMM = {
+  dunk: ['砸筐而入！', '这一扣太暴力了！', '{n} 起飞了！篮筐还在晃', '没人敢在空中拦他'],
+  oop: ['空中接力！', '心有灵犀的空接', '这默契，空中完成连线'],
+  three: ['三分出手——命中！', '{n} 手感滚烫', '远投也能稳稳命中', '拉开就投，干脆利落'],
+  perfect: ['完美出手，空心入网', '这一投的时机无可挑剔'],
+  block: ['大帽！直接扇飞', '封盖！这里是禁区', '{n} 说：不许进'],
+  steal: ['好快的手！', '抢断，反击机会来了', '{n} 读懂了这一传'],
+  ankle: ['晃倒了！防守人坐在地上', '这脚步太致命了', '{n} 把对手晃倒了'],
+  screen: ['一个结实的挡拆', '好掩护，把防守人挡在了身后', '挡拆配合打出来了'],
+  post: ['背身单打，一点点往里挤', '{n} 低位要位，看他发挥', '靠力量吃饼'],
+  ult: ['大招来了！', '{n} 发动了大招，比赛要变天了', '注意！{n} 进入爆发状态'],
+  tie: ['比分追平！', '又回到了同一起跑线'],
+  lead: ['反超！', '{n} 帮球队拿回领先'],
+  last: ['最后一分钟！', '比赛进入最后 60 秒'],
+  shotclock: ['进攻时间用完了', '拖太久了，球权交换'],
+  airball: ['三不沾…有点尴尬', '这球连筐都没碰到'],
+};
+let commT = 0, commPri = 0;
+function comment(kind, p, pri = 1) {
+  const pool = COMM[kind]; if (!pool || S.phase === 'menu') return;
+  if (performance.now() < commT && pri <= commPri) return;
+  commPri = pri; commT = performance.now() + 2200;
+  const el = $('#comm'); el.hidden = true; void el.offsetWidth; el.hidden = false;
+  $('#commT').textContent = pick(pool).replace('{n}', p ? p.def.name : '');
+  clearTimeout(comment.h); comment.h = setTimeout(() => { el.hidden = true; }, 2600);
+}
 function cutin(p, skillName) {
   const mine = isUserTeam(p.team);
   const d = document.createElement('div'); d.className = 'cut ' + (mine ? 'l' : 'r');
@@ -1536,14 +1635,14 @@ function setHolder(p, how) {
   if (ball.shot && !ball.shot.done) resolveMiss(ball.shot, true);
   ball.shot = null;
   p.holdT = 0; p.decT = rand(.1, .3);
-  if (how === 'rebound' && ball.fromShot) { p.stats.reb++; ev('reb'); }
+  if (how === 'rebound' && ball.fromShot) { p.stats.reb++; ev('reb'); addEnergy(p, 7); }
   ball.fromShot = false;
   if (p.team !== S.poss) {
-    S.poss = p.team; S.shotClock = 12;
+    S.poss = p.team; S.shotClock = S.scMax;
     S.cleared = isThree(p.pos.x, p.pos.z, .1);
     for (const q of S.players) { q.spot = null; q.cutT = 0; }
     if (!S.cleared && isUserTeam(p.team)) banner('清球：先把球带出三分线');
-  } else if (how === 'rebound') S.shotClock = 12;
+  } else if (how === 'rebound') S.shotClock = S.scMax;
   if (isThree(p.pos.x, p.pos.z, .1)) S.cleared = true;
 }
 function launchShot(p, from, made, pts, info) {
@@ -1563,7 +1662,7 @@ function launchShot(p, from, made, pts, info) {
   ball.vel.set((to.x - from.x) / T, (to.y - from.y + .5 * BG * T * T) / T, (to.z - from.z) / T);
   ball.shot = { shooter: p, team: p.team, made, pts, kind: info.kind, label: info.label, cleared: info.cleared, t: 0, touched: false, done: false, assist: p.assistFrom && S.time - p.assistT < 4 ? p.assistFrom : null };
   ball.spinAxis.set(ball.vel.z, 0, -ball.vel.x).normalize(); ball.spin = -14;
-  p.stats.fga++;
+  p.stats.fga++; if (pts === 3) p.stats.tpa++;
   ball.fire = p.onFire;
 }
 function doBlock(shooter, blocker) {
@@ -1571,11 +1670,11 @@ function doBlock(shooter, blocker) {
   ball.state = 'loose'; ball.holder = null; ball.shot = null; ball.pass = null; ball.fromShot = true; ball.lastTouch = blocker.team;
   ball.pos.copy(shooter.handR); ball.pos.y = Math.max(ball.pos.y, 2.2);
   ball.vel.set(x / d * rand(4, 6) + rand(-1.5, 1.5), rand(1, 3), z / d * rand(4, 6) + rand(-1.5, 1.5));
-  blocker.stats.blk++; shooter.stats.fga++; shooter.streak = 0; setFire(shooter, false); ev('block');
+  blocker.stats.blk++; shooter.stats.fga++; addEnergy(blocker, 18); shooter.streak = 0; setFire(shooter, false); ev('block');
   if (blocker.act && (blocker.act.type === 'block' || blocker.act.type === 'jump')) blocker.act.swat = true;
   sfx('block'); S.slowT = .55; S.shake = .25; S.hype = Math.max(S.hype, .85); sfx('ooh');
   sparks.emit(26, ball.pos.x, ball.pos.y, ball.pos.z, { color: ['#ffffff', '#6ff3ff'], speed: 4 });
-  callout('盖帽!', isUserTeam(blocker.team) ? 'cyan' : 'red');
+  callout('盖帽!', isUserTeam(blocker.team) ? 'cyan' : 'red'); comment('block', blocker, 3);
   feed(blocker, '盖帽', shooter);
   if (S.shotClock < 6) S.shotClock = 6;
   requestReplay('block', blocker, blocker.isUser || shooter.isUser ? 1 : .35);
@@ -1586,11 +1685,12 @@ function checkBlock(shooter, mul, radius = 1.3) {
   for (const o of opponents(shooter)) {
     if (o.stunT > 0) continue;
     const d = Math.hypot(o.pos.x - shooter.pos.x, o.pos.z - shooter.pos.z);
-    const r = radius + (o.buff.blk > 0 ? .4 : 0) + (o.buff.contest > 0 ? .2 : 0);
+    const tw = o.ult > 0 && o.def.id === 'tower';
+    const r = radius + (o.buff.blk > 0 ? .4 : 0) + (o.buff.contest > 0 ? .2 : 0) + (tw ? .6 : 0);
     if (d > r || o.y < .08) continue;
     const oHand = 2.62 * o.scale + o.y + (o.buff.blk > 0 ? .25 : 0);
     if (oHand < sHand - .3) continue;
-    let c = (.1 + .44 * o.st.blk + (oHand - sHand) * .45 - d * .12 + (o.buff.blk > 0 ? .3 : 0)) * mul;
+    let c = (.1 + .44 * o.st.blk + (oHand - sHand) * .45 - d * .12 + (o.buff.blk > 0 ? .3 : 0) + (tw ? .3 : 0)) * mul;
     if (!isUserTeam(o.team)) c *= .85 + DIFF[S.diff].blockJump * .2;
     if (c > bestC) { bestC = c; best = o; }
   }
@@ -1601,7 +1701,7 @@ function shotProb(p, x, z, kind) {
   let base;
   if (kind === 'layup') base = .5 + .38 * st.lay;
   else if (kind === 'hook') base = .58 + .32 * st.lay;
-  else if (isThree(x, z)) base = .21 + .38 * st.three - Math.max(0, d - 7.6) * .09;
+  else if (isThree(x, z)) base = .21 + .38 * st.three - Math.max(0, d - 7.6) * (p.ult > 0 && p.def.id === 'ace' ? 0 : .09);
   else if (d < 4.5) base = .36 + .33 * st.mid;
   else base = .3 + .35 * st.mid;
   let c = 1;
@@ -1611,10 +1711,13 @@ function shotProb(p, x, z, kind) {
       let f = (2.2 - dd) / 2.2 * (.32 + .3 * o.st.blk);
       if (o.y > .15) f *= 1.4;
       if (o.buff.contest > 0) f *= 1.6;
+      if (o.handsUp) f *= 1.3;
       c -= f;
     }
   }
   if (kind === 'hook') c = 1 - (1 - c) * .3;
+  if (p.ult > 0 && p.def.id === 'ace') c = 1 - (1 - c) * .4;
+  if (kind === 'layup' || kind === 'hook') for (const o of opponents(p)) if (o.ult > 0 && o.def.id === 'tower' && Math.hypot(o.pos.x - x, o.pos.z - z) < 3) base *= .8;
   return { base: Math.max(.02, base), contest: clamp(c, .35, 1) };
 }
 function releaseShot(p, m) {
@@ -1624,7 +1727,7 @@ function releaseShot(p, m) {
   let mul = 1, label = '';
   if (kind === 'jump') {
     const dd = Math.abs(m - A.c);
-    if (dd <= A.w) { mul = 1.75; label = 'perfect'; }
+    if (dd <= A.w) { mul = 1.75; label = 'perfect'; addEnergy(p, 6); }
     else if (dd <= A.w + .12) { mul = 1; label = 'good'; }
     else { mul = .5; label = m < A.c ? 'early' : 'late'; }
   } else if (kind === 'hook') { mul = 1.25; label = 'good'; }
@@ -1708,7 +1811,7 @@ function ballPhysics(dt) {
 function touchShot() {
   const sh = ball.shot;
   if (ball.state === 'flight') ball.state = 'loose';
-  if (sh && !sh.touched) { sh.touched = true; S.shotClock = 12; ball.fromShot = true; }
+  if (sh && !sh.touched) { sh.touched = true; S.shotClock = S.scMax; ball.fromShot = true; }
 }
 function madeShot(sh) {
   sh.done = true;
@@ -1717,7 +1820,7 @@ function madeShot(sh) {
   net.yank(-2.2);
   ball.fromShot = false;
   if (!sh.cleared) { noBasket(p); return; }
-  if (sh.assist && sh.assist.team === p.team) sh.assist.stats.ast++;
+  if (sh.assist && sh.assist.team === p.team) { sh.assist.stats.ast++; addEnergy(sh.assist, 12); }
   scoreBasket(p, sh.pts, sh.kind, sh.label, S.clockExpired);
 }
 function resolveMiss(sh, silent) {
@@ -1725,7 +1828,7 @@ function resolveMiss(sh, silent) {
   sh.done = true;
   ball.fromShot = true;
   const p = sh.shooter; p.streak = 0; setFire(p, false);
-  if (!sh.touched && !silent && sh.kind === 'jump') { callout('三不沾', 'sub'); sfx('ooh'); ev('airball'); }
+  if (!sh.touched && !silent && sh.kind === 'jump') { callout('三不沾', 'sub'); sfx('ooh'); ev('airball'); comment('airball', p, 1); }
 }
 function ballUpdate(dt) {
   const b = ball;
@@ -1776,12 +1879,13 @@ function ballUpdate(dt) {
       if (P.checked.has(o) || o.stunT > 0) continue;
       const d = Math.hypot(o.pos.x - b.pos.x, o.pos.z - b.pos.z);
       const reach = 2.5 * o.scale + o.y;
-      if (d < .7 && b.pos.y < reach && u > .15 && u < .92) {
+      const gh = o.ult > 0 && o.def.id === 'ghost';
+      if (d < (gh ? 1.3 : o.handsUp ? .95 : .7) && b.pos.y < reach + (o.handsUp ? .25 : 0) && u > .15 && u < .92) {
         P.checked.add(o);
-        let c = (.14 + .42 * o.st.stl + (o.buff.stl > 0 ? .25 : 0)) * (P.lob ? 1.3 * (o.y > .2 ? 1 : .3) : 1);
+        let c = (.14 + .42 * o.st.stl + (o.buff.stl > 0 ? .25 : 0) + (o.handsUp ? .1 : 0) + (gh ? .4 : 0)) * (P.lob ? 1.3 * (o.y > .2 ? 1 : .3) : 1);
         if (!isUserTeam(o.team)) c *= DIFF[S.diff].stealMul;
         if (chance(c)) {
-          o.stats.stl++; setHolder(o, 'steal'); sfx('steal'); ev('intercept');
+          o.stats.stl++; setHolder(o, 'steal'); sfx('steal'); ev('intercept'); addEnergy(o, 15);
           callout('抢断!', isUserTeam(o.team) ? 'cyan' : 'red'); feed(o, '断球', P.from);
           if (P.to.act && P.to.act.type === 'oop') P.to.act = null;
           return;
@@ -1828,12 +1932,13 @@ function grabLoose() {
   let best = null, bestS = -99;
   for (const p of S.players) {
     if (p.stunT > 0 || (p.act && (p.act.type === 'dunk' || p.act.type === 'hang' || p.act.type === 'oop'))) continue;
-    const reach = 2.4 * p.scale + p.y + (p.buff.reb > 0 ? .35 : 0) + (p.buff.blk > 0 ? .2 : 0);
+    const twr = p.ult > 0 && p.def.id === 'tower';
+    const reach = 2.4 * p.scale + p.y + (p.buff.reb > 0 ? .35 : 0) + (p.buff.blk > 0 ? .2 : 0) + (twr ? .4 : 0) + (p.rebT > 0 ? .3 : 0);
     const d = Math.hypot(p.pos.x - ball.pos.x, p.pos.z - ball.pos.z);
-    const rr = .62 + .18 * p.st.reb + (p.buff.reb > 0 ? .45 : 0);
+    const rr = .62 + .18 * p.st.reb + (p.buff.reb > 0 ? .45 : 0) + (twr ? .5 : 0) + (p.boxT > 0 ? .15 : 0);
     if (d < rr && ball.pos.y < reach && ball.pos.y > 0) {
       if (ball.pos.y > HOOP.y - .15 && Math.hypot(ball.pos.x - HOOP.x, ball.pos.z - HOOP.z) < RIM_R + .25) continue;
-      const sc = p.st.reb * .6 + (p.buff.reb > 0 ? .6 : 0) + rand(0, .5) - d;
+      const sc = p.st.reb * .6 + (p.buff.reb > 0 ? .6 : 0) + (twr ? .6 : 0) + (p.boxT > 0 ? .45 : 0) + (p.rebT > 0 ? .3 : 0) + rand(0, .5) - d;
       if (sc > bestS) { bestS = sc; best = p; }
     }
   }
@@ -1850,7 +1955,8 @@ function noBasket(p) {
   scheduleReset(1.3, () => setupCheck(1 - p.team));
 }
 function scoreBasket(p, pts, kind, label, buzzer) {
-  S.score[p.team] += pts; p.stats.pts += pts; p.stats.fgm++;
+  S.score[p.team] += pts; p.stats.pts += pts; p.stats.fgm++; if (pts === 3) p.stats.tpm++;
+  addEnergy(p, pts === 3 || kind === 'dunk' || kind === 'oop' ? 24 : 17); teamEnergy(p.team, 5);
   const el = p.team === 0 ? ui.sH : ui.sA; el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
   p.assistFrom = null;
   p.streak++; if (p.streak >= 3) setFire(p, true);
@@ -1864,6 +1970,10 @@ function scoreBasket(p, pts, kind, label, buzzer) {
   else if (pts === 3) callout('三分命中', mine ? '' : 'red');
   else if (label === 'perfect') callout('完美出手', mine ? 'cyan' : 'red');
   feed(p, nm, null, ' +' + pts);
+  { const before = S.score[p.team] - pts, opp = S.score[1 - p.team];
+    if (kind === 'oop') comment('oop', p, 3); else if (kind === 'dunk') comment('dunk', p, 3);
+    else if (S.score[p.team] === opp) comment('tie', p, 2); else if (before <= opp && S.score[p.team] > opp && S.score[p.team] > 2) comment('lead', p, 2);
+    else if (pts === 3) comment(label === 'perfect' ? 'perfect' : 'three', p, 2); }
   floatAt('+' + pts, HOOP.x, HOOP.y + .7, HOOP.z, mine ? '' : 'bad');
   confetti.emit(kind === 'dunk' || kind === 'oop' || pts === 3 ? 80 : 36, HOOP.x, HOOP.y + .2, HOOP.z, { color: ['#ffc83d', '#ff4b5c', '#6ff3ff', '#a3e635', '#ffffff'], speed: 4.5, grav: 4, life: 1.6 });
   S.hype = 1; sfx('cheer', pts === 3 || kind === 'dunk' || kind === 'oop' ? 1.25 : .8);
@@ -1872,7 +1982,7 @@ function scoreBasket(p, pts, kind, label, buzzer) {
   if (kind === 'dunk' || kind === 'oop') requestReplay(kind, p, (p.act && p.act.style && p.act.style !== 'one') || kind === 'oop' ? 1 : .45);
   if (buzzer) requestReplay('buzzer', p, 1);
   else if (pts === 3 && label === 'perfect' && (p.isUser || chance(.3))) requestReplay('three', p, .6);
-  const won = S.ot || S.score[p.team] >= S.target;
+  const won = S.sudden || S.score[p.team] >= S.target;
   if (won) { scheduleReset(1.5, endGame); S.ending = true; return; }
   if (buzzer || S.clockExpired) { scheduleReset(1.5, finishRegulation); S.ending = true; return; }
   scheduleReset(1.4, () => setupCheck(1 - p.team));
@@ -1915,15 +2025,24 @@ function catchOop(r, passer) {
 function shootAuto(p, opt = {}) {
   if (ball.holder !== p || ball.state !== 'held' || (p.act && !['pass', 'call', 'cross'].includes(p.act.type)) || p.stunT > 0) return false;
   const h = dHoop(p);
-  const dunkRange = p.st.dunk > .8 ? 3.4 : p.st.dunk > .55 ? 2.4 : 1.4;
-  if (h < dunkRange && !opt.noDunk) startDunk(p, {});
+  const ultId = p.ult > 0 ? p.def.id : '';
+  const dunkRange = ultId === 'sky' ? 6.5 : ultId === 'rhino' ? 4.4 : p.st.dunk > .8 ? 3.4 : p.st.dunk > .55 ? 2.4 : 1.4;
+  if (h < dunkRange && !opt.noDunk) startDunk(p, { skill: ultId === 'sky' && h > 3.4 });
   else if (h < 2.9) startLayup(p);
   else startJumper(p, opt);
   return true;
 }
+const CONTEST = [{ t: '空位', k: 1.55, c: 'good' }, { t: '轻微干扰', k: 1.05, c: 'white' }, { t: '有干扰', k: .78, c: 'warn' }, { t: '严重干扰', k: .52, c: 'bad' }];
+// 0 = wide open .. 3 = smothered; a raised hand or a defender already in the air counts as closer
+function contestLevel(p, x = p.pos.x, z = p.pos.z) {
+  let best = 99;
+  for (const o of opponents(p)) { if (o.stunT > 0 || o.screenedT > 0) continue; const d = Math.hypot(o.pos.x - x, o.pos.z - z) - (o.handsUp ? .45 : 0) - (o.y > .15 ? .3 : 0); if (d < best) best = d; }
+  return best > 2.6 ? 0 : best > 1.7 ? 1 : best > 1.05 ? 2 : 3;
+}
 function startJumper(p, opt = {}) {
-  const st = isThree(p.pos.x, p.pos.z) ? p.st.three : p.st.mid;
-  p.act = { type: 'jumper', t: 0, gather: .12, dur: .7, c: .8, w: (.045 + .055 * st) * (opt.wMul || 1), jv: 3.0, lock: true, jumped: false, released: false, m: 0,
+  const st = isThree(p.pos.x, p.pos.z) ? p.st.three : p.st.mid, lv = contestLevel(p);
+  const ultK = p.ult > 0 && p.def.id === 'ace' ? 2.2 : 1;
+  p.act = { type: 'jumper', t: 0, gather: .12, dur: .7, c: .8, lv, w: Math.min(.3, (.045 + .055 * st) * (opt.wMul || 1) * CONTEST[lv].k * ultK), jv: 3.0, lock: true, jumped: false, released: false, m: 0,
     sx: p.pos.x, sz: p.pos.z, autoRelease: opt.auto == null ? null : opt.auto, tapRelease: !!opt.tap, cleared: S.cleared, contestMul: opt.contestMul, blockMul: opt.blockMul, canFake: !!opt.canFake };
   p.vel.multiplyScalar(.15);
   const [dx, dz] = dirToHoop(p.pos.x, p.pos.z); p.face = Math.atan2(dx, dz);
@@ -1956,8 +2075,10 @@ function startDunk(p, opt) {
   dust.emit(10, p.pos.x, .05, p.pos.z, { color: '#c9b79c', speed: 1.4, grav: 1, up: .4, life: .6 });
 }
 function userJump(p) {
-  if (p.y > .02 || p.act && p.act.lock || p.stunT > 0 || p.jumpCd > 0) return;
+  if (p.y > .02 || p.act && p.act.lock || p.stunT > 0 || p.jumpCd > 0 || p.boxLag > 0) return;
   const defending = S.poss !== p.team && ball.state !== 'loose' && ball.state !== 'flight';
+  if (!defending && (ball.state === 'loose' || ball.state === 'flight') && ball.vel.y < .5 && ball.pos.y > 2.2 && ball.pos.y < 3.9 && Math.hypot(ball.pos.x - p.pos.x, ball.pos.z - p.pos.z) < 1.9) { p.rebT = .5; floatAt('好时机', p.pos.x, p.def.h + .9, p.pos.z, 'cn good'); }
+  p.boxT = 0;
   p.vy = jumpV(defending ? .5 + .35 * p.st.blk + (p.buff.blk > 0 ? .25 : 0) : .45 + .35 * p.st.reb + (p.buff.reb > 0 ? .2 : 0));
   p.y = .001; p.act = { type: defending ? 'block' : 'jump', t: 0 }; p.jumpCd = .35;
 }
@@ -1969,15 +2090,15 @@ function attemptSteal(d) {
   const dist = Math.hypot(h.pos.x - d.pos.x, h.pos.z - d.pos.z);
   if (dist > 1.5 || (h.act && (h.act.type === 'dunk' || h.act.type === 'hang'))) return;
   d.face = Math.atan2(h.pos.x - d.pos.x, h.pos.z - d.pos.z);
-  let c = .1 + .32 * d.st.stl - .18 * h.st.hnd + (d.buff.stl > 0 ? .35 : 0);
+  let c = .1 + .32 * d.st.stl - .18 * h.st.hnd + (d.buff.stl > 0 ? .35 : 0) + (d.ult > 0 && d.def.id === 'ghost' ? .4 : 0);
   if (h.act && h.act.type === 'jumper' && h.y < .1) c += .12;
   c *= 1.25 - dist / 2;
   if (!d.isUser && !isUserTeam(d.team)) c *= DIFF[S.diff].stealMul;
   if (chance(clamp(c, .03, .9))) stealSuccess(d, h);
 }
 function stealSuccess(d, h) {
-  d.stats.stl++; sfx('steal'); ev('steal');
-  callout('抢断!', isUserTeam(d.team) ? 'cyan' : 'red'); feed(d, '抢断', h);
+  d.stats.stl++; sfx('steal'); ev('steal'); addEnergy(d, 15);
+  callout('抢断!', isUserTeam(d.team) ? 'cyan' : 'red'); feed(d, '抢断', h); comment('steal', d, 2);
   if (h.act && ['jumper', 'fake', 'cross', 'stepback'].includes(h.act.type)) h.act = null;
   if (chance(.6)) setHolder(d, 'steal');
   else {
@@ -1990,16 +2111,34 @@ function crossover(p, dx, dz, power = 1) {
   if (p.burstCd > 0 && power === 1) return;
   if (!dx && !dz) { const [hx, hz] = dirToHoop(p.pos.x, p.pos.z); const s = p.dribHand; dx = -hz * s * .8 + hx * .6; dz = hx * s * .8 + hz * .6; }
   const l = Math.hypot(dx, dz) || 1;
-  p.burstCd = 1.4; p.burstT = power > 1 ? .45 : .36; p.burstMul = power > 1 ? 2.0 : 1.55; p.burstDir.set(dx / l, 0, dz / l);
+  p.burstCd = p.ult > 0 && p.def.id === 'flash' ? .75 : 1.4; p.burstT = power > 1 ? .45 : .36; p.burstMul = power > 1 ? 2.0 : 1.55; p.burstDir.set(dx / l, 0, dz / l);
   const from = p.dribHand; p.dribHand *= -1;
   if (!p.act || p.act.type === 'cross') p.act = { type: 'cross', t: 0, T: .3, kind: pick(['cross', 'btl', 'btb']), from, to: p.dribHand };
   sfx('squeak');
   dust.emit(5, p.pos.x, .05, p.pos.z, { color: '#c9b79c', speed: 1, grav: 1, up: .3, life: .5 });
   const [d, dist] = nearestOpp(p);
   if (d && dist < (power > 1 ? 2.1 : 1.6) && d.stunT <= 0 && d.y < .05) {
-    const c = power > 1 ? .34 + .2 * p.st.hnd - .15 * d.st.stl : .02 + .12 * p.st.hnd - .08 * d.st.stl;
-    if (chance(c)) { ev('ankle'); d.stunT = 1.15; d.act = null; callout('晃倒!', isUserTeam(p.team) ? '' : 'red'); S.hype = Math.max(S.hype, .9); sfx('cheer', .9); sfx('ooh'); S.slowT = .4; feed(p, '晃倒', d); requestReplay('ankle', p, p.isUser || d.isUser ? .9 : .3); }
+    const c = (power > 1 ? .34 + .2 * p.st.hnd - .15 * d.st.stl : .02 + .12 * p.st.hnd - .08 * d.st.stl) + (p.ult > 0 && p.def.id === 'flash' ? .3 : 0);
+    if (chance(c)) { ev('ankle'); addEnergy(p, 15); d.stunT = 1.15; d.act = null; callout('晃倒!', isUserTeam(p.team) ? '' : 'red'); comment('ankle', p, 3); S.hype = Math.max(S.hype, .9); sfx('cheer', .9); sfx('ooh'); S.slowT = .4; feed(p, '晃倒', d); requestReplay('ankle', p, p.isUser || d.isUser ? .9 : .3); }
   }
+}
+/* ---------- energy and the ultimate ---------- */
+function addEnergy(p, v) {
+  if (!p || p.ult > 0 || S.phase === 'menu') return;
+  const was = p.energy; p.energy = Math.min(100, p.energy + v);
+  if (was < 100 && p.energy >= 100 && p.isUser) { floatAt('大招就绪', p.pos.x, p.def.h + 1.1, p.pos.z, 'cn good'); sfx('ready'); }
+}
+function teamEnergy(team, v) { for (const q of S.players) if (q.team === team) addEnergy(q, v); }
+function canUlt(p) { return p.energy >= 100 && p.ult <= 0 && p.stunT <= 0 && S.phase === 'live' && !(p.act && ['dunk', 'hang', 'oop'].includes(p.act.type)); }
+function useUlt(p) {
+  if (!canUlt(p)) return false;
+  p.energy = 0; p.ult = p.def.ult.T; ev('ult_' + p.def.id);
+  ultCutin(p); S.slowT = Math.max(S.slowT, .7); S.ultFocus = { p, t: 1.1 }; S.hype = Math.max(S.hype, .9);
+  sparks.emit(40, p.pos.x, 1, p.pos.z, { color: [p.team === 0 ? '#ffc83d' : '#ff4b5c', '#ffffff'], speed: 4, up: 2 });
+  feed(p, '发动大招', null, ' ' + p.def.ult.name); comment('ult', p, 3);
+  p.updateTag();
+  if (p.def.id === 'ghost' || p.def.id === 'flash') p.burstCd = 0;
+  return true;
 }
 function canUseSkill(p) {
   if (p.cd > 0 || p.stunT > 0) return false;
@@ -2074,6 +2213,7 @@ function updateAct(p, dt) {
     case 'jumper': case 'hook':
       if (!A.jumped && A.t >= A.gather) { A.jumped = true; p.vy = A.jv; p.y = .001; }
       p.hang = A.jumped && !A.released;
+      if (A.fade && A.jumped && !A.released) { const [hx, hz] = dirToHoop(p.pos.x, p.pos.z); p.pos.x -= hx * 1.3 * dt; p.pos.z -= hz * 1.3 * dt; }
       if (!A.released) {
         A.m = A.t / A.dur;
         if (A.autoRelease != null && A.m >= A.autoRelease) releaseShot(p, A.m);
@@ -2092,7 +2232,7 @@ function updateAct(p, dt) {
       p.y = lerp(A.y0 || 0, A.peak, Math.sin(Math.min(1, u / .85) * Math.PI / 2)); p.vy = 0;
       if (!A.checked && u > .45) {
         A.checked = true;
-        const blk = checkBlock(p, (A.skill ? .25 : 1) * (1.15 - .4 * p.st.dunk), 1.6);
+        const blk = checkBlock(p, (A.skill ? .25 : 1) * (1.15 - .4 * p.st.dunk) * (p.ult > 0 && p.def.id === 'sky' ? .1 : 1), 1.6);
         if (blk) { p.act = null; p.pose.spin = 0; doBlock(p, blk); return; }
       }
       if (u >= 1) slam(p, A);
@@ -2118,6 +2258,11 @@ function updateAct(p, dt) {
       if (A.t >= A.T || dHoop(p) < 2.6) { p.act = null; if (ball.holder === p) startDunk(p, {}); }
       break;
     }
+    case 'spin': {
+      const f = clamp(A.t / A.T, 0, 1); p.vel.set(A.dir.x * 6.2 * (1 - f * .4), 0, A.dir.z * 6.2 * (1 - f * .4));
+      if (A.t >= A.T) { p.act = null; p.pose.spin = 0; p.face = Math.atan2(...dirToHoop(p.pos.x, p.pos.z)); }
+      break;
+    }
     case 'block': case 'jump': if (A.t > .05 && p.y <= 0) p.act = null; break;
     default: if (A.T && A.t >= A.T) p.act = null;
   }
@@ -2131,18 +2276,21 @@ function slam(p, A) {
   const spin = A.style === 'reverse' ? Math.PI : 0;
   p.act = { type: 'hang', t: 0, T: A.style && A.style !== 'one' ? .5 : .38, y: p.y, lock: true, spin, style: A.style };
   if (!A.cleared) noBasket(p);
-  else { if (A.oop && p.assistFrom && p.assistFrom.team === p.team) p.assistFrom.stats.ast++; scoreBasket(p, 2, A.oop ? 'oop' : 'dunk', '', S.clockExpired); }
+  else { if (A.oop && p.assistFrom && p.assistFrom.team === p.team) { p.assistFrom.stats.ast++; addEnergy(p.assistFrom, 14); } scoreBasket(p, 2, A.oop ? 'oop' : 'dunk', '', S.clockExpired); }
 }
 function physics(p, dt) {
   for (const k in p.buff) if (p.buff[k] > 0) p.buff[k] -= dt;
+  if (p.ult > 0) { p.ult -= dt; if (p.ult <= 0) { p.ult = 0; p.updateTag(); } }
+  if (S.phase === 'live' && p.ult <= 0) p.energy = Math.min(100, p.energy + dt * .8);
+  p.screenedT -= dt; p.boxT -= dt; p.boxLag -= dt; p.rebT -= dt; p.bumpT -= dt; p.screenCd -= dt;
   p.cd = Math.max(0, p.cd - dt); p.burstCd -= dt; p.burstT -= dt; p.stunT -= dt; p.stealCd -= dt; p.jumpCd -= dt; p.callT -= dt; p.squeakCd -= dt;
   if (p.pendingJump > 0) { p.pendingJump -= dt; if (p.pendingJump <= 0 && p.y < .02 && S.phase === 'live') { p.vy = jumpV(1.1); p.y = .001; p.act = { type: 'block', t: 0 }; } }
   if (p.act) updateAct(p, dt);
   const A = p.act;
   const locked = p.stunT > 0 || (A && A.lock);
-  if (!(A && (A.type === 'dunk' || A.type === 'hang' || A.type === 'stepback' || A.type === 'charge' || A.type === 'oop'))) {
+  if (!(A && (A.type === 'dunk' || A.type === 'hang' || A.type === 'stepback' || A.type === 'charge' || A.type === 'oop' || A.type === 'spin'))) {
     const has = ball.holder === p;
-    const maxS = (4.3 + 2.3 * p.st.spd) * (has ? .9 : 1) * (p.sprint && !has ? 1.2 : 1) * (p.stance ? .93 : 1) * (p.buff.stl > 0 ? 1.08 : 1);
+    const maxS = (4.3 + 2.3 * p.st.spd) * (has ? .9 : 1) * (p.sprint && !has ? 1.2 : 1) * (p.stance ? .93 : 1) * (p.buff.stl > 0 ? 1.08 : 1) * (p.handsUp ? .8 : 1) * (p.screenedT > 0 ? .15 : 1) * (p.post ? .5 : 1) * (p.boxT > 0 ? .55 : 1) * (p.boxLag > 0 ? 0 : 1) * (p.ult > 0 ? ({ flash: 1.22, ghost: 1.1, rhino: 1.08 }[p.def.id] || 1.04) : 1);
     if (p.burstT > 0) p.vel.set(p.burstDir.x * maxS * p.burstMul, 0, p.burstDir.z * maxS * p.burstMul);
     else {
       let wx = locked ? 0 : p.want.x, wz = locked ? 0 : p.want.z;
@@ -2165,7 +2313,7 @@ function physics(p, dt) {
   if (p.faceTo) target = Math.atan2(p.faceTo.x - p.pos.x, p.faceTo.z - p.pos.z);
   else if (Math.hypot(p.vel.x, p.vel.z) > .6) target = Math.atan2(p.vel.x, p.vel.z);
   else if (ball.holder === p) { const [hx, hz] = dirToHoop(p.pos.x, p.pos.z); target = Math.atan2(hx, hz); }
-  if (target != null && !(A && ['jumper', 'hook', 'dunk', 'hang', 'oop', 'pass'].includes(A.type))) p.face = angLerp(p.face, target, 1 - Math.exp(-dt * 12));
+  if (target != null && !(A && ['jumper', 'hook', 'dunk', 'hang', 'oop', 'pass', 'spin'].includes(A.type))) p.face = angLerp(p.face, target, 1 - Math.exp(-dt * 12));
   p.pos.x = clamp(p.pos.x, -BOUND.x + .2, BOUND.x - .2);
   p.pos.z = clamp(p.pos.z, .3, BOUND.zMax - .25);
 }
@@ -2185,10 +2333,139 @@ function collide() {
       }
     }
     if ((a.act && (a.act.type === 'dunk' || a.act.type === 'oop')) || (b.act && (b.act.type === 'dunk' || b.act.type === 'oop'))) continue;
-    const wa = b.st.str / (a.st.str + b.st.str);
+    const strOf = (q, o) => q.st.str * (q.boxT > 0 && o.team !== q.team ? 2 : 1) * (q.ult > 0 && q.def.id === 'rhino' ? 1.6 : 1) * (q.screening ? 2.2 : 1);
+    for (const [att, def] of [[a, b], [b, a]]) {
+      if (att.ult > 0 && att.def.id === 'rhino' && ball.holder === att && def.team !== att.team && def.stunT <= 0 && Math.hypot(att.vel.x, att.vel.z) > 2.6 && !(att.chargeHit.get(def) > S.time)) {
+        att.chargeHit.set(def, S.time + 1.4); def.stunT = .8; def.act = null; S.shake = .3; sfx('block'); feed(att, '撞翻', def); ev('rhino_hit');
+        if (isUserTeam(att.team) || def.isUser) callout('撞翻!', isUserTeam(att.team) ? '' : 'red');
+      }
+    }
+    const sa = strOf(a, b), sb = strOf(b, a), wa = sb / (sa + sb);
     a.pos.x -= nx * push * wa; a.pos.z -= nz * push * wa;
     b.pos.x += nx * push * (1 - wa); b.pos.z += nz * push * (1 - wa);
   }
+}
+
+/* =========================================================
+   Pick and roll, post-ups, box-outs
+   ========================================================= */
+// the defender actually guarding a player (closest opponent within reach, else the assigned man)
+function guardOf(p) { let best = null, m = 2.8; for (const o of opponents(p)) { const d = o.pos.distanceTo(p.pos); if (d < m) { m = d; best = o; } } return best || p.match; }
+function screenSpot(scr, h) {
+  const d = guardOf(h); if (!d) return null;
+  const ax = d.pos.x - h.pos.x, az = d.pos.z - h.pos.z, al = Math.hypot(ax, az) || 1;
+  // set the screen on the middle-of-the-floor side of the defender
+  let px = -az / al, pz = ax / al; if (px * -h.pos.x + pz * (6 - h.pos.z) < 0) { px = -px; pz = -pz; }
+  const r = .12 + .4 * (scr.scale * scr.def.bulk + d.scale * d.def.bulk);
+  return { x: d.pos.x + px * r - ax / al * .12, z: d.pos.z + pz * r - az / al * .12, side: { x: px, z: pz }, def: d };
+}
+function startScreen(p, h) {
+  if (!h || h === p || p.scr) return false;
+  p.scr = { phase: 'go', t: 0, for: h, roll: p.st.dunk > .75 || p.st.three < .5 ? 'roll' : 'pop' };
+  p.spot = null; p.cutT = 0;
+  return true;
+}
+function updateScreen(p, dt) {
+  const S2 = p.scr; S2.t += dt;
+  const h = S2.for;
+  if (ball.holder !== h || ball.state !== 'held' || S.poss !== p.team) { p.scr = null; p.screening = false; return; }
+  if (S2.phase === 'go') {
+    const sp = screenSpot(p, h); if (!sp) { p.scr = null; return; }
+    S2.spot = sp; p.sprint = true; p.faceTo = sp.def.pos;
+    if (moveTo(p, sp.x, sp.z, 1.1, .05) < .42) { S2.phase = 'set'; S2.t = 0; S2.x = p.pos.x; S2.z = p.pos.z; if (isUserTeam(p.team)) floatAt('挡拆', p.pos.x, p.def.h + .9, p.pos.z, 'cn white'); ev('screen_set'); }
+    if (S2.t > 2.4) p.scr = null;
+    return;
+  }
+  if (S2.phase === 'set') {
+    p.want.set(0, 0, 0); p.screening = true; p.faceTo = h.pos;
+    if (S2.t > 1.15) {
+      p.screening = false; p.scr = null; p.screenCd = rand(5, 8);
+      if (S2.roll === 'roll') { p.cutT = 1.6; p.cutTo = { x: rand(-.9, .9), z: rand(1.7, 2.6) }; if (isUserTeam(p.team) && !p.isUser) floatAt('下顺', p.pos.x, p.def.h + .9, p.pos.z, 'cn white'); }
+      else { const sp = SPOTS.filter(q => isThree(q[0], q[1])).sort((a, b) => Math.hypot(a[0] - p.pos.x, a[1] - p.pos.z) - Math.hypot(b[0] - p.pos.x, b[1] - p.pos.z))[0]; p.spot = sp; p.spotT = 2.5; }
+    }
+  }
+}
+// defenders who run into a planted screen get hung up on it
+function screenContacts() {
+  for (const s2 of S.players) {
+    if (!s2.screening) continue;
+    for (const o of opponents(s2)) {
+      if (o.screenedT > 0 || o.stunT > 0 || o.y > .1) continue;
+      const d = Math.hypot(o.pos.x - s2.pos.x, o.pos.z - s2.pos.z), sp = Math.hypot(o.vel.x, o.vel.z);
+      if (d < .2 + .4 * (o.scale * o.def.bulk + s2.scale * s2.def.bulk) && sp > .8) {
+        const h = s2.scr && s2.scr.for;
+        if (!h || o.pos.distanceTo(h.pos) > 3.2 || (o !== guardOf(h) && o.match !== h) || (s2.scr.hit && s2.scr.hit.has(o))) continue;
+        (s2.scr.hit = s2.scr.hit || new Set()).add(o);
+        o.screenedT = .75 + .35 * clamp(s2.st.str - o.st.str * .7, 0, 1); o.vel.multiplyScalar(.15);
+        ev('screened'); sfx('bump'); addEnergy(s2, 5);
+        if (isUserTeam(s2.team) || o.isUser) floatAt('被挡住', o.pos.x, o.def.h + .9, o.pos.z, 'cn white');
+        feed(s2, '挡拆', o); comment('screen', s2, 1);
+        // the screener's own defender may switch onto the ball handler
+        const sd = s2.match, D = isUserTeam(o.team) ? DIFF.normal : DIFF[S.diff];
+        if (h && sd && sd.team === o.team && sd !== o && !sd.isUser && !o.isUser && chance(D.help * .7)) swapMatches(o, sd);
+      }
+    }
+  }
+}
+function swapMatches(a, b) {
+  const ma = a.match, mb = b.match; if (!ma || !mb) return;
+  a.match = mb; b.match = ma; mb.match = a; ma.match = b; ev('switch');
+  if (isUserTeam(a.team)) floatAt('换防', b.pos.x, b.def.h + .9, b.pos.z, 'cn white');
+}
+
+/* ---------- post-up ---------- */
+function canPost(p) { return ball.holder === p && ball.state === 'held' && dHoop(p) < 5.4 && S.cleared && !(p.act && p.act.lock) && p.stunT <= 0; }
+function updatePost(p, dt, mx, mz) {
+  const P = p.post; P.t += dt;
+  const [hx, hz] = dirToHoop(p.pos.x, p.pos.z);
+  p.faceTo = { x: p.pos.x - hx * 3, z: p.pos.z - hz * 3 };
+  // input along the hoop direction backs the defender down; sideways input shades left/right
+  const back = Math.max(0, mx * hx + mz * hz), side = mx * -hz + mz * hx;
+  p.want.set((hx * back + -hz * side * .6) * .55, 0, (hz * back + hx * side * .6) * .55);
+  const d = guardOf(p);
+  if (d && back > .2 && p.bumpT <= 0) {
+    const dd = Math.hypot(d.pos.x - p.pos.x, d.pos.z - p.pos.z), between = (d.pos.x - p.pos.x) * hx + (d.pos.z - p.pos.z) * hz;
+    if (dd < 1.15 && between > 0) {
+      p.bumpT = .55;
+      const k = clamp(.16 + .38 * (p.st.str - d.st.str * .8), .04, .5);
+      d.pos.x += hx * k; d.pos.z += hz * k; p.pos.x += hx * k * .8; p.pos.z += hz * k * .8;
+      sfx('bump'); S.shake = Math.max(S.shake, .08); dust.emit(4, (p.pos.x + d.pos.x) / 2, .05, (p.pos.z + d.pos.z) / 2, { color: '#c9b79c', speed: .8, grav: 1, up: .3, life: .4 });
+      ev('post_bump');
+      if (p.st.str - d.st.str > .25 && chance(.18)) { d.stunT = .5; d.act = null; if (isUserTeam(p.team) || d.isUser) floatAt('撞开', d.pos.x, d.def.h + .9, d.pos.z, 'cn white'); }
+    }
+  }
+}
+function postShot(p) {
+  p.post = null;
+  if (p.st.str > .85 || (p.def.h >= 2 && p.st.lay > .85)) { startHook(p); p.act.post = true; }
+  else { startJumper(p, { wMul: 1.15, contestMul: .7, auto: p.isUser && !S.auto ? null : aiReleasePoint(p, .45) }); p.act.fade = true; }
+  ev('post_shot');
+}
+function postSpin(p) {
+  const d = guardOf(p); p.post = null;
+  const [hx, hz] = dirToHoop(p.pos.x, p.pos.z);
+  const sd = d ? Math.sign((d.pos.x - p.pos.x) * -hz + (d.pos.z - p.pos.z) * hx) || 1 : 1;
+  p.act = { type: 'spin', t: 0, T: .42, lock: true, dir: { x: hx * .8 - hz * -sd * .7, z: hz * .8 + hx * -sd * .7 } };
+  sfx('squeak'); dust.emit(6, p.pos.x, .05, p.pos.z, { color: '#c9b79c', speed: 1, grav: 1, up: .3, life: .5 }); ev('post_spin');
+  if (d && d.pos.distanceTo(p.pos) < 1.4 && d.stunT <= 0 && chance(.2 + .2 * p.st.hnd + .15 * (p.st.str - d.st.str))) { d.stunT = .9; d.act = null; callout('转身晃过!', isUserTeam(p.team) ? '' : 'red'); feed(p, '转身晃过', d); addEnergy(p, 10); }
+}
+
+/* ---------- box-out and rebound timing ---------- */
+function startBoxOut(p) {
+  if (p.y > .05 || p.stunT > 0 || p.boxLag > 0 || (p.act && p.act.lock)) return;
+  const sh = ball.shot;
+  if (ball.state === 'flight' && sh && sh.t < .22) { p.boxLag = .55; if (p.isUser) floatAt('卡位过早', p.pos.x, p.def.h + .9, p.pos.z, 'cn bad'); ev('box_early'); return; }
+  p.boxT = 1.5; ev('boxout');
+  if (p.isUser) floatAt('卡位', p.pos.x, p.def.h + .9, p.pos.z, 'cn white');
+}
+// where the ball will next come down through rebounding height
+const landing = { x: 0, z: 0, ok: false };
+function predictLanding() {
+  landing.ok = false;
+  if (!(ball.state === 'flight' || ball.state === 'loose') || !(ball.fromShot || (ball.shot && ball.shot.touched))) return;
+  let x = ball.pos.x, y = ball.pos.y, z = ball.pos.z, vx = ball.vel.x, vy = ball.vel.y, vz = ball.vel.z;
+  if (ball.state === 'flight' && ball.shot && !ball.shot.touched) return;
+  for (let i = 0; i < 90; i++) { vy -= BG * .02; x += vx * .02; y += vy * .02; z += vz * .02; if (vy < 0 && y < 2.7) { landing.x = clamp(x, -7, 7); landing.z = clamp(z, .4, 13.5); landing.ok = true; return; } }
 }
 
 /* =========================================================
@@ -2234,7 +2511,7 @@ function aiSkillCond(p) {
   }
   return false;
 }
-function aiShoot(p, D) { return shootAuto(p, { auto: aiReleasePoint(p, D.perfect) }); }
+function aiShoot(p, D) { const lv = contestLevel(p); return shootAuto(p, { auto: aiReleasePoint(p, clamp(D.perfect * [1.35, 1.1, .8, .55][lv] * (p.ult > 0 && p.def.id === 'ace' ? 2 : 1), 0, .95)) }); }
 function aiBall(p, D, dt) {
   p.holdT += dt; p.faceTo = null; p.stance = false;
   const h = dHoop(p);
@@ -2247,6 +2524,18 @@ function aiBall(p, D, dt) {
     if (p.holdT > 3 && chance(dt * .6)) { const m = mates(p).find(q => isThree(q.pos.x, q.pos.z, .1) && laneOpen(p, q) > 1.1); if (m) doPass(p, m, false); }
     return;
   }
+  // post-up for the strong inside players
+  if (p.post) {
+    const [hx, hz] = dirToHoop(p.pos.x, p.pos.z); updatePost(p, dt, hx, hz);
+    const g = guardOf(p), gd = g ? g.pos.distanceTo(p.pos) : 9;
+    if (p.post.t > p.post.dur || dHoop(p) < 1.9 || S.shotClock < 2.5) { if (gd < 1.3 && chance(.4)) postSpin(p); else postShot(p); }
+    else if (p.post.t > .8 && chance(dt * .5)) { const m = mates(p).find(q => openness(q) > 2.4 && laneOpen(p, q) > 1); if (m) { p.post = null; doPass(p, m, false); } }
+    return;
+  }
+  if (S.cleared && (p.st.str > .8 || p.st.lay > .85) && canPost(p) && dHoop(p) > 2.2 && p.holdT > .3 && chance(dt * 1.4)) { const g = guardOf(p); if (g && g.pos.distanceTo(p.pos) < 1.7) { p.post = { t: 0, dur: rand(1.1, 2.3) }; ev('post'); comment('post', p, 1); if (isUserTeam(p.team) || g.isUser) floatAt('背打', p.pos.x, p.def.h + .9, p.pos.z, 'cn white'); return; } }
+  // use a teammate's screen: go round it toward the rim
+  const scrm = mates(p).find(m => m.scr && m.scr.for === p && m.scr.phase === 'set' && m.scr.spot);
+  if (scrm) { const sd = scrm.scr.spot.side, [hx, hz] = dirToHoop(p.pos.x, p.pos.z); moveTo(p, scrm.pos.x + sd.x * 1.4 + hx * 1.4, scrm.pos.z + sd.z * 1.4 + hz * 1.4, 1, .2); return; }
   const user = S.user;
   if (p.team === user.team && user !== p && user.callT > 0 && !S.auto && laneOpen(p, user) > .4 && !(p.act && p.act.lock)) { doPass(p, user, canOop(user) && dHoop(user) < 3.8); user.callT = 0; return; }
   if (p.decT > 0) { p.decT -= dt; moveTo(p, p.goal.x, p.goal.z, p.goalSpd, .3); return; }
@@ -2290,7 +2579,12 @@ function aiBall(p, D, dt) {
 }
 function aiOffBall(p, D, dt) {
   p.faceTo = ball.pos; p.stance = false;
+  p.callAlert = (p.callAlert || 0) - dt;
+  if (ball.holder && ball.holder.isUser && !S.auto && p.team === ball.holder.team && S.cleared && p.callAlert <= 0 && openness(p) > 2.6 && laneOpen(ball.holder, p) > 1.1 && chance(dt * .8)) { p.callAlert = 4.5; p.act = p.act || { type: 'call', t: 0, T: .7 }; floatAt(dHoop(p) < 3.6 && canOop(p) ? '空接!' : '空位!', p.pos.x, p.def.h + .9, p.pos.z, 'cn good'); }
+  if (p.scr) { updateScreen(p, dt); return; }
   p.spotT -= dt;
+  const hd = ball.holder;
+  if (S.cleared && hd && hd.team === p.team && p.screenCd <= 0 && p.cutT <= 0 && dHoop(hd) > 5 && !mates(p).some(m => m.scr) && guardOf(hd) && guardOf(hd).pos.distanceTo(hd.pos) < 2.2 && chance(dt * (p.st.str > .6 ? .55 : .22))) { p.screenCd = rand(6, 9); startScreen(p, hd); return; }
   if (p.cutT > 0) { p.cutT -= dt; moveTo(p, p.cutTo.x, p.cutTo.z, 1.08); p.sprint = true; return; }
   if (!p.spot || p.spotT <= 0) {
     p.spotT = rand(2.2, 4.2);
@@ -2321,6 +2615,7 @@ function aiDefend(p, D, dt) {
       return;
     }
   }
+  if (hd && hd.team !== p.team && hd.pos.distanceTo(p.pos) < 1.8 && (isThree(hd.pos.x, hd.pos.z, -.8) && hd.st.three > .7 || (hd.act && hd.act.type === 'jumper' && !hd.act.released))) p.handsUp = true;
   if (hd === man) {
     let gap = lerp(1.7, 1.0, D.tight);
     if (man.st.three < .5 && dHoop(man) > 7) gap += .7;
@@ -2360,7 +2655,10 @@ function aiRebound(p, D, dt) {
     const off = p.team === sh.team;
     const a = Math.atan2(p.pos.x - HOOP.x, p.pos.z - HOOP.z);
     const r = p.st.reb > .7 ? 1.9 : off ? 4.6 : 2.8;
+    if (p.boxT > 0) { const o = nearestOpp(p)[0]; p.faceTo = o ? o.pos : null; p.want.set(0, 0, 0); return; }
     moveTo(p, HOOP.x + Math.sin(a) * r, Math.max(.8, HOOP.z + Math.cos(a) * r), .9);
+    sh.boxed = sh.boxed || new Set();
+    if (!sh.boxed.has(p) && sh.t > .3 && dHoop(p) < 3.8) { sh.boxed.add(p); const [o, od] = nearestOpp(p); if (o && od < 1.6 && chance(.25 + .5 * p.st.reb)) startBoxOut(p); }
     return;
   }
   const b = ball.pos, tx = b.x + ball.vel.x * .3, tz = b.z + ball.vel.z * .3;
@@ -2370,13 +2668,20 @@ function aiRebound(p, D, dt) {
   else moveTo(p, lerp(p.pos.x, tx, .4), lerp(p.pos.z, tz, .4), .6);
   const hd = Math.hypot(p.pos.x - b.x, p.pos.z - b.z);
   if (hd < 1.3 && b.y > 2.1 && b.y < 2.4 * p.scale + 1.0 && ball.vel.y < 1.5 && p.y < .02 && p.jumpCd <= 0 && !(p.act && p.act.lock)) {
-    p.vy = jumpV(.45 + .35 * p.st.reb + (p.buff.reb > 0 ? .2 : 0)); p.y = .001; p.act = { type: 'jump', t: 0 }; p.jumpCd = .8;
+    p.vy = jumpV(.45 + .35 * p.st.reb + (p.buff.reb > 0 ? .2 : 0)); p.y = .001; p.act = { type: 'jump', t: 0 }; p.jumpCd = .8; if (ball.vel.y < 0) p.rebT = .45;
   }
 }
+function aiUltCond(p) {
+  const id = p.def.id, hd = ball.holder, off = S.poss === p.team;
+  if (off) { if (hd !== p) return false; const h = dHoop(p); return id === 'sky' ? h < 6.4 : id === 'ace' ? isThree(p.pos.x, p.pos.z) || h < 8 : id === 'tower' ? h < 5 : h < 9; }
+  if (!hd || hd.team === p.team) return false;
+  return id === 'ghost' || id === 'flash' ? hd.pos.distanceTo(p.pos) < 4 : id === 'tower' || id === 'rhino' ? dHoop(hd) < 6.5 : chance(.3);
+}
 function aiUpdate(p, dt) {
-  p.sprint = false;
+  p.sprint = false; p.handsUp = false;
   if (p.stunT > 0 || (p.act && p.act.lock)) { p.want.set(0, 0, 0); return; }
   const D = isUserTeam(p.team) ? DIFF.normal : DIFF[S.diff];
+  if (canUlt(p) && chance(dt * (.6 + D.skill * 2)) && aiUltCond(p) && useUlt(p)) return;
   if (ball.state === 'loose' || ball.state === 'flight') { aiRebound(p, D, dt); return; }
   if (ball.state === 'dead') { p.want.set(0, 0, 0); return; }
   if (S.poss === p.team) { if (ball.holder === p) aiBall(p, D, dt); else aiOffBall(p, D, dt); }
@@ -2386,10 +2691,10 @@ function aiUpdate(p, dt) {
 /* =========================================================
    User control
    ========================================================= */
-const input = { mx: 0, my: 0, keys: {}, held: { J: false, K: false, L: false, I: false }, pressed: new Set(), released: new Set(), joy: null };
+const input = { mx: 0, my: 0, keys: {}, held: { J: false, K: false, L: false, I: false, H: false, O: false, Q: false }, pressed: new Set(), released: new Set(), joy: null };
 function press(b) { if (!input.held[b]) { input.held[b] = true; input.pressed.add(b); } audioInit(); }
 function release(b) { if (input.held[b]) { input.held[b] = false; input.released.add(b); } }
-const KEYMAP = { KeyJ: 'J', Space: 'J', KeyK: 'K', KeyL: 'L', ShiftLeft: 'L', ShiftRight: 'L', KeyI: 'I', KeyU: 'I' };
+const KEYMAP = { KeyJ: 'J', Space: 'J', KeyK: 'K', KeyL: 'L', ShiftLeft: 'L', ShiftRight: 'L', KeyI: 'I', KeyU: 'I', KeyH: 'H', KeyO: 'O', KeyQ: 'Q', Tab: 'Q' };
 addEventListener('keydown', e => {
   if ((S.phase === 'replay' || S.phase === 'intro') && $('#tut').hidden) { if (!e.repeat) skipCinematic(); if (KEYMAP[e.code] || e.code.startsWith('Arrow')) e.preventDefault(); return; }
   if (e.code === 'KeyP' || e.code === 'Escape') { if (S.phase !== 'menu' && S.phase !== 'over' && $('#tut').hidden) togglePause(); return; }
@@ -2442,18 +2747,61 @@ function passTarget(u) {
   }
   return best;
 }
+// where an auto-following defender should stand: between the man and the rim
+function autoDefPos(p) {
+  const man = p.match, hd = ball.holder; if (!man) return null;
+  const [mx, mz] = dirToHoop(man.pos.x, man.pos.z);
+  if (hd === man) { const gap = 1.15 + (!S.cleared ? .4 : 0); return [man.pos.x + mx * gap, man.pos.z + mz * gap]; }
+  const bx = ball.pos.x - man.pos.x, bz = ball.pos.z - man.pos.z, bl = Math.hypot(bx, bz) || 1, sag = 1.2 + Math.min(1.4, bl * .12);
+  return [man.pos.x + (mx * .7 + bx / bl * .5) * sag, man.pos.z + (mz * .7 + bz / bl * .5) * sag];
+}
+function setUser(n) {
+  const o = S.user; if (!o || n === o) return;
+  o.isUser = false; n.isUser = true; S.user = n;
+  for (const q of [o, n]) { q.ring.geometry = q.isUser ? PG.ringMe : PG.ring; q.ring.material.color.setHex(q.isUser ? 0x6ff3ff : TEAM[q.team].ring); q.ring.material.opacity = q.isUser ? .95 : .5; q.ring.scale.setScalar(1); q.updateTag(); q.scr = null; q.post = null; q.handsUp = false; q.screening = false; }
+  ui.skillImg.src = n.portrait; ui.ultImg.src = n.portrait; buildTeamStrip(); lastCtx = '';
+  floatAt('切换', n.pos.x, n.def.h + 1, n.pos.z, 'cn good'); SFX.ui(); ev('switch_user');
+}
+function switchUser() {
+  const u = S.user; if (!u || (ball.holder === u && ball.state === 'held')) return;
+  const c = mates(u).filter(m => m.stunT <= 0 && !(m.act && m.act.lock)).sort((a, b) => a.pos.distanceTo(ball.pos) - b.pos.distanceTo(ball.pos))[0];
+  if (c) setUser(c);
+}
 function userUpdate(u, dt) {
   readMove();
   const P = input.pressed, R = input.released;
-  u.faceTo = null; u.sprint = false;
+  u.faceTo = null; u.sprint = false; u.handsUp = false;
   u.want.set(input.mx, 0, -input.my);
   const has = ball.holder === u && ball.state === 'held';
   const offense = S.poss === u.team && ball.state !== 'loose' && ball.state !== 'flight';
+  const moving = Math.hypot(input.mx, input.my) > .15;
   u.stance = !offense && ball.state === 'held' && Math.hypot(input.mx, input.my) < .9;
   if (!offense && ball.holder && ball.state === 'held') u.faceTo = ball.holder.pos;
+  if (P.has('Q')) switchUser();
+  if (S.user !== u) return;
+  if (P.has('O') && !useUlt(u)) floatAt(u.ult > 0 ? '大招进行中' : '士气 ' + Math.floor(u.energy) + '%', u.pos.x, u.def.h + .9, u.pos.z, 'cn white');
   if (u.stunT > 0 || (u.act && u.act.type === 'oop')) return;
+  // auto-follow on defence while the stick is idle
+  if (!offense && S.autoDef && !moving && ball.state === 'held' && !(u.act && u.act.lock)) { const ap = autoDefPos(u); if (ap) moveTo(u, ap[0], ap[1], 1.05, .15); }
+  // H: post-up / call a screen / set a screen / hands up / box out
+  if (has && u.post) {
+    if (!input.held.H || !canPost(u)) u.post = null;
+    else {
+      updatePost(u, dt, input.mx, -input.my);
+      if (P.has('J')) { postShot(u); P.delete('J'); }
+      else if (P.has('L')) { postSpin(u); P.delete('L'); }
+    }
+  } else if (P.has('H')) {
+    if (has && canPost(u)) { u.post = { t: 0 }; floatAt('背打', u.pos.x, u.def.h + .9, u.pos.z, 'cn white'); ev('post'); }
+    else if (has) { const m = mates(u).filter(q => !q.scr && q.stunT <= 0).sort((a, b) => b.st.str - a.st.str)[0]; if (m && S.cleared) { startScreen(m, u); floatAt('叫挡拆', u.pos.x, u.def.h + .9, u.pos.z, 'cn white'); } }
+    else if (offense && ball.holder && ball.holder.team === u.team) { if (startScreen(u, ball.holder)) floatAt('去挡拆', u.pos.x, u.def.h + .9, u.pos.z, 'cn white'); }
+    else if (ball.state === 'flight' || ball.state === 'loose') startBoxOut(u);
+  }
+  if (u.scr) { if (u.scr.phase === 'set' && Math.hypot(input.mx, input.my) > .6) { u.scr = null; u.screening = false; } else { updateScreen(u, dt); if (u.scr) return; } }
+  if (!offense && input.held.H && ball.holder && ball.holder.team !== u.team) u.handsUp = true;
+  if (u.boxT > 0 && input.held.H) { const o = nearestOpp(u)[0]; if (o) u.faceTo = o.pos; u.boxT = Math.max(u.boxT, .2); }
   if (P.has('J')) {
-    if (has && !(u.act && u.act.lock)) shootAuto(u, { canFake: true });
+    if (has && !(u.act && u.act.lock)) { u.post = null; shootAuto(u, { canFake: true }); }
     else if (u.act && u.act.type === 'jumper' && u.act.tapRelease && !u.act.released) releaseShot(u, u.act.m);
     else if (!has) userJump(u);
   }
@@ -2461,7 +2809,7 @@ function userUpdate(u, dt) {
     if (u.act.canFake && !u.act.jumped) pumpFake(u); else releaseShot(u, u.act.m);
   }
   if (P.has('K')) {
-    if (has && !(u.act && u.act.lock)) doPass(u, passTarget(u));
+    if (has && !(u.act && u.act.lock)) { u.post = null; doPass(u, passTarget(u)); }
     else if (offense && ball.holder && ball.holder !== u) { u.callT = 1.3; if (!u.act) u.act = { type: 'call', t: 0, T: .7 }; floatAt('要球!', u.pos.x, u.def.h + .9, u.pos.z, 'cn white'); }
     else if (!offense) attemptSteal(u);
   }
@@ -2555,7 +2903,7 @@ $('#replay').addEventListener('pointerdown', skipCinematic);
 function scheduleReset(t, cb) { S.phase = 'dead'; S.deadT = t; S.deadCb = cb; if (ball.state === 'held' || ball.state === 'pass') ball.state = 'dead'; }
 function setupCheck(team) {
   S.ending = false;
-  S.poss = team; S.cleared = true; S.shotClock = 12; S.phase = 'check'; S.checkT = .75;
+  S.poss = team; S.cleared = true; S.shotClock = S.scMax; S.phase = 'check'; S.checkT = .75;
   const off = S.players.filter(p => p.team === team), def = S.players.filter(p => p.team !== team);
   const handler = isUserTeam(team) ? S.user : off.slice().sort((a, b) => b.st.hnd - a.st.hnd)[0];
   const others = off.filter(p => p !== handler);
@@ -2564,6 +2912,7 @@ function setupCheck(team) {
   others[0].pos.set(sp[0][0], 0, sp[0][1]); others[1].pos.set(sp[1][0], 0, sp[1][1]);
   for (const d of def) { const m = d.match; const [hx, hz] = dirToHoop(m.pos.x, m.pos.z); d.pos.set(m.pos.x + hx * 1.35, 0, m.pos.z + hz * 1.35); }
   for (const p of S.players) {
+    p.match = p.match0 || p.match; p.scr = null; p.screening = false; p.post = null; p.boxT = 0; p.boxLag = 0; p.screenedT = 0; p.handsUp = false;
     p.vel.set(0, 0, 0); p.y = 0; p.vy = 0; p.act = null; p.stunT = 0; p.burstT = 0; p.hang = false; p.spot = null; p.cutT = 0; p.callT = 0; p.pose.spin = 0; p.celebrateNext = false; p.pendingJump = 0;
     p.pose.aRx = ((p.pose.aRx + Math.PI) % TAU + TAU) % TAU - Math.PI;
     const tgt = p.team === team ? HOOP : p.match.pos; p.face = Math.atan2(tgt.x - p.pos.x, tgt.z - p.pos.z);
@@ -2573,11 +2922,11 @@ function setupCheck(team) {
   banner(isUserTeam(team) ? '我方球权' : '对手球权');
 }
 function finishRegulation() {
-  if (S.score[0] === S.score[1] && !S.ot) {
-    S.ot = true; S.clockExpired = false;
-    callout('加时赛'); callout('先得分者获胜', 'sub'); sfx('whistle');
-    scheduleReset(1.6, () => setupCheck(chance(.5) ? 0 : 1));
-  } else endGame();
+  if (S.score[0] !== S.score[1]) { endGame(); return; }
+  S.clockExpired = false; sfx('whistle');
+  if (!S.ot) { S.ot = true; S.clock = 60; callout('加时赛'); callout('加时 1 分钟', 'sub'); }
+  else { S.sudden = true; callout('突然死亡'); callout('先得分者获胜', 'sub'); }
+  scheduleReset(1.6, () => setupCheck(chance(.5) ? 0 : 1));
 }
 function endGame() {
   S.phase = 'over'; S.ending = false;
@@ -2602,18 +2951,20 @@ function newMatch() {
   S.user = S.players[0];
   const H = S.players.slice(0, 3).sort((a, b) => a.def.h - b.def.h), A = S.players.slice(3).sort((a, b) => a.def.h - b.def.h);
   H.forEach((p, i) => { p.match = A[i]; A[i].match = p; });
-  Object.assign(S, { score: [0, 0], clock: S.dur, ot: false, clockExpired: false, hype: 0, slowT: 0, ending: false, replayReq: null, lastReplay: -99, replay: null });
+  for (const p of S.players) { p.match0 = p.match; p.chosen = p.isUser; }
+  Object.assign(S, { score: [0, 0], clock: S.dur, ot: false, sudden: false, target: S.mode === '21' ? 21 : 11, scMax: S.mode === '21' ? 12 : 20, clockExpired: false, hype: 0, slowT: 0, ending: false, replayReq: null, lastReplay: -99, replay: null });
   showcase.forEach(p => p.setVisible(false));
   for (const p of S.players) p.portrait = makePortrait(p);
   buildTeamStrip();
-  ui.skillImg.src = S.user.portrait;
+  ui.skillImg.src = S.user.portrait; ui.ultImg.src = S.user.portrait;
   recInit();
   for (const p of S.players) p.pos.set(rand(-4, 4), 0, rand(4, 9));
 }
 function rules(dt) {
   if (S.phase !== 'live') return;
   const pending = (ball.shot && !ball.shot.done) || (ball.holder && ball.holder.act && ball.holder.act.type === 'dunk') || (ball.state === 'pass' && ball.pass && ball.pass.lob);
-  if (!S.ot && !S.clockExpired) {
+  if (!S.sudden && !S.clockExpired) {
+    if (S.clock > 60 && S.clock - dt <= 60 && !S.ot) { comment('last', null, 3); callout('最后一分钟', 'sub'); }
     S.clock -= dt;
     if (S.clock <= 0) {
       S.clock = 0; S.clockExpired = true; sfx('buzzer');
@@ -2625,7 +2976,7 @@ function rules(dt) {
   if (ball.state !== 'flight' && !(ball.holder && shotActive(ball.holder)) && !(ball.shot && !ball.shot.done)) {
     S.shotClock -= dt;
     if (S.shotClock <= 0) {
-      S.shotClock = 0; sfx('whistle'); callout('进攻超时', isUserTeam(S.poss) ? 'red' : 'cyan'); ev('shotclock');
+      S.shotClock = 0; sfx('whistle'); callout('进攻超时', isUserTeam(S.poss) ? 'red' : 'cyan'); ev('shotclock'); comment('shotclock', null, 2);
       const t = 1 - S.poss; scheduleReset(1.1, () => setupCheck(t)); return;
     }
   }
@@ -2657,11 +3008,18 @@ function gameUpdate(dt) {
   }
   input.pressed.clear(); input.released.clear();
   for (const p of S.players) physics(p, dt);
+  screenContacts();
   collide();
+  predictLanding();
   const ctx = { time: S.time, check: S.phase === 'check' };
   for (const p of S.players) p.animate(dt, ctx);
   ballUpdate(dt);
   rules(dt);
+  for (const p of S.players) if (p.ult > 0) {
+    p.auraT = (p.auraT || 0) - dt;
+    if (p.auraT <= 0) { p.auraT = .03; const a = rand(0, TAU), r = rand(.35, .55); sparks.emit(1, p.pos.x + Math.cos(a) * r, p.y + .05, p.pos.z + Math.sin(a) * r, { color: p.team === 0 ? ['#ffc83d', '#fff1b8'] : ['#ff4b5c', '#ffd1d6'], speed: .3, up: 3.2, grav: -1.5, life: .7 }); }
+    p.ring.scale.setScalar(1.15 + .12 * Math.sin(S.time * 10));
+  } else if (!p.isUser) p.ring.scale.setScalar(1);
   for (const p of S.players) if (p.onFire) { p.fireT -= dt; if (p.fireT <= 0) { p.fireT = .05; sparks.emit(2, p.pos.x + rand(-.25, .25), p.y + rand(.2, 1.6) * p.scale, p.pos.z + rand(-.25, .25), { color: ['#ff9a3c', '#ffd27a', '#ff4b5c'], speed: .6, up: 2, grav: -2, life: .6 }); } }
   S.hype = Math.max(0, S.hype - dt * .5);
   REC.on = true; recFrame();
@@ -2676,7 +3034,7 @@ function startIntro() {
   ball.holder = S.user; ball.state = 'held';
   const side = (list, cls, tm) => `<div class="side ${cls}"><div class="tname">${tm.name} ${tm.en}</div>${list.map((p, i) => `<div class="ip" style="animation-delay:${.15 + i * .12}s"><img src="${p.portrait}" alt=""><div class="tx"><div class="nm">${p.def.name}${p.isUser ? '（你）' : ''}</div><div class="ps">#${p.def.num} · ${p.def.pk} · ${p.def.h.toFixed(2)}M</div></div></div>`).join('')}</div>`;
   const el = $('#intro');
-  el.innerHTML = `<div class="ttl">街头王者杯 · 21 分制</div>${side(H, 'h', TEAM[0])}<div class="vs">VS</div>${side(A, 'a', TEAM[1])}<div class="skip">点击任意处跳过</div>`;
+  el.innerHTML = `<div class="ttl">街头王者杯 · ${S.target} 分赛</div>${side(H, 'h', TEAM[0])}<div class="vs">VS</div>${side(A, 'a', TEAM[1])}<div class="skip">点击任意处跳过</div>`;
   el.hidden = false; ui.hud.classList.add('cine');
   sfx('whoosh'); setTimeout(() => { if (S.phase === 'intro') sfx('cheer', .7); }, 300);
 }
@@ -2727,7 +3085,7 @@ function makePortrait(p) {
   } catch (e) { return ''; }
 }
 function buildTeamStrip() {
-  ui.team.innerHTML = S.players.filter(p => p.team === S.user.team).map((p, i) => `<div class="tmr${p.isUser ? ' me' : ''}" id="tm${i}"><img src="${p.portrait}" alt=""><div><div class="nm">${p.def.name}${p.isUser ? ' · 你' : ''}</div><div class="cdb"><i></i></div></div></div>`).join('');
+  ui.team.innerHTML = S.players.filter(p => p.team === S.user.team).map((p, i) => `<div class="tmr${p.isUser ? ' me' : ''}" id="tm${i}"><img src="${p.portrait}" alt=""><div><div class="nm">${p.def.name}${p.isUser ? ' · 你' : ''}</div><div class="cdb"><i></i></div><div class="enb"><i></i></div></div></div>`).join('');
 }
 
 /* =========================================================
@@ -2775,11 +3133,23 @@ function render(rdt) {
     cam.zoom = lerp(cam.zoom, dunking ? 1 : 0, 1 - Math.exp(-rdt * (dunking ? 5 : 2.2)));
     const z = cam.zoom, lx = lerp(cam.lx, HOOP.x, z * .8), ly = lerp(1, 2.4, z), lz = lerp(cam.lz, HOOP.z + .8, z), kd = f.k * (1 - .42 * z);
     camera.position.set(lerp(cam.x, HOOP.x, z * .6) + rand(-sh, sh) * .4, ly + 7.8 * kd * (1 - .25 * z) + rand(-sh, sh) * .4, lz + 15 * kd);
-    camera.lookAt(lx, ly, lz);
+    const uf = S.ultFocus;
+    if (uf && uf.t > 0 && rdt > 0) {
+      uf.t -= rdt; const w = Math.sin(clamp(1 - uf.t / 1.1, 0, 1) * Math.PI) * .8, q = uf.p;
+      camera.position.lerp(tmp2.set(q.pos.x + 1.2, q.def.h * .9 + 1.1, q.pos.z + 4.2), w);
+      camera.lookAt(lerp(lx, q.pos.x, w), lerp(ly, q.def.h * .7, w), lerp(lz, q.pos.z, w));
+    } else camera.lookAt(lx, ly, lz);
   }
   hoop.rimK = lerp(hoop.rimK, 0, 1 - Math.exp(-rdt * 6));
   hoop.rimG.rotation.x = hoop.rimK * .3 * Math.cos(t * 40);
   if (rdt > 0) net.update(rdt * (S.slowT > 0 && S.phase !== 'replay' ? S.slowK : S.phase === 'replay' ? .55 : 1), ball.pos);
+  if (!ui.landRing) { ui.landRing = new THREE.Mesh(new THREE.RingGeometry(.4, .52, 40), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .6, depthWrite: false })); ui.landRing.rotation.x = -Math.PI / 2; scene.add(ui.landRing); }
+  ui.landRing.visible = landing.ok && S.phase === 'live';
+  if (!ui.matchRing) { ui.matchRing = new THREE.Mesh(new THREE.RingGeometry(.58, .64, 40, 1, 0, Math.PI * 1.6), new THREE.MeshBasicMaterial({ color: 0x6ff3ff, transparent: true, opacity: .55, depthWrite: false })); ui.matchRing.rotation.x = -Math.PI / 2; scene.add(ui.matchRing); }
+  const mu = S.user && S.user.match;
+  ui.matchRing.visible = !!(mu && S.phase === 'live' && S.poss !== S.user.team && ball.state === 'held');
+  if (ui.matchRing.visible) { ui.matchRing.position.set(mu.pos.x, .025, mu.pos.z); ui.matchRing.rotation.z = t * 2; }
+  if (ui.landRing.visible) { ui.landRing.position.set(landing.x, .03, landing.z); const k = 1 + .12 * Math.sin(t * 12); ui.landRing.scale.set(k, k, 1); ui.landRing.material.opacity = .45 + .25 * Math.sin(t * 12); }
   clearArc.visible = S.phase !== 'menu' && !S.cleared && S.user && isUserTeam(S.poss) && (S.phase === 'live' || S.phase === 'check');
   clearArc.material.opacity = .45 + .4 * Math.abs(Math.sin(t * 5));
   crowd.update(t, S.hype);
@@ -2798,7 +3168,7 @@ function render(rdt) {
   }
 }
 function fmtClock() {
-  if (S.ot) return '加时';
+  if (S.sudden) return '决胜';
   const c = Math.max(0, S.clock);
   if (c < 10) return c.toFixed(1);
   const m = Math.floor(c / 60), s = Math.floor(c % 60);
@@ -2807,9 +3177,9 @@ function fmtClock() {
 let lastCtx = '', lastPassTgt = null;
 function hudUpdate() {
   setT(ui.sH, String(S.score[0])); setT(ui.sA, String(S.score[1]));
-  setT(ui.clock, fmtClock());
+  setT(ui.clock, fmtClock()); ui.clock.classList.toggle('ot', S.ot);
   const sc = Math.ceil(Math.max(0, S.shotClock));
-  setT(ui.shot, String(sc)); ui.shot.classList.toggle('warn', sc <= 3);
+  setT(ui.shot, String(sc)); ui.shot.classList.toggle('warn', sc <= 5);
   ui.tmH.classList.toggle('poss', S.poss === 0); ui.tmA.classList.toggle('poss', S.poss === 1);
   const showClear = !S.cleared && (S.phase === 'live' || S.phase === 'check');
   ui.clearChip.hidden = !showClear;
@@ -2818,20 +3188,27 @@ function hudUpdate() {
   S.players.filter(p => p.team === u.team).forEach((p, i) => {
     const el = document.getElementById('tm' + i); if (!el) return;
     el.classList.toggle('fire', p.onFire); el.classList.toggle('ball', ball.holder === p);
-    const sk = S.poss === p.team ? p.def.off.cd : p.def.def.cd; el.querySelector('i').style.width = ((1 - p.cd / sk) * 100).toFixed(0) + '%';
+    const sk = S.poss === p.team ? p.def.off.cd : p.def.def.cd; el.querySelector('.cdb i').style.width = ((1 - p.cd / sk) * 100).toFixed(0) + '%';
+    const en = p.ult > 0 ? p.ult / p.def.ult.T : p.energy / 100; el.querySelector('.enb i').style.width = (en * 100).toFixed(0) + '%'; el.querySelector('.enb').classList.toggle('full', p.energy >= 100 || p.ult > 0); el.classList.toggle('ult', p.ult > 0);
   });
   const has = ball.holder === u && ball.state === 'held';
   const ctx = has ? 'ball' : (ball.state === 'loose' || ball.state === 'flight') ? 'loose' : S.poss === u.team ? 'off' : 'def';
   const tap = u.act && u.act.type === 'jumper' && u.act.tapRelease && !u.act.released;
-  const key = ctx + (tap ? 't' : '');
+  const post = has && u.post, postable = has && canPost(u);
+  const key = ctx + (tap ? 't' : '') + (post ? 'p' : postable ? 'q' : '') + (u.scr ? 's' : '');
   if (key !== lastCtx) {
     lastCtx = key;
-    const L = { ball: ['投篮', '传球', '突破'], off: ['跳跃', '要球', '冲刺'], def: ['盖帽', '抢断', '冲刺'], loose: ['抢板', '—', '冲刺'] }[ctx];
-    setT(ui.lbl.J, tap ? '出手' : L[0]); setT(ui.lbl.K, L[1]); setT(ui.lbl.L, L[2]);
+    const L = { ball: ['投篮', '传球', '突破', postable ? '背打' : '叫挡拆'], off: ['跳跃', '要球', '冲刺', u.scr ? '掩护中' : '挡拆'], def: ['盖帽', '抢断', '冲刺', '张手'], loose: ['抢板', '—', '冲刺', '卡位'] }[ctx];
+    if (post) { L[0] = '转身投'; L[1] = '分球'; L[2] = '转身'; L[3] = '背打中'; }
+    setT(ui.lbl.J, tap ? '出手' : L[0]); setT(ui.lbl.K, L[1]); setT(ui.lbl.L, L[2]); setT(ui.lbl.H, L[3]);
   }
+  setT(ui.lbl.O, u.def.ult.name);
+  ui.ultBtn.style.setProperty('--en', u.ult > 0 ? (u.ult / u.def.ult.T).toFixed(3) : (u.energy / 100).toFixed(3));
+  ui.ultBtn.classList.toggle('ready', u.energy >= 100 && u.ult <= 0); ui.ultBtn.classList.toggle('on', u.ult > 0);
+  ui.swBtn.classList.toggle('dis', has);
   const tgt = has && S.phase === 'live' ? passTarget(u) : null;
   if (tgt !== lastPassTgt) { if (lastPassTgt) lastPassTgt.ring.material.opacity = .5; lastPassTgt = tgt; }
-  if (tgt) { tgt.ring.material.opacity = .75 + .25 * Math.sin(S.time * 10); setT(ui.lbl.K, canOop(tgt) && dHoop(tgt) < 3.6 ? '空接' : '传球'); }
+  if (tgt) { tgt.ring.material.opacity = .75 + .25 * Math.sin(S.time * 10); setT(ui.lbl.K, post ? '分球' : canOop(tgt) && dHoop(tgt) < 3.6 ? '空接' : '传球'); }
   const offSkill = S.poss === u.team && ball.state !== 'loose';
   setT(ui.lbl.I, tap ? '出手' : offSkill ? u.def.off.name : u.def.def.name);
   const ready = canUseSkill(u);
@@ -2847,7 +3224,9 @@ function hudUpdate() {
     const m = clamp(A.m || 0, 0, 1);
     ui.mFill.style.strokeDasharray = `${(m * 100).toFixed(1)} 200`;
     ui.mZone.style.strokeDasharray = `0 ${((A.c - A.w) * 100).toFixed(1)} ${(A.w * 200).toFixed(1)} 200`;
-  } else ui.meter.hidden = true;
+    const cl = CONTEST[A.lv || 0]; ui.mLbl.hidden = false; setT(ui.mLbl, cl.t); ui.mLbl.className = cl.c;
+    ui.mLbl.style.left = ((tmp.x + 1) / 2 * app.clientWidth + 52) + 'px'; ui.mLbl.style.top = ((1 - tmp.y) / 2 * app.clientHeight - 66) + 'px';
+  } else { ui.meter.hidden = true; ui.mLbl.hidden = true; }
 }
 function resize() {
   const w = app.clientWidth, h = app.clientHeight;
@@ -2888,6 +3267,7 @@ function renderDetail() {
     <div class="skills">
       <div class="sk"><div class="k">进攻技能</div><div class="t">${d.off.name}</div><div class="x">${d.off.desc}</div></div>
       <div class="sk d"><div class="k">防守技能</div><div class="t">${d.def.name}</div><div class="x">${d.def.desc}</div></div>
+      <div class="sk u"><div class="k">大招 · 攒满士气后释放</div><div class="t">${d.ult.name}</div><div class="x">${d.ult.desc}</div></div>
     </div>
     <div class="teams">队友会从剩下的球员里自动搭配：后卫配内线，保证阵容平衡。另外三名球员组成对手。</div>`;
 }
@@ -2915,7 +3295,7 @@ function startMatch(skipIntro) {
   cam.x = 0; cam.lx = 0; cam.lz = 5.5; cam.zoom = 0;
   resize();
   if (skipIntro === true) setupCheck(0); else startIntro();
-  if (!store.get('ssk.tut2', false)) { $('#tut').hidden = false; S.paused = true; }
+  if (!store.get('ssk.tut3', false)) { $('#tut').hidden = false; S.paused = true; }
 }
 function togglePause(force) {
   const p = force != null ? force : !S.paused;
@@ -2932,12 +3312,16 @@ function showResults(win) {
   const winTeam = S.score[0] > S.score[1] ? 0 : 1;
   const mvp = S.players.filter(p => p.team === winTeam).sort((a, b) => val(b) - val(a))[0];
   $('#mvpImg').src = mvp.portrait;
-  $('#mvpName').textContent = (mvp.isUser ? '你 · ' : '') + mvp.def.name + ' · ' + TEAM[mvp.team].name;
+  $('#mvpName').textContent = (mvp.chosen ? '你 · ' : '') + mvp.def.name + ' · ' + TEAM[mvp.team].name;
   $('#mvpLine').textContent = `${mvp.stats.pts} 分 ${mvp.stats.reb} 篮板 ${mvp.stats.ast} 助攻 ${mvp.stats.stl} 抢断 ${mvp.stats.blk} 盖帽`;
-  $('#statBody').innerHTML = S.players.map(p => `<tr class="${p.isUser ? 'me' : ''}"><td class="n"><img src="${p.portrait}" alt="">${p.def.name}${p.isUser ? '（你）' : ''}</td><td>${p.stats.pts}</td><td>${p.stats.reb}</td><td>${p.stats.ast}</td><td>${p.stats.stl}</td><td>${p.stats.blk}</td><td>${p.stats.fgm}/${p.stats.fga}</td></tr>`).join('');
+  const grade = p => { const v = val(p) - (p.stats.fga - p.stats.fgm) * .6; return v >= 16 ? 'S' : v >= 11 ? 'A' : v >= 7 ? 'B' : v >= 4 ? 'C' : 'D'; };
+  $('#statBody').innerHTML = S.players.map(p => `<tr class="${p.chosen ? 'me' : ''}${p.team ? ' away' : ''}"><td class="n"><img src="${p.portrait}" alt="">${p.def.name}${p.chosen ? '（你）' : ''}</td><td>${p.stats.pts}</td><td>${p.stats.reb}</td><td>${p.stats.ast}</td><td>${p.stats.stl}</td><td>${p.stats.blk}</td><td>${p.stats.fgm}/${p.stats.fga}</td><td>${p.stats.tpm}/${p.stats.tpa}</td><td class="g g${grade(p)}">${grade(p)}</td></tr>`).join('');
+  const tm = t => S.players.filter(p => p.team === t).reduce((a, p) => { a.fgm += p.stats.fgm; a.fga += p.stats.fga; a.stl += p.stats.stl; a.blk += p.stats.blk; a.reb += p.stats.reb; return a; }, { fgm: 0, fga: 0, stl: 0, blk: 0, reb: 0 });
+  const h = tm(0), a = tm(1), pc = x => x.fga ? Math.round(x.fgm / x.fga * 100) + '%' : '—';
+  $('#teamLine').innerHTML = `<span class="h">${TEAM[0].name}</span> 命中率 ${pc(h)} · 篮板 ${h.reb} · 抢断 ${h.stl} · 盖帽 ${h.blk}<br><span class="a">${TEAM[1].name}</span> 命中率 ${pc(a)} · 篮板 ${a.reb} · 抢断 ${a.stl} · 盖帽 ${a.blk}`;
 }
 $('#startBtn').addEventListener('click', () => startMatch());
-$('#tutGo').addEventListener('click', () => { $('#tut').hidden = true; S.paused = false; input.pressed.clear(); input.released.clear(); store.set('ssk.tut2', true); audioInit(); });
+$('#tutGo').addEventListener('click', () => { $('#tut').hidden = true; S.paused = false; input.pressed.clear(); input.released.clear(); store.set('ssk.tut3', true); audioInit(); });
 $('#pauseBtn').addEventListener('click', () => togglePause());
 $('#resumeBtn').addEventListener('click', () => togglePause(false));
 $('#restartBtn').addEventListener('click', () => { togglePause(false); startMatch(true); });
@@ -2970,18 +3354,19 @@ function boot(data) {
   S.sel = clamp(data.sel != null ? data.sel : store.get('ssk.sel', 0), 0, ROSTER.length - 1);
   S.diff = data.diff || store.get('ssk.diff', 'normal');
   S.dur = data.dur || store.get('ssk.dur', 180);
+  S.mode = data.mode || store.get('ssk.mode', '11'); S.autoDef = store.get('ssk.autoDef', true);
   setMuted(AU.muted);
   for (const p of showcase) p.portrait = makePortrait(p);
-  segInit('#diffSeg', 'diff', v => v); segInit('#durSeg', 'dur', v => +v);
+  segInit('#diffSeg', 'diff', v => v); segInit('#durSeg', 'dur', v => +v); segInit('#modeSeg', 'mode', v => v); segInit('#adSeg', 'autoDef', v => v === 'true');
   renderRoster(); renderDetail(); showMenu();
   requestAnimationFrame(t => { last = t; frame(t); });
 }
-try { window.claude && window.claude.hot && window.claude.hot.snapshot && window.claude.hot.snapshot(() => ({ sel: S.sel, diff: S.diff, dur: S.dur })); } catch (e) {}
+try { window.claude && window.claude.hot && window.claude.hot.snapshot && window.claude.hot.snapshot(() => ({ sel: S.sel, diff: S.diff, dur: S.dur, mode: S.mode })); } catch (e) {}
 const H = window.claude && window.claude.hot;
 if (H && H.ready) H.ready(boot); else boot(H && H.data);
 
 // test hooks (harmless in play): lets an automated run drive the match headlessly
-window.__ssk = { S, ball, step, startMatch, ballUpdate, V3, setAuto: v => { S.auto = v; }, ROSTER, laneOpen, showcase, render, net, cam, camera, skipCinematic };
+window.__ssk = { S, ball, step, startMatch, ballUpdate, V3, setAuto: v => { S.auto = v; }, ROSTER, laneOpen, showcase, render, net, cam, camera, skipCinematic, useUlt, setUser, switchUser, startScreen, startBoxOut, landing };
 })();
 </script>
 
