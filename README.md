@@ -53,6 +53,8 @@
 
 ## 文件
 
+- `art/`：六名球员的立绘（`<id>.webp` 全身、`<id>_head.webp` 头像），用于选人界面、头像、技能和大招横幅、开场 VS 和赛后 MVP。缺图时会退回到用 3D 模型渲染的头像
+
 - `game.html`：游戏全部代码（HTML + CSS + JS，单文件，渲染用 three.js r128）
 - `index.html`：由 `node scripts/build.mjs` 从 `game.html` 生成的独立页面，改完 `game.html` 后重新运行一次
 

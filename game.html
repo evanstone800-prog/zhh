@@ -114,6 +114,8 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .ultc.r{flex-direction:row-reverse;animation-name:cutR;border-color:var(--away)}
 .ultc img{height:220px;margin-top:-50px;transform:skewY(5deg);filter:drop-shadow(0 0 18px rgba(255,200,61,.8))}
 .ultc.r img{filter:drop-shadow(0 0 18px rgba(255,75,92,.8))}
+.ultc img.art{height:340px;margin-top:-40px;align-self:flex-start}
+.cut img.art{height:210px;margin-top:-50px;align-self:flex-start;object-fit:cover;object-position:50% 0}
 .ultc .tx{display:flex;flex-direction:column;transform:skewY(5deg);gap:2px}
 .ultc .who{font-family:var(--f-num);font-size:22px;letter-spacing:.2em;color:var(--gold);line-height:1}
 .ultc.r .who{color:#ff8a95}
@@ -166,6 +168,14 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .screen>*{pointer-events:auto}
 .slab{background:var(--slab);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid var(--line)}
 
+#hero{position:absolute;right:0;top:0;bottom:0;left:min(440px,100%);pointer-events:none;overflow:hidden}
+#hero img{position:absolute;right:max(2vw,calc(50% - 34vh));bottom:-2vh;height:104vh;max-width:none;filter:drop-shadow(0 18px 30px rgba(0,0,0,.55));animation:heroIn .5s cubic-bezier(.2,.9,.25,1) both}
+#hero .hnum{position:absolute;right:4vw;top:8vh;font-family:var(--f-num);font-weight:700;font-size:44vh;line-height:.8;color:transparent;-webkit-text-stroke:3px rgba(255,200,61,.55);transform:skewX(-10deg);animation:heroNum .6s both}
+#hero .hname{position:absolute;left:3vw;bottom:6vh;font-family:var(--f-cn);font-size:12vh;line-height:1;color:rgba(255,255,255,.1);letter-spacing:.1em;writing-mode:vertical-rl}
+#hero::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 70% at 65% 60%,var(--heroGlow,rgba(255,200,61,.28)),transparent 70%)}
+@keyframes heroIn{from{opacity:0;transform:translateX(60px)}}
+@keyframes heroNum{from{opacity:0;transform:skewX(-10deg) translateY(30px)}}
+@media (max-aspect-ratio:1/1){#hero{left:0;bottom:60%}#hero img{height:40vh;bottom:-1vh;right:50%;transform:translateX(50%)}#hero .hnum{font-size:26vh;top:2vh}#hero .hname{display:none}}
 #menu .panel{position:absolute;left:0;top:0;bottom:0;width:min(440px,100%);overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 22px) 22px calc(env(safe-area-inset-bottom,0px) + 22px);box-sizing:border-box;display:flex;flex-direction:column;gap:18px;border-width:0 1px 0 0}
 .brand{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
 .brand h1{font-family:var(--f-cn);font-weight:400;font-size:54px;line-height:.9;margin:0;color:var(--chalk);letter-spacing:.04em;transform:skewX(-8deg)}
@@ -174,7 +184,7 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .sec{font-family:var(--f-cn);font-weight:400;font-size:18px;letter-spacing:.12em;color:var(--dim);margin:0 0 8px}
 .roster{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .rc{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:4px;padding:0 6px 6px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;min-width:0;overflow:hidden;position:relative}
-.rc img{width:calc(100% + 12px);margin:0 -6px 2px;height:64px;object-fit:cover;object-position:50% 30%;background:linear-gradient(#2a2d3a,#171a24)}
+.rc img{width:calc(100% + 12px);margin:0 -6px 2px;height:64px;object-fit:cover;object-position:50% 22%;background:linear-gradient(#2a2d3a,#171a24)}
 .rc .n{font-family:var(--f-cn);font-size:22px;line-height:1}
 .rc .p{font-family:var(--f-num);font-size:16px;color:var(--dim);letter-spacing:.06em;line-height:1}
 .rc.on{background:var(--gold);color:#1b1405;border-color:var(--gold)}
@@ -216,7 +226,14 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 #intro{position:absolute;inset:0;pointer-events:auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:0 max(16px,4vw)}
-#intro .side{display:flex;flex-direction:column;gap:10px}
+#intro .side{display:flex;flex-direction:column;gap:10px;position:relative;z-index:2}
+#intro .vs{position:relative;z-index:2}
+#intro .arts{position:absolute;bottom:0;height:70%;width:48%;display:flex;align-items:flex-end;pointer-events:none}
+#intro .arts.h{left:0;justify-content:flex-start;padding-left:2%}#intro .arts.a{right:0;justify-content:flex-end;padding-right:2%}
+#intro .arts img{height:100%;margin:0 -9%;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55));animation:ipL .6s both}
+#intro .arts.a img{animation-name:ipR}
+#intro::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,200,61,.2),transparent 40%,transparent 60%,rgba(255,75,92,.22))}
+@media (max-aspect-ratio:1/1){#intro .arts{height:42%;width:100%;top:6%;bottom:auto}#intro .arts.a{top:auto;bottom:4%}}
 #intro .side.a{align-items:flex-end}
 #intro .ttl{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 7%);text-align:center;font-family:var(--f-cn);font-size:clamp(22px,3.4vw,34px);letter-spacing:.3em;color:var(--chalk);text-shadow:0 3px 0 rgba(0,0,0,.5)}
 #intro .tname{font-family:var(--f-cn);font-size:clamp(28px,4.4vw,46px);line-height:1;margin-bottom:4px;text-shadow:0 3px 0 rgba(0,0,0,.5)}
@@ -247,6 +264,8 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .final .s{font-variant-numeric:tabular-nums}
 .final .h{color:var(--gold)}.final .a{color:var(--away)}
 .final .dash{color:var(--dim);font-size:34px}
+.mvpart{position:absolute;left:max(0px,calc(50% - 280px - 36vh));bottom:0;height:90vh;pointer-events:none!important;filter:drop-shadow(0 12px 24px rgba(0,0,0,.6));animation:heroIn .6s both}
+@media (max-width:900px){.mvpart{display:none}}
 .mvp{display:flex;gap:14px;align-items:center;border:1px solid var(--line);padding:8px 14px 8px 8px;border-radius:4px}
 .mvp img{width:64px;height:64px;border-radius:50%;background:#2a2d3a;object-fit:cover}
 .mvp .badge{font-family:var(--f-num);font-size:22px;font-weight:700;background:var(--gold);color:#1b1405;padding:3px 7px 0;transform:skewX(-10deg);display:inline-block;margin-bottom:4px}
@@ -354,6 +373,7 @@ td.g{font-weight:700}td.gS{color:var(--gold)}td.gA{color:var(--good)}td.gB{color
   </section>
 
   <section id="menu" class="screen">
+    <div id="hero" aria-hidden="true"><div class="hnum" id="heroNum"></div><div class="hname" id="heroName"></div><img id="heroImg" alt=""></div>
     <div class="panel slab">
       <header class="brand">
         <h1>街头王者</h1><span class="plate">3V3</span>
@@ -408,6 +428,7 @@ td.g{font-weight:700}td.gS{color:var(--gold)}td.gA{color:var(--good)}td.gB{color
   </section>
 
   <section id="over" class="screen" hidden>
+    <img id="mvpArt" class="mvpart" alt="" hidden>
     <div class="center slab">
       <p class="res" id="resTitle">胜利</p>
       <div class="final"><span class="s h" id="fH">21</span><span class="dash">—</span><span class="s a" id="fA">15</span></div>
@@ -497,6 +518,16 @@ const ROSTER = [
     def: { name: '幻手抢断', desc: '冲到 3.5 米内的持球人身前掏球，对控球差的人更容易得手', cd: 12 },
     ult: { name: '幻影之手', desc: '8 秒内抢断与断球能力暴涨，移速提升', T: 8 } },
 ];
+// hand-drawn character art (art/<id>.webp full body, art/<id>_head.webp portrait); falls back to rendered portraits
+const ART = {};
+function loadArt() {
+  return Promise.all(ROSTER.map(d => Promise.all(['', '_head'].map(sfx => new Promise(res => {
+    const im = new Image(); const url = `art/${d.id}${sfx}.webp`;
+    im.onload = () => { (ART[d.id] = ART[d.id] || {})[sfx ? 'head' : 'full'] = url; res(); }; im.onerror = () => res(); im.src = url;
+    setTimeout(res, 4000);
+  })))));
+}
+const artHead = id => ART[id] && ART[id].head, artFull = id => ART[id] && ART[id].full;
 const STAT_LABELS = [['spd', '速度'], ['hnd', '控球'], ['three', '三分'], ['mid', '中投'], ['dunk', '扣篮'], ['blk', '盖帽'], ['stl', '抢断'], ['reb', '篮板']];
 const TEAM = [
   { name: '王者', en: 'KINGS', jersey: '#ffc83d', trim: '#14213d', num: '#14213d', ring: 0xffc83d, css: 'h' },
@@ -1677,7 +1708,7 @@ function feed(p, verb, q, extra) {
 function ultCutin(p) {
   const mine = isUserTeam(p.team);
   const d = document.createElement('div'); d.className = 'ultc ' + (mine ? 'l' : 'r');
-  d.innerHTML = `<img src="${p.portrait}" alt=""><div class="tx"><span class="who">ULTIMATE · ${p.def.en}</span><span class="sn">${p.def.ult.name}</span><span class="ds">${p.def.ult.desc}</span></div>`;
+  d.innerHTML = `<img src="${artFull(p.def.id) || p.portrait}" class="${artFull(p.def.id) ? 'art' : ''}" alt=""><div class="tx"><span class="who">ULTIMATE · ${p.def.en}</span><span class="sn">${p.def.ult.name}</span><span class="ds">${p.def.ult.desc}</span></div>`;
   ui.cutin.innerHTML = ''; ui.cutin.appendChild(d); setTimeout(() => d.remove(), 1600);
   sfx('ult');
 }
@@ -1710,7 +1741,7 @@ function comment(kind, p, pri = 1) {
 function cutin(p, skillName) {
   const mine = isUserTeam(p.team);
   const d = document.createElement('div'); d.className = 'cut ' + (mine ? 'l' : 'r');
-  d.innerHTML = `<img src="${p.portrait}" alt=""><div class="tx"><span class="who">${p.def.en} · ${p.def.name}</span><span class="sn">${skillName}</span></div>`;
+  d.innerHTML = `<img src="${artFull(p.def.id) || p.portrait}" class="${artFull(p.def.id) ? 'art' : ''}" alt=""><div class="tx"><span class="who">${p.def.en} · ${p.def.name}</span><span class="sn">${skillName}</span></div>`;
   ui.cutin.innerHTML = ''; ui.cutin.appendChild(d); setTimeout(() => d.remove(), 1150);
   sfx('skill');
 }
@@ -3107,7 +3138,7 @@ function newMatch() {
   for (const p of S.players) { p.match0 = p.match; p.chosen = p.isUser; }
   Object.assign(S, { score: [0, 0], clock: S.dur, ot: false, sudden: false, target: S.mode === '21' ? 21 : 11, scMax: S.mode === '21' ? 12 : 20, clockExpired: false, hype: 0, slowT: 0, ending: false, replayReq: null, lastReplay: -99, replay: null });
   showcase.forEach(p => p.setVisible(false));
-  for (const p of S.players) p.portrait = makePortrait(p);
+  for (const p of S.players) p.portrait = artHead(p.def.id) || makePortrait(p);
   buildTeamStrip();
   ui.skillImg.src = S.user.portrait; ui.ultImg.src = S.user.portrait;
   recInit();
@@ -3190,7 +3221,8 @@ function startIntro() {
   ball.holder = S.user; ball.state = 'held';
   const side = (list, cls, tm) => `<div class="side ${cls}"><div class="tname">${tm.name} ${tm.en}</div>${list.map((p, i) => `<div class="ip" style="animation-delay:${.15 + i * .12}s"><img src="${p.portrait}" alt=""><div class="tx"><div class="nm">${p.def.name}${p.isUser ? '（你）' : ''}</div><div class="ps">#${p.def.num} · ${p.def.pk} · ${p.def.h.toFixed(2)}M</div></div></div>`).join('')}</div>`;
   const el = $('#intro');
-  el.innerHTML = `<div class="ttl">街头王者杯 · ${S.target} 分赛</div>${side(H, 'h', TEAM[0])}<div class="vs">VS</div>${side(A, 'a', TEAM[1])}<div class="skip">点击任意处跳过</div>`;
+  const arts = (list, cls) => `<div class="arts ${cls}">${list.map((p, i) => artFull(p.def.id) ? `<img src="${artFull(p.def.id)}" style="animation-delay:${.1 + i * .14}s;z-index:${3 - Math.abs(1 - i)}" alt="">` : '').join('')}</div>`;
+  el.innerHTML = `${arts(H, 'h')}${arts(A, 'a')}<div class="ttl">街头王者杯 · ${S.target} 分赛</div>${side(H, 'h', TEAM[0])}<div class="vs">VS</div>${side(A, 'a', TEAM[1])}<div class="skip">点击任意处跳过</div>`;
   el.hidden = false; ui.hud.classList.add('cine');
   sfx('whoosh'); setTimeout(() => { if (S.phase === 'intro') sfx('cheer', .7); }, 300);
 }
@@ -3263,6 +3295,7 @@ function render(rdt) {
     camera.lookAt(0, 1.15, 8);
     const w = app.clientWidth, h = app.clientHeight;
     if (w / h >= 1) camera.setViewOffset(w, h, -Math.min(w * .2, 240), 0, w, h); else camera.setViewOffset(w, h, 0, h * .3, w, h);
+    if (artFull(ROSTER[S.sel].id)) { camera.position.set(Math.sin(a * .4) * 9, 4.2, 15); camera.lookAt(0, 2.2, 4); }
   } else if (S.phase === 'intro') {
     camera.clearViewOffset();
     const f = camFit(); if (Math.abs(camera.fov - f.vf) > .01) { camera.fov = f.vf; camera.updateProjectionMatrix(); }
@@ -3404,7 +3437,7 @@ addEventListener('resize', resize);
 const showcase = ROSTER.map((d, i) => { const p = new Player(d, 0, i, false); p.pos.set(0, 0, 8); p.face = 0; p.setVisible(false); return p; });
 function menuUpdate(dt) {
   const p = showcase[S.sel];
-  for (const q of showcase) q.root.visible = q.blob.visible = q === p;
+  for (const q of showcase) q.root.visible = q.blob.visible = q === p && !artFull(q.def.id);
   ball.holder = p; ball.state = 'held';
   p.face = angLerp(p.face, Math.atan2(camera.position.x, camera.position.z - 8), 1 - Math.exp(-dt * 2));
   p.vel.set(0, 0, 0); p.holdT = 1;
@@ -3420,8 +3453,15 @@ function renderRoster() {
     box.appendChild(b);
   });
 }
+const HERO_GLOW = { flash: 'rgba(255,111,174,.32)', ace: 'rgba(58,134,255,.3)', sky: 'rgba(255,75,92,.3)', tower: 'rgba(41,182,246,.3)', rhino: 'rgba(232,69,44,.34)', ghost: 'rgba(192,132,252,.34)' };
+function renderHero() {
+  const d = ROSTER[S.sel], img = $('#heroImg'), url = artFull(d.id);
+  $('#hero').hidden = !url; if (!url) return;
+  if (img.dataset.id !== d.id) { img.dataset.id = d.id; img.src = url; img.style.animation = 'none'; void img.offsetWidth; img.style.animation = ''; const n = $('#heroNum'); n.style.animation = 'none'; void n.offsetWidth; n.style.animation = ''; }
+  $('#heroNum').textContent = d.num; $('#heroName').textContent = d.name; $('#hero').style.setProperty('--heroGlow', HERO_GLOW[d.id]);
+}
 function renderDetail() {
-  const d = ROSTER[S.sel];
+  const d = ROSTER[S.sel]; renderHero();
   const bars = STAT_LABELS.map(([k, l]) => { const v = Math.round(d.st[k] * 99); return `<div class="stat"><span>${l}</span><span class="bar"><i class="${v >= 90 ? 'hi' : ''}" style="width:${v}%"></i></span><span class="v">${v}</span></div>`; }).join('');
   $('#detail').innerHTML = `
     <div class="dhead"><span class="big">${d.name}</span><span class="meta">${d.en} · #${d.num} · ${d.pos} · ${d.h.toFixed(2)}M</span></div>
@@ -3474,6 +3514,7 @@ function showResults(win) {
   const winTeam = S.score[0] > S.score[1] ? 0 : 1;
   const mvp = S.players.filter(p => p.team === winTeam).sort((a, b) => val(b) - val(a))[0];
   $('#mvpImg').src = mvp.portrait;
+  { const a = $('#mvpArt'), u = artFull(mvp.def.id); a.hidden = !u; if (u) a.src = u; }
   $('#mvpName').textContent = (mvp.chosen ? '你 · ' : '') + mvp.def.name + ' · ' + TEAM[mvp.team].name;
   $('#mvpLine').textContent = `${mvp.stats.pts} 分 ${mvp.stats.reb} 篮板 ${mvp.stats.ast} 助攻 ${mvp.stats.stl} 抢断 ${mvp.stats.blk} 盖帽`;
   const grade = p => { const v = val(p) - (p.stats.fga - p.stats.fgm) * .6; return v >= 16 ? 'S' : v >= 11 ? 'A' : v >= 7 ? 'B' : v >= 4 ? 'C' : 'D'; };
@@ -3518,14 +3559,14 @@ function boot(data) {
   S.dur = data.dur || store.get('ssk.dur', 180);
   S.mode = data.mode || store.get('ssk.mode', '11'); S.autoDef = store.get('ssk.autoDef', true);
   setMuted(AU.muted);
-  for (const p of showcase) p.portrait = makePortrait(p);
+  for (const p of showcase) p.portrait = artHead(p.def.id) || makePortrait(p);
   segInit('#diffSeg', 'diff', v => v); segInit('#durSeg', 'dur', v => +v); segInit('#modeSeg', 'mode', v => v); segInit('#adSeg', 'autoDef', v => v === 'true');
   renderRoster(); renderDetail(); showMenu();
   requestAnimationFrame(t => { last = t; frame(t); });
 }
 try { window.claude && window.claude.hot && window.claude.hot.snapshot && window.claude.hot.snapshot(() => ({ sel: S.sel, diff: S.diff, dur: S.dur, mode: S.mode })); } catch (e) {}
 const H = window.claude && window.claude.hot;
-if (H && H.ready) H.ready(boot); else boot(H && H.data);
+loadArt().then(() => { if (H && H.ready) H.ready(boot); else boot(H && H.data); });
 
 // test hooks (harmless in play): lets an automated run drive the match headlessly
 window.__ssk = { S, ball, step, startMatch, ballUpdate, V3, setAuto: v => { S.auto = v; }, ROSTER, laneOpen, showcase, render, net, cam, camera, skipCinematic, useUlt, setUser, switchUser, startScreen, startBoxOut, landing };
