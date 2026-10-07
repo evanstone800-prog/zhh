@@ -1301,28 +1301,28 @@ const S = { mode: 'orbit', time: 'day', labels: true };
 const SPIN = [], NIGHT_GLASS = [];
 async function build() {
   await fontsReady;
-  makeFacades();', Math.round(performance.now()));
-  buildGround();', Math.round(performance.now()));
-  wall(); gates(); centralPlaza(); library(); gymnasium(); activityCentre(); gates(); centralPlaza(); library', Math.round(performance.now()));
-  wenComplex(1, '文渊楼'); wenComplex(-1, '文津楼'); wenComplex(-1, '文津", Math.round(performance.now()));
+  makeFacades();
+  buildGround();
+  wall(); gates(); centralPlaza(); library(); gymnasium(); activityCentre();
+  wenComplex(1, '文渊楼'); wenComplex(-1, '文津楼');
   // 西学楼 / 东学楼: public teaching buildings with full lecture-room interiors
   teachingBlock({ x0: -262, x1: -138, zN: 258, depth: 11, floors: 5, name: '西学楼', signAt: -200, signBase: 0 });
   teachingBlock({ x0: 138, x1: 262, zN: 258, depth: 11, floors: 5, name: '东学楼', signAt: 200, signBase: 35 });
-  academics(); canteens(); dorms(); lake(); canteens(); dorms(); lake()', Math.round(performance.now()));
-  playground(); courts([[140, 412], [172, 412], [204, 412], [236, 412], [140, 432], [172, 432], [204, 432], [236, 432]], [122, 402, 254, 442], '篮球场'); courts([[140, 412], [172, ', Math.round(performance.now()));
+  academics(); canteens(); dorms(); lake();
+  playground(); courts([[140, 412], [172, 412], [204, 412], [236, 412], [140, 432], [172, 432], [204, 432], [236, 432]], [122, 402, 254, 442], '篮球场');
   bikesAt([[-255, -145, 280, 0], [145, 255, 280, 0], [-60, -20, 386, Math.PI / 2], [20, 60, 386, Math.PI / 2], [-380, -330, 380 + 12, 0]]);
-  cars(); lamps(); lamps();', Math.round(performance.now()));
+  cars(); lamps();
   [[-80, -82, 80, 30], [-95, 30, 95, 314], [-16, 380, 16, 600], [-75, 330, 75, 380], [-130, -202, 130, -80]].forEach(r => block(...r));
   block(GYM.x - GYM.a - 10, GYM.z - GYM.b - 10, GYM.x + GYM.a + 10, GYM.z + GYM.b + 10);
   block(TRACK.cx - TRACK.r1 - 14, TRACK.cz - TRACK.S - TRACK.r1 - 4, TRACK.cx + TRACK.r1 + 12, TRACK.cz + TRACK.S + TRACK.r1 + 4);
-  block(300, -200, 485, -20); block(122, 400, 254, 444); block(122, 4', Math.round(performance.now()));
-  trees();', Math.round(performance.now()));
-  furniture(); people(); people();', Math.round(performance.now()));
-  inst(BOX, M.white, ROADMARKS);', Math.round(performance.now()));
-  flush();', Math.round(performance.now()));
+  block(300, -200, 485, -20); block(122, 400, 254, 444);
+  trees();
+  furniture(); people();
+  inst(BOX, M.white, ROADMARKS);
+  flush();
   const gm = new THREE.SpriteMaterial({ map: glowTex, color: 0xffe2a8, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false });
   lampGlow = new THREE.Group(); for (const p of LAMPS) { const s = new THREE.Sprite(gm); s.position.copy(p); s.scale.set(6, 6, 1); lampGlow.add(s); } scene.add(lampGlow);
-  setTime('day');", Math.round(performance.now()));
+  setTime('day');
 }
 
 /* ================= camera controls ================= */
