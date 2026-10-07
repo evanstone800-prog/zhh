@@ -443,6 +443,7 @@ td.g{font-weight:700}td.gS{color:var(--gold)}td.gA{color:var(--good)}td.gB{color
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script>
 (() => {
 'use strict';
@@ -1175,6 +1176,412 @@ const POSE_KEYS = ['hipY', 'hipRx', 'hipRy', 'hipRz', 'spX', 'spY', 'spZ', 'hdX'
 const NPOSE = POSE_KEYS.length;
 function basePose() { return { hipY: 0, hipRx: 0, hipRy: 0, hipRz: 0, spX: .04, spY: 0, spZ: 0, hdX: 0, hdY: 0, thL: 0, thLz: .05, knL: .06, anL: null, thR: 0, thRz: -.05, knR: .06, anR: null, aLx: .06, aLy: 0, aLz: .13, eL: -.2, wL: 0, aRx: .06, aRy: 0, aRz: -.13, eR: -.2, wR: 0, spin: 0 }; }
 
+/* =========================================================
+   Anime character models. One licensed base model (pixiv "VRM1_Constraint_Twist_Sample",
+   VRM Public License 1.0: commercial use, modification and redistribution allowed) is cloned
+   for every player, recolored and restyled per character, and posed every frame by copying
+   the procedural rig's joint rotations onto the model's skeleton. If the file can't be
+   loaded (e.g. the page was opened straight from disk) the procedural models are used.
+   ========================================================= */
+const VRM = { gltf: null, H: 1.6, human: {}, expr: {}, spring: null, texCache: new Map() };
+const VRM_URL = 'art/girl.glb', SKIN0 = [249, 231, 218];
+function loadVRM() {
+  return new Promise(res => {
+    if (!THREE.GLTFLoader) return res();
+    let done = false; const fin = () => { if (!done) { done = true; res(); } };
+    try {
+      new THREE.GLTFLoader().load(VRM_URL, g => {
+        if (done) return;
+        prepVRM(g).then(m => { if (!done) VRM.gltf = m; }).catch(e => console.warn('model setup failed', e)).then(fin);
+      }, null, fin);
+    } catch (e) { fin(); }
+    setTimeout(fin, 30000);
+  });
+}
+async function prepVRM(g) {
+  const json = g.parser.json, ext = json.extensions.VRMC_vrm, N = json.nodes;
+  for (const k in ext.humanoid.humanBones) VRM.human[k] = N[ext.humanoid.humanBones[k].node].name;
+  for (const k in ext.expressions.preset) { const b = ext.expressions.preset[k].morphTargetBinds; if (b && b.length) VRM.expr[k] = b[0].index; }
+  const sb = json.extensions.VRMC_springBone;
+  VRM.spring = {
+    colliders: sb.colliders.map(c => ({ node: N[c.node].name, sphere: c.shape.sphere, capsule: c.shape.capsule })),
+    groups: sb.colliderGroups.map(gr => gr.colliders),
+    springs: sb.springs.map(s => ({ name: s.name, groups: s.colliderGroups || [], joints: s.joints.map(j => ({ node: N[j.node].name, r: j.hitRadius || 0, stiff: j.stiffness == null ? 1 : j.stiffness, drag: j.dragForce == null ? .4 : j.dragForce, grav: j.gravityPower || 0, gdir: j.gravityDir || [0, -1, 0] })) })),
+  };
+  g.scene.updateMatrixWorld(true);
+  let top = 0; const v = new V3();
+  g.scene.traverse(o => {
+    if (!o.isMesh) return;
+    const m = o.material; if (m.map) m.map.encoding = THREE.LinearEncoding;
+    if (o.name.startsWith('Hair')) { const pos = o.geometry.attributes.position; for (let i = 0; i < pos.count; i += 7) { v.fromBufferAttribute(pos, i); top = Math.max(top, v.y); } }
+  });
+  VRM.H = top || 1.6;
+  g.scene.traverse(o => { if (o.isSkinnedMesh && o.material.name.startsWith('Tops')) cutSleeves(o); });
+  const em = json.materials.find(m => m.name.startsWith('Hair_00'));
+  if (em && em.emissiveTexture) { VRM.hairSpec = await g.parser.getDependency('texture', em.emissiveTexture.index); VRM.hairSpec.encoding = THREE.LinearEncoding; }
+  return g;
+}
+// basketball jerseys are sleeveless: drop the T-shirt triangles that follow the arm bones
+function cutSleeves(o) {
+  const geo = o.geometry, si = geo.attributes.skinIndex, sw = geo.attributes.skinWeight, idx = geo.index;
+  const arm = o.skeleton.bones.map(b => /UpperArm|LowerArm|Hand/.test(b.name));
+  const w = new Float32Array(si.count);
+  for (let i = 0; i < si.count; i++) w[i] = (arm[si.getX(i)] ? sw.getX(i) : 0) + (arm[si.getY(i)] ? sw.getY(i) : 0) + (arm[si.getZ(i)] ? sw.getZ(i) : 0) + (arm[si.getW(i)] ? sw.getW(i) : 0);
+  const keep = [];
+  for (let t = 0; t < idx.count; t += 3) { const a = idx.getX(t), b = idx.getX(t + 1), c = idx.getX(t + 2); if ((w[a] + w[b] + w[c]) / 3 < .3) keep.push(a, b, c); }
+  geo.setIndex(keep);
+}
+// clone the model with its own skeleton
+function cloneVRM() {
+  const src = VRM.gltf.scene, dst = src.clone(true), a = [], b = [];
+  src.traverse(o => a.push(o)); dst.traverse(o => b.push(o));
+  const map = new Map(a.map((o, i) => [o, b[i]]));
+  b.forEach((o, i) => { if (o.isSkinnedMesh) o.bind(new THREE.Skeleton(a[i].skeleton.bones.map(x => map.get(x)), a[i].skeleton.boneInverses), a[i].bindMatrix); });
+  return dst;
+}
+
+/* ---- texture recoloring (cached per character / team) ---- */
+function texCanvas(tex) {
+  const im = tex.image, c = document.createElement('canvas'); c.width = im.width; c.height = im.height;
+  const g = c.getContext('2d'); g.drawImage(im, 0, 0); return [c, g];
+}
+function finishTex(c, like) {
+  const t = new THREE.CanvasTexture(c); t.flipY = false; t.wrapS = like.wrapS; t.wrapT = like.wrapT; t.anisotropy = Math.min(4, maxAniso); return t;
+}
+const rgbOf = hex => { const c = new THREE.Color(hex); return [c.r * 255, c.g * 255, c.b * 255]; };
+const mixRGB = (a, b, t) => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
+// map the texture's brightness onto a color ramp (keeps all the painted shading and strands)
+function rampTex(key, tex, stops, mask) {
+  if (VRM.texCache.has(key)) return VRM.texCache.get(key);
+  const [c, g] = texCanvas(tex), img = g.getImageData(0, 0, c.width, c.height), d = img.data;
+  const hist = new Uint32Array(256); let n = 0;
+  for (let i = 0; i < d.length; i += 4) { const L = (d[i] * .3 + d[i + 1] * .59 + d[i + 2] * .11) | 0; hist[L]++; n++; }
+  let lo = 0, hi = 255, acc = 0;
+  for (let i = 0; i < 256; i++) { acc += hist[i]; if (acc > n * .01) { lo = i; break; } }
+  acc = 0; for (let i = 255; i >= 0; i--) { acc += hist[i]; if (acc > n * .01) { hi = i; break; } }
+  const lut = new Uint8ClampedArray(256 * 3);
+  for (let L = 0; L < 256; L++) {
+    const t = clamp((L - lo) / Math.max(1, hi - lo), 0, 1);
+    let k = 0; while (k < stops.length - 2 && t > stops[k + 1][0]) k++;
+    const [t0, c0] = stops[k], [t1, c1] = stops[k + 1], col = mixRGB(c0, c1, clamp((t - t0) / (t1 - t0), 0, 1));
+    lut[L * 3] = col[0]; lut[L * 3 + 1] = col[1]; lut[L * 3 + 2] = col[2];
+  }
+  const W = c.width;
+  for (let i = 0, p = 0; i < d.length; i += 4, p++) {
+    if (mask && !mask((p % W) / W, Math.floor(p / W) / c.height)) continue;
+    const L = (d[i] * .3 + d[i + 1] * .59 + d[i + 2] * .11) | 0;
+    d[i] = lut[L * 3]; d[i + 1] = lut[L * 3 + 1]; d[i + 2] = lut[L * 3 + 2];
+  }
+  g.putImageData(img, 0, 0);
+  const t = finishTex(c, tex); VRM.texCache.set(key, t); return t;
+}
+function hairStops(hex) {
+  const h = rgbOf(hex), lum = (h[0] * .3 + h[1] * .59 + h[2] * .11) / 255;
+  const deep = mixRGB(h, [40, 28, 70], .45).map(x => x * .55), hiC = mixRGB(h, lum < .25 ? [120, 140, 210] : [255, 250, 245], lum < .25 ? .35 : .42);
+  return [[0, mixRGB(h, deep, .7)], [.5, mixRGB(h, deep, .2)], [.85, h], [1, mixRGB(h, hiC, .6)]];
+}
+// basketball jersey: the T-shirt texture tinted, sleeves cut into a tank top, trim, team name and number
+function jerseyVRM(tex, def, team) {
+  const key = 'jersey|' + def.id + '|' + team;
+  if (VRM.texCache.has(key)) return VRM.texCache.get(key);
+  const T = TEAM[team], [c, g] = texCanvas(tex), W = c.width, H = c.height;
+  const img = g.getImageData(0, 0, W, H), d = img.data, jc = rgbOf(T.jersey);
+  for (let i = 0; i < d.length; i += 4) { const L = (d[i] * .3 + d[i + 1] * .59 + d[i + 2] * .11) / 255, s = clamp((L - .62) / .38, 0, 1) * .3 + .7; d[i] = jc[0] * s; d[i + 1] = jc[1] * s; d[i + 2] = jc[2] * s; d[i + 3] = 255; }
+  g.putImageData(img, 0, 0);
+  // front panel spans v .09-.41, back v .53-.86; torso u .27-.73
+  // V neckline in front, trim round the neck
+  g.save(); g.globalCompositeOperation = 'destination-out';
+  g.beginPath(); g.moveTo(W * .4, 0); g.lineTo(W * .6, 0); g.lineTo(W * .6, H * .09); g.lineTo(W * .5, H * .135); g.lineTo(W * .4, H * .09); g.fill();
+  g.restore();
+  g.strokeStyle = T.trim; g.lineWidth = W * .02; g.lineJoin = 'round';
+  g.beginPath(); g.moveTo(W * .385, H * .085); g.lineTo(W * .5, H * .14); g.lineTo(W * .615, H * .085); g.stroke();
+  g.fillStyle = T.trim; g.fillRect(W * .36, H * .523, W * .28, H * .01);
+  // side panels
+  g.globalAlpha = .85; g.fillRect(W * .265, H * .2, W * .03, H * .2); g.fillRect(W * .705, H * .2, W * .03, H * .2); g.fillRect(W * .265, H * .64, W * .03, H * .21); g.fillRect(W * .705, H * .64, W * .03, H * .21); g.globalAlpha = 1;
+  // hem stripe
+  g.fillStyle = T.trim; g.globalAlpha = .9; g.fillRect(0, H * .392, W, H * .012); g.fillRect(0, H * .842, W, H * .012); g.globalAlpha = 1;
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  const num = String(def.num);
+  g.fillStyle = T.num; g.strokeStyle = T.jersey === T.num ? '#000' : T.trim;
+  g.font = `900 ${W * .075}px Impact, "Arial Black", sans-serif`; g.fillText(T.en, W * .5, H * .185);
+  g.lineWidth = W * .012; g.font = `900 ${W * .15}px Impact, "Arial Black", sans-serif`;
+  g.strokeText(num, W * .5, H * .27); g.fillText(num, W * .5, H * .27);
+  g.font = `800 ${W * .05}px Impact, "Arial Black", sans-serif`; g.fillText(def.en, W * .5, H * .615);
+  g.font = `900 ${W * .2}px Impact, "Arial Black", sans-serif`; g.strokeText(num, W * .5, H * .71); g.fillText(num, W * .5, H * .71);
+  const t = finishTex(c, tex); VRM.texCache.set(key, t); return t;
+}
+// skin tone + socks painted onto the legs
+function bodyVRM(tex, def) {
+  const key = 'body|' + def.id;
+  if (VRM.texCache.has(key)) return VRM.texCache.get(key);
+  const [c, g] = texCanvas(tex), W = c.width, H = c.height, img = g.getImageData(0, 0, W, H), d = img.data;
+  const base = SKIN0, sk = rgbOf(def.skin), k = [sk[0] / base[0], sk[1] / base[1], sk[2] / base[2]];
+  const hi = def.items.includes('socksHi'), sockTop = hi ? .8 : .905, sc = rgbOf('#f6f6f2');
+  for (let i = 0, p = 0; i < d.length; i += 4, p++) {
+    const u = (p % W) / W, v = Math.floor(p / W) / H;
+    const leg = (u < .225 || u > .775) && v > sockTop;
+    if (leg) { const L = (d[i] * .3 + d[i + 1] * .59 + d[i + 2] * .11) / 240; d[i] = sc[0] * L; d[i + 1] = sc[1] * L; d[i + 2] = sc[2] * L; if (v < sockTop + .012) { d[i] *= .82; d[i + 1] *= .84; d[i + 2] *= .9; } }
+    else { d[i] *= k[0]; d[i + 1] *= k[1]; d[i + 2] *= k[2]; }
+  }
+  g.putImageData(img, 0, 0);
+  const t = finishTex(c, tex); VRM.texCache.set(key, t); return t;
+}
+
+/* ---- spring bones (VRM 1.0 algorithm, simplified) for hair and cloth ---- */
+const _sv = new V3(), _sv2 = new V3(), _sv3 = new V3(), _sq = new THREE.Quaternion(), _sq2 = new THREE.Quaternion(), _sm = new THREE.Matrix4();
+class Springs {
+  constructor(model, ws) {
+    this.ws = ws; this.joints = []; this.colliders = [];
+    const byName = n => model.getObjectByName(n);
+    const cols = VRM.spring.colliders.map(c => {
+      const o = { bone: byName(c.node), r: (c.sphere || c.capsule).radius * ws, off: new V3().fromArray((c.sphere || c.capsule).offset), tail: c.capsule ? new V3().fromArray(c.capsule.tail) : null, w: new V3(), wt: new V3() };
+      this.colliders.push(o); return o;
+    });
+    model.updateMatrixWorld(true);
+    for (const s of VRM.spring.springs) {
+      const group = [].concat(...s.groups.map(gi => VRM.spring.groups[gi].map(ci => cols[ci])));
+      for (let i = 0; i < s.joints.length - 1; i++) {
+        const J = s.joints[i], bone = byName(J.node), child = byName(s.joints[i + 1].node);
+        if (!bone || !child) continue;
+        const axis = child.position.clone(), len = axis.length(); axis.normalize();
+        const tail = child.getWorldPosition(new V3());
+        this.joints.push({ bone, child, rest: bone.quaternion.clone(), axis, len, wlen: tail.distanceTo(bone.getWorldPosition(new V3())), cur: tail.clone(), prev: tail.clone(), stiff: J.stiff, drag: J.drag, grav: J.grav * ws, gdir: new V3().fromArray(J.gdir), r: J.r * ws, cols: group });
+      }
+    }
+  }
+  reset() {
+    for (const j of this.joints) { j.bone.quaternion.copy(j.rest); }
+    for (const j of this.joints) { j.bone.updateMatrixWorld(true); j.child.getWorldPosition(j.cur); j.prev.copy(j.cur); }
+  }
+  update(dt) {
+    dt = clamp(dt, 0, 1 / 30);
+    if (!(dt > 0)) return;
+    for (const c of this.colliders) { c.w.copy(c.off).applyMatrix4(c.bone.matrixWorld); if (c.tail) c.wt.copy(c.tail).applyMatrix4(c.bone.matrixWorld); }
+    for (const j of this.joints) {
+      const b = j.bone;
+      b.quaternion.copy(j.rest); b.updateMatrixWorld(false);
+      const head = _sv.setFromMatrixPosition(b.matrixWorld);
+      b.parent.getWorldQuaternion(_sq);
+      _sq.multiply(j.rest);
+      const restDir = _sv2.copy(j.axis).applyQuaternion(_sq);
+      const next = _sv3.copy(j.cur).sub(j.prev).multiplyScalar(1 - j.drag).add(j.cur)
+        .addScaledVector(restDir, j.stiff * dt * this.ws)
+        .addScaledVector(j.gdir, j.grav * dt);
+      // keep the bone length, then push out of the body's collision shapes
+      next.sub(head).setLength(j.wlen).add(head);
+      for (const c of j.cols) {
+        let cx = c.w.x, cy = c.w.y, cz = c.w.z;
+        if (c.tail) {
+          const ax = c.wt.x - c.w.x, ay = c.wt.y - c.w.y, az = c.wt.z - c.w.z, l2 = ax * ax + ay * ay + az * az;
+          const t = l2 > 0 ? clamp(((next.x - c.w.x) * ax + (next.y - c.w.y) * ay + (next.z - c.w.z) * az) / l2, 0, 1) : 0;
+          cx += ax * t; cy += ay * t; cz += az * t;
+        }
+        const dx = next.x - cx, dy = next.y - cy, dz = next.z - cz, dist = Math.hypot(dx, dy, dz), rr = c.r + j.r;
+        if (dist < rr && dist > 1e-6) { const k = rr / dist; next.set(cx + dx * k, cy + dy * k, cz + dz * k); next.sub(head).setLength(j.wlen).add(head); }
+      }
+      j.prev.copy(j.cur); j.cur.copy(next);
+      // rotate the bone so its child points at the simulated tail
+      _sm.copy(b.matrixWorld).invert();
+      const local = next.clone().applyMatrix4(_sm).normalize();
+      _sq2.setFromUnitVectors(j.axis, local);
+      b.quaternion.multiply(_sq2);
+      b.updateMatrixWorld(true);
+    }
+  }
+}
+
+const TAILG = new Map();
+function tailGeo(len, r0, r1) {
+  const key = [len, r0, r1].map(x => x.toFixed(3)).join();
+  if (!TAILG.has(key)) TAILG.set(key, limbGeo(len, r0, r1, 0, .4, 12));
+  return TAILG.get(key);
+}
+/* ---- the per-player model ---- */
+const RIG_MAP = [['hips', 'hips'], ['spine', 'spine'], ['head', 'head'],
+  ['leftUpperLeg', 'thL'], ['leftLowerLeg', 'knL'], ['leftFoot', 'anL'], ['rightUpperLeg', 'thR'], ['rightLowerLeg', 'knR'], ['rightFoot', 'anR'],
+  ['leftUpperArm', 'shL'], ['leftLowerArm', 'elL'], ['leftHand', 'wrL'], ['rightUpperArm', 'shR'], ['rightLowerArm', 'elR'], ['rightHand', 'wrR']];
+const _q1 = new THREE.Quaternion(), _q2 = new THREE.Quaternion(), _v1 = new V3(), _v2 = new V3();
+function rootQ(o, root, out) { out.identity(); for (let x = o; x && x !== root; x = x.parent) out.premultiply(x.quaternion); return out; }
+class Avatar {
+  constructor(p) {
+    this.p = p; const d = p.def;
+    const m = this.model = cloneVRM();
+    this.k = 2 / VRM.H;                         // model meters -> rig units (the rig is 2 units tall)
+    m.scale.setScalar(this.k); p.root.add(m);
+    const B = this.b = {};
+    for (const k in VRM.human) B[k] = m.getObjectByName(VRM.human[k]);
+    this.meshes = []; this.faces = [];
+    m.traverse(o => { if (o.isMesh) { o.frustumCulled = false; o.castShadow = true; this.meshes.push(o); if (o.morphTargetInfluences && o.morphTargetInfluences.length) this.faces.push(o); } });
+    this.mats = [];
+    this.dress(d, p.team);
+    m.updateMatrixWorld(true);
+    // calibration: the rig's zero pose has its arms hanging down, the model stands in a T-pose
+    const R = p.root, rest = {};
+    for (const [vb] of RIG_MAP) rest[vb] = rootQ(B[vb], R, new THREE.Quaternion());
+    const pos = n => B[n].getWorldPosition(new V3());
+    const down = new V3(0, -1, 0);
+    const align = (a, b) => new THREE.Quaternion().setFromUnitVectors(pos(b).sub(pos(a)).normalize(), down);
+    const A = { leftUpperArm: align('leftUpperArm', 'leftLowerArm'), rightUpperArm: align('rightUpperArm', 'rightLowerArm'), leftUpperLeg: align('leftUpperLeg', 'leftLowerLeg'), rightUpperLeg: align('rightUpperLeg', 'rightLowerLeg') };
+    // world-space alignment was taken with the root possibly rotated: express it in root space
+    const rq = R.getWorldQuaternion(new THREE.Quaternion()), rqi = rq.clone().invert();
+    for (const k in A) A[k].premultiply(rqi).multiply(rq);
+    const chainA = { leftLowerArm: 'leftUpperArm', leftHand: 'leftUpperArm', rightLowerArm: 'rightUpperArm', rightHand: 'rightUpperArm', leftLowerLeg: 'leftUpperLeg', leftFoot: 'leftUpperLeg', rightLowerLeg: 'rightUpperLeg', rightFoot: 'rightUpperLeg' };
+    this.map = RIG_MAP.map(([vb, rj]) => {
+      const a = A[vb] || A[chainA[vb]] || new THREE.Quaternion();
+      return { bone: B[vb], rig: p.j[rj], C: a.clone().multiply(rest[vb]) };
+    });
+    this.hipsY = B.hips.position.y; this.hipsRestRootY = pos('hips').y; // for crouch scaling
+    // relaxed, slightly curled fingers
+    for (const side of ['left', 'right']) {
+      const s = side === 'left' ? 1 : -1, axis = new V3(0, 0, -s);
+      for (const f of ['Index', 'Middle', 'Ring', 'Little', 'Thumb']) {
+        const names = f === 'Thumb' ? ['Metacarpal', 'Proximal', 'Distal'] : ['Proximal', 'Intermediate', 'Distal'];
+        names.forEach((n, i) => {
+          const bone = B[side + f + n]; if (!bone) return;
+          const W = rootQ(bone, R, new THREE.Quaternion());
+          const amt = f === 'Thumb' ? [.05, .2, .2][i] : [.32, .5, .38][i] * (f === 'Index' ? .8 : 1) * (f === 'Little' ? 1.15 : 1);
+          const ax = f === 'Thumb' ? new V3(0, s, 0).applyAxisAngle(new V3(1, 0, 0), .6) : axis;
+          const qw = new THREE.Quaternion().setFromAxisAngle(ax, amt);
+          bone.quaternion.multiply(W.clone().invert().multiply(qw).multiply(W));
+        });
+      }
+    }
+    // eyes: VRM lookAt uses the eye bones, up to 10 degrees
+    this.eyes = ['leftEye', 'rightEye'].filter(n => B[n]).map(n => ({ bone: B[n], rest: B[n].quaternion.clone() }));
+    this.headRest = rootQ(B.head, R, new THREE.Quaternion()); this.headRestInv = this.headRest.clone().invert();
+    this.eyeRest = this.eyes.map(e => rootQ(e.bone, R, new THREE.Quaternion()));
+    this.palm = ['leftHand', 'rightHand'].map(n => new V3(0, -1, 0).applyQuaternion(rootQ(B[n], R, new THREE.Quaternion()).invert()));
+    this.style(d);
+    m.updateMatrixWorld(true);
+    this.springs = new Springs(m, this.k * p.scale);
+    this.expr = { blink: 0, happy: 0, sad: 0, angry: 0, surprised: 0, aa: 0, relaxed: 0 };
+    this.eyeYaw = 0; this.eyePitch = 0; this.lastPos = new V3(1e9, 0, 0);
+  }
+  dress(d, team) {
+    const mk = (src, opts) => {
+      const mat = new THREE.MeshToonMaterial(Object.assign({ map: src.map, gradientMap: GM, skinning: true, side: THREE.DoubleSide }, opts));
+      mat.onBeforeCompile = rimPatch; this.mats.push(mat); return mat;
+    };
+    const basic = (src, opts) => { opts = Object.assign({ map: src.map, skinning: true }, opts); delete opts.morphNormals; const mat = new THREE.MeshBasicMaterial(opts); this.mats.push(mat); return mat; };
+    const hairT = h => hairStops(d.hairC);
+    const eyeC = rgbOf(d.eye), skc = rgbOf(d.skin), skinK = new THREE.Color(Math.min(1, skc[0] / SKIN0[0]), Math.min(1, skc[1] / SKIN0[1]), Math.min(1, skc[2] / SKIN0[2]));
+    this.outlined = [];
+    for (const o of this.meshes) {
+      const src = o.material, n = src.name, morph = !!(o.morphTargetInfluences && o.morphTargetInfluences.length);
+      const mo = morph ? { morphTargets: true, morphNormals: !!o.geometry.morphAttributes.normal } : {};
+      let mat;
+      if (n.startsWith('Body_00')) { mat = mk(src, Object.assign({ map: bodyVRM(src.map, d), gradientMap: GM_SOFT, color: 0xd6d6d6 }, mo)); this.outlined.push(o); }
+      else if (n.startsWith('Face_00')) {
+        mat = basic(src, Object.assign({ color: skinK.clone().multiplyScalar(.93) }, mo)); this.outlined.push(o);
+      }
+      else if (n.startsWith('Tops')) { mat = mk(src, { map: jerseyVRM(src.map, d, team), alphaTest: .5 }); this.outlined.push(o); this.jersey = mat; }
+      else if (n.startsWith('Bottoms')) {
+        const T = TEAM[team], jc = rgbOf(T.jersey), tc = rgbOf(T.trim);
+        mat = mk(src, { map: rampTex('shorts|' + team, src.map, [[0, jc.map(x => x * .62)], [.25, jc.map(x => x * .86)], [.6, jc.map(x => x * .95)], [1, jc]]) }); this.outlined.push(o);
+      }
+      else if (n.startsWith('Shoes')) {
+        const sc = rgbOf(d.shoe);
+        mat = mk(src, { map: rampTex('shoe|' + d.id, src.map, [[0, sc.map(x => x * .5)], [.3, sc], [.62, mixRGB(sc, [255, 255, 255], .5)], [1, [250, 250, 250]]]) }); this.outlined.push(o);
+      }
+      else if (n.startsWith('Hair') || n.startsWith('HairBack')) {
+        mat = mk(src, { map: rampTex('hair|' + n + '|' + d.id, src.map, hairT()), emissive: new THREE.Color(d.hairC).lerp(new THREE.Color('#ffffff'), .5).multiplyScalar(.22), emissiveMap: n.startsWith('Hair_00') ? VRM.hairSpec : null });
+        this.outlined.push(o); this.hairMat = mat;
+      }
+      else if (n.startsWith('EyeIris')) mat = basic(src, Object.assign({ map: rampTex('iris|' + d.id, src.map, [[0, eyeC.map(x => x * .12)], [.35, eyeC.map(x => x * .55)], [.7, eyeC], [1, mixRGB(eyeC, [255, 255, 255], .7)]]) }, mo));
+      else if (n.startsWith('FaceMouth')) mat = basic(src, Object.assign({ color: skinK }, mo));
+      else if (n.startsWith('FaceBrow')) mat = basic(src, Object.assign({ map: rampTex('brow|' + d.id, src.map, [[0, rgbOf(d.hairC).map(x => x * .45)], [1, [255, 240, 230]]]) }, mo));
+      else mat = basic(src, Object.assign({ color: 0xf4f0ec }, mo));
+      o.material = mat;
+    }
+    // ink outlines: inverted hulls sharing the skeleton, width follows camera distance
+    this.olW = { value: .004 };
+    const olW = this.olW;
+    this.ol = [];
+    for (const o of this.outlined) {
+      const morph = !!(o.morphTargetInfluences && o.morphTargetInfluences.length);
+      const om = new THREE.MeshBasicMaterial({ color: o.material === this.hairMat ? new THREE.Color(d.hairC).multiplyScalar(.28) : 0x1a1014, side: THREE.BackSide, skinning: true, morphTargets: morph, alphaTest: o.material.alphaTest || 0, map: o.material.alphaTest ? o.material.map : null });
+      if (om.map) om.color.multiplyScalar(.01);
+      om.onBeforeCompile = sh => { sh.uniforms.olW = olW; sh.vertexShader = 'uniform float olW;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\ntransformed += normalize( normal ) * olW;'); };
+      this.mats.push(om);
+      const ol = new THREE.SkinnedMesh(o.geometry, om);
+      ol.bind(o.skeleton, o.bindMatrix); ol.frustumCulled = false; ol.castShadow = false;
+      if (morph) ol.morphTargetInfluences = o.morphTargetInfluences;
+      o.parent.add(ol); this.ol.push(ol);
+    }
+  }
+  // hair styles: the base model has long straight hair; tied styles gather the long locks
+  // by shrinking their bone chains and add tails, buns or a braid as extra swinging pieces
+  style(d) {
+    const B = this.model, get = n => B.getObjectByName(n);
+    const shrink = (ids, s, from = 2) => {
+      for (const id of ids) for (let k = from; k < 9; k++) { const b = get(`J_Sec_Hair${k}_${id}`); if (b) b.scale.setScalar(k === from ? s : 1); }
+    };
+    const back = ['05', '06', '07', '08', '09', '10'], side = ['11', '12'];
+    switch (d.hairStyle) {
+      case 'bob': shrink(back, .5, 1); shrink(side, .45); break;
+      case 'twin': case 'pony': case 'hipony': case 'braid': case 'bun': shrink(back, .12, 1); shrink(side, d.hairStyle === 'bun' ? .55 : .85); break;
+    }
+  }
+  setExpr(name, w) {
+    const i = VRM.expr[name]; if (i == null) return;
+    for (const o of this.faces) o.morphTargetInfluences[i] = w;
+  }
+  // copy the rig's joint rotations onto the model
+  retarget() {
+    const R = this.p.root, P = this.p.pose;
+    for (const e of this.map) {
+      rootQ(e.rig, R, _q1).multiply(e.C);
+      rootQ(e.bone.parent, R, _q2).invert();
+      e.bone.quaternion.copy(_q2.multiply(_q1));
+    }
+    this.b.hips.position.y = this.hipsY * (1 + P.hipY);
+  }
+  hands(outL, outR) {
+    for (const [i, side, out] of [[0, 'left', outL], [1, 'right', outR]]) {
+      const h = this.b[side + 'Hand'], f = this.b[side + 'MiddleProximal'];
+      h.getWorldPosition(_v1); f.getWorldPosition(_v2);
+      out.copy(_v1).add(_v2).multiplyScalar(.5);
+      h.getWorldQuaternion(_q1); out.addScaledVector(_v1.copy(this.palm[i]).applyQuaternion(_q1), .03 * this.p.scale);
+    }
+  }
+  update(dt, ctx) {
+    const p = this.p;
+    // teleports (resets, replays) shouldn't fling the hair
+    const jumped = this.lastPos.distanceToSquared(p.root.position) > 1.2;
+    this.lastPos.copy(p.root.position);
+    if (jumped) this.springs.reset(); else this.springs.update(dt);
+    // facial expression
+    const A = p.act, E = this.expr, tgt = { blink: 0, happy: 0, sad: 0, angry: 0, surprised: 0, aa: 0, relaxed: .15 };
+    if (A && (A.type === 'celebrate' || (A.type === 'pose' && A.v !== 2))) { tgt.happy = 1; tgt.aa = .35; tgt.relaxed = 0; }
+    else if ((A && A.type === 'sad') || p.stunT > 0) { tgt.sad = .85; tgt.relaxed = 0; }
+    else if (A && ['dunk', 'block', 'hang', 'oop', 'charge'].includes(A.type)) { tgt.angry = .55; tgt.aa = .5; tgt.relaxed = 0; }
+    else if (A && (A.type === 'jumper' || A.type === 'hook' || A.type === 'layup')) { tgt.angry = .25; tgt.relaxed = 0; }
+    else if (p.ult > 0 || p.onFire) { tgt.happy = .35; tgt.angry = .2; }
+    this.blinkT = (this.blinkT == null ? rand(1, 4) : this.blinkT) - dt;
+    if (this.blinkT < 0) { tgt.blink = 1; if (this.blinkT < -.13) this.blinkT = rand(1.8, 4.5); }
+    if (tgt.happy > .5) tgt.blink = 0;
+    const k = 1 - Math.exp(-dt * 14);
+    for (const n in E) { E[n] += (tgt[n] - E[n]) * (n === 'blink' ? Math.min(1, k * 2.2) : k); this.setExpr(n, E[n]); }
+    // eyes follow the ball
+    if (this.eyes.length && ctx && ctx.ball) {
+      this.b.head.updateMatrixWorld(); _sm.copy(this.b.head.matrixWorld).invert();
+      _v1.copy(ctx.ball).applyMatrix4(_sm);
+      _v1.applyQuaternion(this.headRest);
+      const yaw = clamp(Math.atan2(_v1.x, _v1.z), -1.57, 1.57), pitch = clamp(Math.atan2(_v1.y, Math.hypot(_v1.x, _v1.z)), -1.57, 1.57);
+      this.eyeYaw += (yaw * .111 - this.eyeYaw) * k; this.eyePitch += (pitch * .111 - this.eyePitch) * k;
+    }
+    this.eyes.forEach((e, i) => {
+      _q2.setFromEuler(new THREE.Euler(-this.eyePitch, this.eyeYaw, 0, 'YXZ'));
+      e.bone.quaternion.copy(this.headRestInv).multiply(_q2).multiply(this.eyeRest[i]);
+    });
+  }
+  setOutline(camPos) {
+    const dist = camPos.distanceTo(this.p.root.position);
+    this.olW.value = clamp(dist * .0011, .0018, .03) / (this.k * this.p.scale);
+  }
+  dispose() { for (const m of this.mats) m.dispose(); }
+}
+
 class Player {
   constructor(def, team, slot, isUser) {
     this.def = def; this.st = def.st; this.team = team; this.slot = slot; this.isUser = !!isUser;
@@ -1198,6 +1605,7 @@ class Player {
     this.build();
   }
   build() {
+    if (VRM.gltf) return this.buildVRM();
     const d = this.def, T = TEAM[this.team], b = d.bulk, has = k => d.items.includes(k);
     const skin = toon(d.skin, null, { gradientMap: GM_SOFT }), hair = toon(d.hairC), acc = toon(d.acc), shoe = toon(d.shoe), tie = toon(d.tie);
     const jersey = toon(null, jerseyTex(d, this.team)), shorts = toon(null, shortsTex(this.team), { side: THREE.DoubleSide });
@@ -1291,6 +1699,10 @@ class Player {
       case 'braid': { const c = chain(0, .045, -.1, .18, 0, 8, .062, .036, .022, .03); c.braid = true; for (let k = 0; k < c.segs.length; k++) c.segs[k].children.forEach(m => { if (m.isMesh) m.rotation.y = k % 2 ? .5 : -.5; }); const last = c.segs[c.segs.length - 1]; addMesh(last, PF.tie, tie, 0, -.06, 0, .024, .024, .018, .2, false).rotation.x = Math.PI / 2; break; }
       case 'bun': addMesh(hd, PG.sphere, hair, 0, .225, -.07, .058, .052, .056, .05); tieAt(0, .19, -.06, -.6); for (const side of [1, -1]) chain(.095 * side, .1, .035, -.05, .05 * side, 3, .06, .02, .012); break;
     }
+    this.addMarkers();
+  }
+  addMarkers() {
+    const T = TEAM[this.team], R = this.root;
     this.hv = new V3(); this.hvy = 0; this.hface = 0;
     // ---- ground ring, blob shadow, name tag ----
     this.ring = new THREE.Mesh(this.isUser ? PG.ringMe : PG.ring, new THREE.MeshBasicMaterial({ color: this.isUser ? 0x6ff3ff : T.ring, transparent: true, opacity: this.isUser ? .95 : .5, depthWrite: false }));
@@ -1303,6 +1715,65 @@ class Player {
     scene.add(R);
     this.updateTag();
     this.applyPose(this.pose);
+  }
+  // the procedural rig without meshes drives the anime model (see Avatar)
+  buildVRM() {
+    const d = this.def, b = d.bulk;
+    const R = this.root = new THREE.Group(); R.scale.setScalar(this.scale);
+    const grp = (parent, x, y, z) => { const g = new THREE.Group(); g.position.set(x, y, z); parent.add(g); return g; };
+    const J = this.j = {};
+    J.hips = grp(R, 0, 1, 0);
+    for (const side of [1, -1]) {
+      const s = side > 0 ? 'L' : 'R';
+      J['th' + s] = grp(J.hips, .1 * side * b, -.05, 0); J['kn' + s] = grp(J['th' + s], 0, -.46, 0); J['an' + s] = grp(J['kn' + s], 0, -.43, 0);
+    }
+    J.spine = grp(J.hips, 0, .12, 0);
+    for (const side of [1, -1]) {
+      const s = side > 0 ? 'L' : 'R';
+      J['sh' + s] = grp(J.spine, .215 * side * b, .47, 0); J['el' + s] = grp(J['sh' + s], 0, -.28, 0); J['wr' + s] = grp(J['el' + s], 0, -.25, 0); J['hand' + s] = grp(J['wr' + s], 0, -.07, .01);
+    }
+    J.head = grp(J.spine, 0, .63, .005);
+    this.mats = [];
+    const av = this.av = new Avatar(this);
+    this.hair = [];
+    this.buildTails(av);
+    this.addMarkers();
+  }
+  // tied hair styles, buns, braids and accessories, attached to the model's head and arms
+  buildTails(av) {
+    const d = this.def, has = k => d.items.includes(k);
+    const head = new THREE.Group(); head.quaternion.copy(av.headRestInv); av.b.head.add(head);
+    const hm = toon(null, av.hairMat.map), hm2 = hm, tie = toon(d.tie), acc = toon(d.acc);
+    this.mats.push(hm, hm2, tie, acc);
+    const grp = (parent, x, y, z) => { const g = new THREE.Group(); g.position.set(x, y, z); parent.add(g); return g; };
+    const chain = (ax, ay, az, rx, rz, nSeg, len, r0, r1, bend = 0) => {
+      const ch = { segs: [], rx, rz, bend, ax: 0, az: 0, vx: 0, vz: 0, ph: rand(0, TAU) };
+      let parent = grp(head, ax, ay, az); ch.segs.push(parent);
+      for (let k = 0; k < nSeg; k++) {
+        const t = k / Math.max(1, nSeg - 1), t2 = (k + 1) / Math.max(1, nSeg - 1), r = lerp(r0, r1, t) * (1 + .15 * Math.sin(t * Math.PI)), rn = lerp(r0, r1, Math.min(1, t2)) * (1 + .15 * Math.sin(Math.min(1, t2) * Math.PI));
+        const m = addMesh(parent, tailGeo(len * 1.08, r, k === nSeg - 1 ? r * .35 : rn), hm, 0, 0, 0, 1, 1, .78, .06);
+        if (k < nSeg - 1) { parent = grp(parent, 0, -len * .86, 0); ch.segs.push(parent); }
+      }
+      this.hair.push(ch); return ch;
+    };
+    const tieAt = (x, y, z, rx = 0, rz = 0, s = .022) => { const t = addMesh(head, PF.tie, tie, x, y, z, s, s, s * .8, .2, false); t.rotation.set(rx, 0, rz); };
+    // head-bone space, meters: skull centre about (0, .085, .0), radius about .095
+    switch (d.hairStyle) {
+      case 'twin': for (const side of [1, -1]) { chain(.085 * side, .15, -.045, .25, .5 * side, 6, .085, .042, .02, -.04); tieAt(.085 * side, .15, -.045, 0, Math.PI / 2); } break;
+      case 'pony': chain(0, .13, -.1, .55, 0, 7, .08, .04, .016, .06); tieAt(0, .13, -.1, .5); break;
+      case 'hipony': chain(0, .19, -.07, 2.2, 0, 7, .085, .045, .018, -.36); tieAt(0, .19, -.07, 2.2); break;
+      case 'braid': { const c = chain(0, .05, -.095, .2, 0, 9, .058, .03, .02, .03); for (let k = 0; k < c.segs.length; k++) c.segs[k].children.forEach(m => { if (m.isMesh) m.rotation.y = k % 2 ? .5 : -.5; }); addMesh(c.segs[c.segs.length - 1], PF.tie, tie, 0, -.055, 0, .02, .02, .016, .2, false).rotation.x = Math.PI / 2; break; }
+      case 'bun': addMesh(head, PG.sphere, hm, 0, .2, -.06, .055, .05, .052, .05); addMesh(head, PG.sphere, hm2, .012, .215, -.05, .03, .028, .03, 0); tieAt(0, .17, -.055, -.6); break;
+    }
+    if (has('headband')) { const m = addMesh(head, PG.band, acc, 0, .135, .005, .104, .108, .16, 0); m.rotation.x = Math.PI / 2 - .3; }
+    if (has('clip')) { const c = addMesh(head, PG.box, tie, .06, .175, .07, .03, .009, .011, .3, false); c.rotation.z = .5; }
+    if (has('earring')) for (const side of [1, -1]) addMesh(head, PG.sphereLo, toon('#ffd36a'), .078 * side, .02, .0, .008, .008, .008, 0, false);
+    // wristbands and knee pads ride on the forearm / shin bones
+    const onBone = (bone, t, child) => { const g = new THREE.Group(); g.quaternion.copy(rootQ(bone, this.root, new THREE.Quaternion()).invert()); g.position.copy(child.position).multiplyScalar(t); bone.add(g); return g; };
+    for (const [side, s] of [['L', 'left'], ['R', 'right']]) {
+      if (has('wrist' + side)) { const g = onBone(av.b[s + 'LowerArm'], .86, av.b[s + 'Hand']); addMesh(g, PG.cyl, acc, 0, 0, 0, .034, .05, .034, .08).rotation.z = Math.PI / 2; }
+      if (has('knee' + side)) { const g = onBone(av.b[s + 'LowerLeg'], .1, av.b[s + 'Foot']); addMesh(g, PF.knee, acc, 0, .06, .004, .62, .9, .66, .05); }
+    }
   }
   // hair swings with acceleration, turning and jumping; the face blinks and reacts
   updateHair(dt, time) {
@@ -1339,6 +1810,7 @@ class Player {
   }
   dispose() {
     scene.remove(this.root, this.ring, this.tag, this.blob);
+    if (this.av) this.av.dispose();
     const mats = new Set(this.mats);
     mats.add(this.ring.material); mats.add(this.tag.material); mats.add(this.blob.material);
     for (const m of mats) { if (m.map && m.map !== blobTex) m.map.dispose(); m.dispose(); }
@@ -1359,8 +1831,10 @@ class Player {
   place() {
     this.root.position.set(this.pos.x, this.y, this.pos.z);
     this.root.rotation.y = this.face + this.pose.spin;
+    if (this.av) this.av.retarget();
     this.root.updateMatrixWorld(true);
-    this.j.handR.getWorldPosition(this.handR); this.j.handL.getWorldPosition(this.handL); this.j.head.getWorldPosition(this.headW);
+    if (this.av) { this.av.hands(this.handL, this.handR); this.av.b.head.getWorldPosition(this.headW); }
+    else { this.j.handR.getWorldPosition(this.handR); this.j.handL.getWorldPosition(this.handL); this.j.head.getWorldPosition(this.headW); }
     this.ring.position.set(this.pos.x, .02, this.pos.z);
     const bs = (.9 + .25 * this.def.bulk) * Math.max(.45, 1 - this.y * .4);
     this.blob.position.set(this.pos.x, .012, this.pos.z); this.blob.scale.set(bs, bs, 1);
@@ -1372,9 +1846,10 @@ class Player {
     const P = this.pose, k = 1 - Math.exp(-dt * (T._rate || 15));
     for (const key of POSE_KEYS) P[key] = T._snap && T._snap.includes(key) ? T[key] : lerp(P[key], T[key], k);
     this.applyPose(P);
-    this.updateHair(dt, ctx.time); this.updateFace(dt);
+    this.updateHair(dt, ctx.time);
     if (this.isUser && this.ring.visible) { const pulse = 1 + Math.sin(ctx.time * 6) * .05; this.ring.scale.set(pulse, pulse, 1); }
     this.place();
+    if (this.av) this.av.update(dt, { ball: ball.pos }); else this.updateFace(dt);
   }
 }
 
@@ -3022,12 +3497,13 @@ function recFrame() {
   RB.head = (RB.head + 1) % RB.max; RB.n = Math.min(RB.n + 1, RB.max);
   if (REC.events.length > 400) REC.events.splice(0, REC.events.length - 300);
 }
-function recApply(idx) {
+function recApply(idx, dt) {
   const B = RB.buf; let i = idx * RB.stride;
   for (const p of S.players) {
     p.pos.x = B[i++]; p.pos.z = B[i++]; p.y = B[i++]; p.face = B[i++];
     for (const k of POSE_KEYS) p.pose[k] = B[i++];
     p.applyPose(p.pose); p.place();
+    if (p.av && dt) { p.updateHair(dt, S.time); p.av.update(dt, { ball: ball.pos }); }
   }
   ball.pos.set(B[i], B[i + 1], B[i + 2]); ball.mesh.position.copy(ball.pos); ball.mesh.quaternion.set(B[i + 3], B[i + 4], B[i + 5], B[i + 6]); i += 8;
   hoop.rimK = B[i];
@@ -3061,7 +3537,7 @@ function replayUpdate(rdt) {
   const R = S.replay; if (!R) return;
   R.cur += rdt * 60 * .55;
   const i = Math.min(R.frames.length - 1, Math.floor(R.cur));
-  recApply(R.frames[i].idx);
+  recApply(R.frames[i].idx, rdt * .55);
   const fr = R.frames[i].f;
   const on = REC.on; REC.on = false;
   for (const e of REC.events) if (e.f > R.firedTo && e.f <= fr) e.fn();
@@ -3352,6 +3828,8 @@ function render(rdt) {
   if (AU.ctx && AU.beatAt) { const d = AU.ctx.currentTime - AU.beatAt; const pulse = d >= 0 && d < .15 ? 1 - d / .15 : 0; for (const s of decor.speakers) s.scale.set(1 + pulse * .25, 1, 1 + pulse * .25); }
   if (AU.crowdGain) AU.crowdGain.gain.value = .015 + S.hype * .05;
   sparks.update(rdt); confetti.update(rdt); dust.update(rdt);
+  for (const p of S.players) if (p.av) p.av.setOutline(camera.position);
+  for (const p of showcase) if (p.av && p.root.visible) p.av.setOutline(camera.position);
   renderer.render(scene, camera);
   if (S.phase !== 'menu') {
     const cine = S.phase === 'intro' || S.phase === 'replay';
@@ -3434,7 +3912,8 @@ addEventListener('resize', resize);
 /* =========================================================
    Menu / screens
    ========================================================= */
-const showcase = ROSTER.map((d, i) => { const p = new Player(d, 0, i, false); p.pos.set(0, 0, 8); p.face = 0; p.setVisible(false); return p; });
+const showcase = [];
+function buildShowcase() { ROSTER.forEach((d, i) => { const p = new Player(d, 0, i, false); p.pos.set(0, 0, 8); p.face = 0; p.setVisible(false); showcase.push(p); }); }
 function menuUpdate(dt) {
   const p = showcase[S.sel];
   for (const q of showcase) q.root.visible = q.blob.visible = q === p && !artFull(q.def.id);
@@ -3566,7 +4045,7 @@ function boot(data) {
 }
 try { window.claude && window.claude.hot && window.claude.hot.snapshot && window.claude.hot.snapshot(() => ({ sel: S.sel, diff: S.diff, dur: S.dur, mode: S.mode })); } catch (e) {}
 const H = window.claude && window.claude.hot;
-loadArt().then(() => { if (H && H.ready) H.ready(boot); else boot(H && H.data); });
+Promise.all([loadArt(), loadVRM()]).then(() => { buildShowcase(); if (H && H.ready) H.ready(boot); else boot(H && H.data); });
 
 // test hooks (harmless in play): lets an automated run drive the match headlessly
 window.__ssk = { S, ball, step, startMatch, ballUpdate, V3, setAuto: v => { S.auto = v; }, ROSTER, laneOpen, showcase, render, net, cam, camera, skipCinematic, useUlt, setUser, switchUser, startScreen, startBoxOut, landing };
