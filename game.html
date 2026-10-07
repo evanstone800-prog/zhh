@@ -324,9 +324,11 @@ td.g{font-weight:700}td.gS{color:var(--gold)}td.gA{color:var(--good)}td.gB{color
   #chips{top:calc(env(safe-area-inset-top,0px) + 120px)}
 }
 @media (prefers-reduced-motion:reduce){.call,.float,.cut,.fe{animation-duration:.01s}.chip.warn{animation:none}}
+#loading{position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);z-index:99;padding:14px 22px;border-radius:12px;background:rgba(10,12,30,.82);color:#ffe7a3;font:600 16px/1.4 system-ui,sans-serif;letter-spacing:.05em}
 </style>
 
 <div id="app">
+<div id="loading" hidden>正在加载角色模型…</div>
   <canvas id="gl"></canvas>
 
   <div id="hud" hidden>
@@ -443,7 +445,7 @@ td.g{font-weight:700}td.gS{color:var(--gold)}td.gA{color:var(--good)}td.gB{color
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="vendor/GLTFLoader.js"></script>
 <script>
 (() => {
 'use strict';
@@ -1185,22 +1187,31 @@ function basePose() { return { hipY: 0, hipRx: 0, hipRy: 0, hipRz: 0, spX: .04, 
    ========================================================= */
 const VRM = { gltf: null, H: 1.6, human: {}, expr: {}, spring: null, texCache: new Map() };
 const VRM_URL = 'art/girl.glb', SKIN0 = [249, 231, 218];
+const loadScript = src => new Promise((ok, no) => { const el = document.createElement('script'); el.src = src; el.onload = ok; el.onerror = no; document.head.appendChild(el); });
+function loadMsg(t) { const el = document.getElementById('loading'); if (el) { el.hidden = !t; if (t) el.textContent = t; } }
 function loadVRM() {
-  return new Promise(res => {
-    if (!THREE.GLTFLoader) return res();
-    let done = false; const fin = () => { if (!done) { done = true; res(); } };
+  return new Promise(async res => {
+    let done = false; const t0 = performance.now();
+    const fin = why => { if (done) return; done = true; if (!VRM.gltf) { VRM.fail = why || 'timeout'; console.warn('character model not loaded:', VRM.fail); } loadMsg(''); res(); };
+    const tick = setInterval(() => { if (done) return clearInterval(tick); loadMsg(`正在加载角色模型… ${((performance.now() - t0) / 1000) | 0}s`); }, 500);
+    setTimeout(() => fin('timeout'), 120000);
+    // same-origin copy first; the CDN only if that is missing
+    if (!THREE.GLTFLoader) { try { await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js'); } catch (e) {} }
+    if (!THREE.GLTFLoader) return fin('no loader');
     const loader = new THREE.GLTFLoader(), ok = g => {
       if (done) return;
-      prepVRM(g).then(m => { if (!done) VRM.gltf = m; }).catch(e => console.warn('model setup failed', e)).then(fin);
+      prepVRM(g).then(m => { if (!done) VRM.gltf = m; }).catch(e => { console.warn('model setup failed', e); }).then(() => fin('setup'));
     };
-    // the binary model, or the same bytes as base64 text where only text/media files can be hosted
-    const b64 = () => fetch(VRM_URL + '.txt').then(r => { if (!r.ok) throw 0; return r.text(); }).then(t => {
-      const bin = atob(t.trim()), u8 = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
-      loader.parse(u8.buffer, 'art/', ok, fin);
-    }).catch(fin);
-    try { loader.load(VRM_URL, ok, null, b64); } catch (e) { fin(); }
-    setTimeout(fin, 30000);
+    const bin = () => loader.load(VRM_URL, ok, e => { if (e && e.total) loadMsg(`正在加载角色模型… ${Math.round(e.loaded / e.total * 100)}%`); }, () => fin('load'));
+    // where only scripts/text can be hosted the model ships as base64 inside art/girl.js
+    try {
+      await loadScript('art/girl.js');
+      const t = window.__girlGLB; window.__girlGLB = null;
+      if (!t) return bin();
+      const raw = atob(t), u8 = new Uint8Array(raw.length);
+      for (let i = 0; i < raw.length; i++) u8[i] = raw.charCodeAt(i);
+      loader.parse(u8.buffer, 'art/', ok, () => fin('parse'));
+    } catch (e) { bin(); }
   });
 }
 async function prepVRM(g) {
@@ -4046,6 +4057,7 @@ function boot(data) {
   for (const p of showcase) p.portrait = artHead(p.def.id) || makePortrait(p);
   segInit('#diffSeg', 'diff', v => v); segInit('#durSeg', 'dur', v => +v); segInit('#modeSeg', 'mode', v => v); segInit('#adSeg', 'autoDef', v => v === 'true');
   renderRoster(); renderDetail(); showMenu();
+  if (VRM.fail) { loadMsg(`3D 角色模型没加载成功（${VRM.fail}），暂用简化模型。刷新页面可重试`); setTimeout(() => loadMsg(''), 7000); }
   requestAnimationFrame(t => { last = t; frame(t); });
 }
 try { window.claude && window.claude.hot && window.claude.hot.snapshot && window.claude.hot.snapshot(() => ({ sel: S.sel, diff: S.diff, dur: S.dur, mode: S.mode })); } catch (e) {}
