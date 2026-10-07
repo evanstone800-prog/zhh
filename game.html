@@ -1189,12 +1189,17 @@ function loadVRM() {
   return new Promise(res => {
     if (!THREE.GLTFLoader) return res();
     let done = false; const fin = () => { if (!done) { done = true; res(); } };
-    try {
-      new THREE.GLTFLoader().load(VRM_URL, g => {
-        if (done) return;
-        prepVRM(g).then(m => { if (!done) VRM.gltf = m; }).catch(e => console.warn('model setup failed', e)).then(fin);
-      }, null, fin);
-    } catch (e) { fin(); }
+    const loader = new THREE.GLTFLoader(), ok = g => {
+      if (done) return;
+      prepVRM(g).then(m => { if (!done) VRM.gltf = m; }).catch(e => console.warn('model setup failed', e)).then(fin);
+    };
+    // the binary model, or the same bytes as base64 text where only text/media files can be hosted
+    const b64 = () => fetch(VRM_URL + '.txt').then(r => { if (!r.ok) throw 0; return r.text(); }).then(t => {
+      const bin = atob(t.trim()), u8 = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+      loader.parse(u8.buffer, 'art/', ok, fin);
+    }).catch(fin);
+    try { loader.load(VRM_URL, ok, null, b64); } catch (e) { fin(); }
     setTimeout(fin, 30000);
   });
 }
