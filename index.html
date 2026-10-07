@@ -473,35 +473,35 @@ const dHoop = p => dHoopXZ(p.pos.x, p.pos.z);
    Roster — original characters
    ========================================================= */
 const ROSTER = [
-  { id: 'flash', name: '闪电', en: 'FLASH', pos: '控球后卫', pk: 'PG', num: 3, h: 1.88, bulk: .94, skin: '#8d5524', hair: 'fade', hairC: '#17110c', shoe: '#22d3ee', acc: '#ff4b5c', items: ['headband', 'sleeveR', 'wristL'],
+  { id: 'flash', name: '闪电', en: 'FLASH', pos: '控球后卫', pk: 'PG', num: 3, h: 1.70, bulk: .92, skin: '#f7d9c4', hairStyle: 'twin', hairC: '#ff6fae', eye: '#ff3d86', tie: '#ffffff', shoe: '#22d3ee', acc: '#22d3ee', items: ['wristL', 'wristR', 'socksHi'],
     st: { spd: .96, hnd: .96, three: .74, mid: .72, lay: .82, dunk: .45, blk: .25, stl: .82, reb: .3, str: .35 },
     off: { name: '鬼魅变向', desc: '持球大幅变向加速，贴身防守人很可能被晃倒', cd: 9 },
     def: { name: '贴身紧逼', desc: '5 秒内抢断成功率大幅提升，移动更快', cd: 12 },
     ult: { name: '极速风暴', desc: '8 秒内移速大增，每次变向都很可能晃倒对手', T: 8 } },
-  { id: 'ace', name: '神射', en: 'ACE', pos: '得分后卫', pk: 'SG', num: 30, h: 1.91, bulk: .96, skin: '#e0ac69', hair: 'cap', hairC: '#20160f', shoe: '#f8fafc', acc: '#14213d', items: ['wristR', 'wristL'],
+  { id: 'ace', name: '神射', en: 'ACE', pos: '得分后卫', pk: 'SG', num: 30, h: 1.74, bulk: .93, skin: '#f2d0b6', hairStyle: 'pony', hairC: '#1d1a2b', eye: '#3a86ff', tie: '#ffc83d', shoe: '#f8fafc', acc: '#14213d', items: ['sleeveR', 'wristL', 'clip'],
     st: { spd: .8, hnd: .78, three: .97, mid: .86, lay: .62, dunk: .35, blk: .3, stl: .55, reb: .32, str: .35 },
     off: { name: '后撤步三分', desc: '后撤一步拉开空间再起跳，完美区间翻倍。起跳后再按投篮出手', cd: 10 },
     def: { name: '极速封堵', desc: '冲到持球人面前，3 秒内干扰效果大幅提升', cd: 10 },
     ult: { name: '无限射程', desc: '8 秒内完美区间翻倍，超远三分不衰减，几乎不受干扰', T: 8 } },
-  { id: 'sky', name: '飞人', en: 'SKY', pos: '小前锋', pk: 'SF', num: 23, h: 2.01, bulk: 1.0, skin: '#6b3e26', hair: 'bald', hairC: '#120c08', shoe: '#ff4b5c', acc: '#ff4b5c', items: ['headband', 'legSleeveL', 'wristR', 'goatee'],
+  { id: 'sky', name: '飞燕', en: 'SWIFT', pos: '小前锋', pk: 'SF', num: 23, h: 1.80, bulk: .96, skin: '#c98e6a', hairStyle: 'bob', hairC: '#e3e6f0', eye: '#8b5cf6', tie: '#ff4b5c', shoe: '#ff4b5c', acc: '#ff4b5c', items: ['headband', 'legSleeveL', 'wristR'],
     st: { spd: .86, hnd: .72, three: .62, mid: .76, lay: .9, dunk: .99, blk: .62, stl: .55, reb: .56, str: .62 },
     off: { name: '战斧暴扣', desc: '距篮 6 米内直接腾空暴扣，极难被封盖', cd: 11 },
     def: { name: '追身大帽', desc: '向球冲刺并高高跃起，封盖能力大幅提升', cd: 11 },
     ult: { name: '扣篮大赛', desc: '8 秒内 6.5 米内即可起飞暴扣，扣篮几乎无法封盖', T: 8 } },
-  { id: 'tower', name: '铁塔', en: 'TOWER', pos: '中锋', pk: 'C', num: 34, h: 2.16, bulk: 1.13, skin: '#4a2c1a', hair: 'short', hairC: '#0d0907', shoe: '#facc15', acc: '#f8fafc', items: ['kneeL', 'kneeR', 'wristR', 'beard', 'hightop'],
+  { id: 'tower', name: '冰山', en: 'FROST', pos: '中锋', pk: 'C', num: 34, h: 1.92, bulk: 1.02, skin: '#f9e3d3', hairStyle: 'braid', hairC: '#2b3d86', eye: '#29b6f6', tie: '#f8fafc', shoe: '#facc15', acc: '#f8fafc', items: ['kneeL', 'kneeR', 'wristR', 'hightop', 'socksHi'],
     st: { spd: .55, hnd: .42, three: .2, mid: .55, lay: .86, dunk: .86, blk: .98, stl: .3, reb: .98, str: .96 },
     off: { name: '背身勾手', desc: '距篮 4.8 米内高弧度勾手，几乎无法封盖', cd: 9 },
     def: { name: '禁区之王', desc: '6 秒内封盖范围、高度和篮板能力大幅提升', cd: 13 },
     ult: { name: '禁区霸主', desc: '10 秒内封盖与篮板范围暴涨，对手篮下命中率下降', T: 10 } },
-  { id: 'rhino', name: '野兽', en: 'RHINO', pos: '大前锋', pk: 'PF', num: 1, h: 2.06, bulk: 1.16, skin: '#c68642', hair: 'mohawk', hairC: '#3a1f12', shoe: '#a3e635', acc: '#a3e635', items: ['tattoo', 'wristL', 'wristR', 'hightop'],
+  { id: 'rhino', name: '烈焰', en: 'BLAZE', pos: '大前锋', pk: 'PF', num: 1, h: 1.86, bulk: 1.0, skin: '#e2a47e', hairStyle: 'hipony', hairC: '#e8452c', eye: '#ffb020', tie: '#a3e635', shoe: '#a3e635', acc: '#a3e635', items: ['wristL', 'wristR', 'hightop', 'headband'],
     st: { spd: .7, hnd: .56, three: .42, mid: .66, lay: .85, dunk: .9, blk: .7, stl: .4, reb: .86, str: .99 },
-    off: { name: '野蛮冲撞', desc: '低头冲向篮下，撞开路线上的防守人，到篮下直接扣篮', cd: 10 },
+    off: { name: '烈焰冲撞', desc: '低头冲向篮下，撞开路线上的防守人，到篮下直接扣篮', cd: 10 },
     def: { name: '卡位抢板', desc: '6 秒内篮板范围与优先级大幅提升', cd: 12 },
-    ult: { name: '蛮牛冲撞', desc: '8 秒内持球突破会撞开防守人，扣篮范围变大', T: 8 } },
-  { id: 'ghost', name: '鬼手', en: 'GHOST', pos: '锋卫摇摆', pk: 'G/F', num: 7, h: 1.96, bulk: .97, skin: '#f1c27d', hair: 'braids', hairC: '#1a120c', shoe: '#c084fc', acc: '#c084fc', items: ['sleeveL', 'legSleeveR', 'wristR'],
+    ult: { name: '燎原冲锋', desc: '8 秒内持球突破会撞开防守人，扣篮范围变大', T: 8 } },
+  { id: 'ghost', name: '幻影', en: 'PHANTOM', pos: '锋卫摇摆', pk: 'G/F', num: 7, h: 1.77, bulk: .94, skin: '#8d5b3e', hairStyle: 'bun', hairC: '#8b5cf6', eye: '#e879f9', tie: '#f5d0fe', shoe: '#c084fc', acc: '#c084fc', items: ['sleeveL', 'legSleeveR', 'wristR', 'earring'],
     st: { spd: .86, hnd: .82, three: .7, mid: .93, lay: .72, dunk: .56, blk: .46, stl: .98, reb: .46, str: .5 },
     off: { name: '急停跳投', desc: '急停拔起中投，完美区间翻倍、受干扰减半。起跳后再按投篮出手', cd: 9 },
-    def: { name: '鬼手抢断', desc: '闪身贴到 3.5 米内的持球人身前掏球，对控球差的人更容易得手', cd: 12 },
+    def: { name: '幻手抢断', desc: '冲到 3.5 米内的持球人身前掏球，对控球差的人更容易得手', cd: 12 },
     ult: { name: '幻影之手', desc: '8 秒内抢断与断球能力暴涨，移速提升', T: 8 } },
 ];
 const STAT_LABELS = [['spd', '速度'], ['hnd', '控球'], ['three', '三分'], ['mid', '中投'], ['dunk', '扣篮'], ['blk', '盖帽'], ['stl', '抢断'], ['reb', '篮板']];
@@ -512,7 +512,7 @@ const TEAM = [
 const DIFF = {
   easy:   { react: .5,  perfect: .12, stealRate: .12, stealMul: .7, tight: .7,  shotIQ: .55, blockJump: .4, skill: .15, help: .5, oop: .5 },
   normal: { react: .3,  perfect: .32, stealRate: .22, stealMul: 1,  tight: .88, shotIQ: .8,  blockJump: .7, skill: .3,  help: .8, oop: .7 },
-  hard:   { react: .17, perfect: .55, stealRate: .3,  stealMul: 1.2, tight: 1,  shotIQ: .95, blockJump: .9, skill: .45, help: 1,  oop: .85 },
+  hard:   { react: .17, perfect: .55, stealRate: .3,  stealMul: 1.2, tight: 1,  shotIQ: .95, blockJump: .78, skill: .45, help: 1,  oop: .85 },
 };
 
 /* =========================================================
@@ -546,6 +546,8 @@ function rimPatch(sh) {
     'outgoingLight += vec3( 1.0, .9, .78 ) * smoothstep( .58, 1.0, rimF ) * .32 * diffuseColor.rgb + vec3( .55, .65, 1.0 ) * smoothstep( .75, 1.0, rimF ) * .12;\n' +
     'gl_FragColor = vec4( outgoingLight, diffuseColor.a );');
 }
+// softer 3-step ramp for faces and skin so cheeks don't fall into a dark band
+const GM_SOFT = (() => { const d = new Uint8Array([165, 165, 165, 255, 215, 215, 215, 255, 255, 255, 255, 255]); const t = new THREE.DataTexture(d, 3, 1, THREE.RGBAFormat); t.minFilter = t.magFilter = THREE.NearestFilter; t.needsUpdate = true; return t; })();
 const toon = (color, map, extra) => { const m = new THREE.MeshToonMaterial(Object.assign({ color: map ? 0xffffff : color, map: map || null, gradientMap: GM }, extra || {})); m.onBeforeCompile = rimPatch; return m; };
 const OUTLINE = new THREE.MeshBasicMaterial({ color: 0x120d0a, side: THREE.BackSide });
 const SH = { white: toon('#f4f4f2'), dark: new THREE.MeshBasicMaterial({ color: 0x16100c }), eye: new THREE.MeshBasicMaterial({ color: 0xf6f1e8 }), sole: toon('#f1efe8'), black: toon('#1d1f26') };
@@ -1015,6 +1017,66 @@ const PG = {
   band: new THREE.TorusGeometry(1, .12, 6, 24), box: new THREE.BoxGeometry(1, 1, 1), cyl: new THREE.CylinderGeometry(1, 1, 1, 14),
   ring: new THREE.RingGeometry(.42, .52, 36), ringMe: new THREE.RingGeometry(.44, .62, 40), plane: new THREE.PlaneGeometry(1, 1),
 };
+// slimmer, curvier parts for the girls
+const PF = {
+  chest: profileGeo([[1.08, .175], [1.16, .162], [1.26, .158], [1.34, .178], [1.42, .21], [1.48, .222], [1.53, .214], [1.59, .2], [1.64, .178], [1.68, .132], [1.705, .075], [1.72, 0]], CHEST_Y0, CHEST_Y1, 26),
+  pelvis: profileGeo([[.8, 0], [.82, .14], [.88, .19], [.96, .2], [1.03, .185], [1.1, .165], [1.12, 0]], .8, 1.12, 12),
+  thigh: limbGeo(.46, .094, .062, .012, .3), shin: limbGeo(.43, .064, .039, .02, .24),
+  shortLeg: tubeGeo(.28, .106, .114), sockHi: tubeGeo(.3, .056, .046), sock: tubeGeo(.12, .045, .043), sleeveLeg: tubeGeo(.3, .072, .05),
+  knee: limbGeo(.11, .078, .074, 0, .5),
+  upper: limbGeo(.28, .052, .04, .008, .42), fore: limbGeo(.25, .041, .03, .006, .25),
+  sleeveUp: tubeGeo(.26, .058, .045), sleeveFore: tubeGeo(.23, .046, .034), wrist: tubeGeo(.055, .036, .034),
+  delt: new THREE.SphereGeometry(.058, 14, 10), neck: limbGeo(.12, .041, .046),
+  face: new THREE.SphereGeometry(1, 36, 26, Math.PI / 2 - .95, 1.9, .72, 1.7),
+  strand: new THREE.SphereGeometry(1, 10, 8), tie: new THREE.TorusGeometry(1, .35, 6, 14),
+};
+// anime face drawn on a transparent decal that wraps the front of the head
+const FACE_W = 512, FACE_H = 456, FPX = FACE_W / 1.9;
+function faceTex(d, mode) {
+  return canvasTex(FACE_W, FACE_H, (g, W, H) => {
+    g.clearRect(0, 0, W, H);
+    const cx = W / 2, ey = (Math.PI / 2 - .08 - .72) * FPX, my = (Math.PI / 2 + .52 - .72) * FPX, dx = .33 * FPX;
+    const dark = shade(d.hairC, .45), lash = '#1b1220';
+    // brows
+    g.strokeStyle = dark; g.lineWidth = 6; g.lineCap = 'round';
+    for (const s of [-1, 1]) { g.beginPath(); const by = ey - 56; g.moveTo(cx + s * 52, by + (mode === 'sad' ? -10 : 4)); g.quadraticCurveTo(cx + s * 88, by - 8, cx + s * 124, by + (mode === 'sad' ? 10 : 2)); g.stroke(); }
+    for (const s of [-1, 1]) {
+      const x = cx + s * dx, y = ey;
+      if (mode === 'open') {
+        // sclera
+        g.save(); g.beginPath(); g.moveTo(x - 32, y - 10); g.bezierCurveTo(x - 24, y - 40, x + 24, y - 42, x + 33, y - 14); g.bezierCurveTo(x + 34, y + 22, x + 16, y + 38, x, y + 38); g.bezierCurveTo(x - 18, y + 38, x - 33, y + 22, x - 32, y - 10); g.closePath();
+        g.fillStyle = '#fffaf6'; g.fill(); g.clip();
+        // iris with a dark top and bright bottom
+        const ir = g.createLinearGradient(0, y - 36, 0, y + 36); ir.addColorStop(0, shade(d.eye, .35)); ir.addColorStop(.55, d.eye); ir.addColorStop(1, '#ffffff');
+        g.fillStyle = ir; g.beginPath(); g.ellipse(x + s * 2, y + 4, 25, 33, 0, 0, TAU); g.fill();
+        g.fillStyle = shade(d.eye, .25); g.beginPath(); g.ellipse(x + s * 2, y + 4, 12, 17, 0, 0, TAU); g.fill();
+        g.strokeStyle = shade(d.eye, .3); g.lineWidth = 3; g.beginPath(); g.ellipse(x + s * 2, y + 4, 25, 33, 0, 0, TAU); g.stroke();
+        g.fillStyle = 'rgba(30,20,40,.35)'; g.fillRect(x - 40, y - 44, 80, 16); // lid shadow
+        g.restore();
+        g.fillStyle = '#ffffff'; g.beginPath(); g.ellipse(x - 9, y - 12, 9, 11, -.4, 0, TAU); g.fill(); g.beginPath(); g.arc(x + 11, y + 18, 4.5, 0, TAU); g.fill();
+        // upper lash line with a wing
+        g.strokeStyle = lash; g.lineWidth = 8; g.beginPath(); g.moveTo(x - 34 * s * -1 * -1 - (s > 0 ? 0 : 0), y); g.stroke();
+        g.beginPath(); g.moveTo(x - 33, y - 8); g.bezierCurveTo(x - 24, y - 42, x + 24, y - 44, x + 34, y - 14); g.stroke();
+        g.lineWidth = 5; g.beginPath(); g.moveTo(x + s * 30, y - 20); g.lineTo(x + s * 44, y - 30); g.stroke();
+        g.lineWidth = 2.5; g.beginPath(); g.moveTo(x + s * 26, y + 26); g.quadraticCurveTo(x, y + 42, x - s * 14, y + 36); g.stroke();
+      } else if (mode === 'blink') {
+        g.strokeStyle = lash; g.lineWidth = 7; g.beginPath(); g.moveTo(x - 32, y + 4); g.quadraticCurveTo(x, y + 20, x + 33, y + 2); g.stroke();
+        g.lineWidth = 4; g.beginPath(); g.moveTo(x + s * 30, y + 4); g.lineTo(x + s * 42, y - 4); g.stroke();
+      } else if (mode === 'happy') {
+        g.strokeStyle = lash; g.lineWidth = 8; g.beginPath(); g.moveTo(x - 28, y + 10); g.quadraticCurveTo(x, y - 22, x + 28, y + 10); g.stroke();
+      } else { // sad / hurt: squeezed shut
+        g.strokeStyle = lash; g.lineWidth = 7; g.beginPath(); g.moveTo(x - s * 30, y - 10); g.lineTo(x + s * 4, y + 4); g.lineTo(x - s * 28, y + 16); g.stroke();
+      }
+    }
+    // blush, nose, mouth
+    g.fillStyle = 'rgba(255,110,130,.3)'; for (const s of [-1, 1]) { g.beginPath(); g.ellipse(cx + s * 108, ey + 64, 30, 13, 0, 0, TAU); g.fill(); }
+    g.strokeStyle = 'rgba(160,80,70,.45)'; g.lineWidth = 3; g.beginPath(); g.moveTo(cx + 2, ey + 70); g.lineTo(cx - 3, ey + 80); g.stroke();
+    g.lineCap = 'round';
+    if (mode === 'happy') { g.fillStyle = '#7a1f2b'; g.beginPath(); g.moveTo(cx - 24, my - 8); g.quadraticCurveTo(cx, my - 2, cx + 24, my - 8); g.quadraticCurveTo(cx + 18, my + 22, cx, my + 22); g.quadraticCurveTo(cx - 18, my + 22, cx - 24, my - 8); g.fill(); g.fillStyle = '#ff8fa3'; g.beginPath(); g.ellipse(cx, my + 14, 10, 6, 0, 0, TAU); g.fill(); }
+    else if (mode === 'sad') { g.strokeStyle = '#8a3a3a'; g.lineWidth = 4; g.beginPath(); g.moveTo(cx - 16, my + 6); g.quadraticCurveTo(cx, my - 6, cx + 16, my + 6); g.stroke(); }
+    else { g.strokeStyle = '#a0424a'; g.lineWidth = 4; g.beginPath(); g.moveTo(cx - 14, my - 2); g.quadraticCurveTo(cx, my + 8, cx + 14, my - 2); g.stroke(); }
+  });
+}
 function addMesh(parent, geo, mat, x, y, z, sx = 1, sy = 1, sz = 1, ol = 0, cast = true) {
   const m = new THREE.Mesh(geo, mat); m.position.set(x || 0, y || 0, z || 0); m.scale.set(sx, sy, sz); m.castShadow = cast; parent.add(m);
   if (ol) { const o = new THREE.Mesh(geo, OUTLINE); o.scale.set(1 + ol, 1 + ol * (geo.type === 'LatheGeometry' ? .25 : 1), 1 + ol); m.add(o); }
@@ -1100,7 +1162,7 @@ class Player {
     this.spot = null; this.spotT = 0; this.cutT = 0; this.cutTo = { x: 0, z: 2 }; this.stealTry = 1;
     this.dribPh = rand(0, TAU); this.dribB = 1; this.dribHand = 1; this.prevCos = 1;
     this.buff = { stl: 0, blk: 0, reb: 0, contest: 0 };
-    this.energy = 0; this.ult = 0; this.handsUp = false; this.screenedT = 0; this.scr = null; this.screening = false; this.post = null; this.boxT = 0; this.boxLag = 0; this.rebT = 0; this.screenCd = rand(2, 5); this.bumpT = 0; this.chargeHit = new Map();
+    this.energy = 0; this.ult = 0; this.blockTry = null; this.stealMiss = 0; this.pendingSteal = 0; this.warnT = 0; this.handsUp = false; this.screenedT = 0; this.scr = null; this.screening = false; this.post = null; this.boxT = 0; this.boxLag = 0; this.rebT = 0; this.screenCd = rand(2, 5); this.bumpT = 0; this.chargeHit = new Map();
     this.streak = 0; this.onFire = false; this.fireT = 0;
     this.stats = { pts: 0, reb: 0, ast: 0, stl: 0, blk: 0, fgm: 0, fga: 0, tpm: 0, tpa: 0 };
     this.assistFrom = null; this.assistT = -99;
@@ -1113,94 +1175,100 @@ class Player {
   }
   build() {
     const d = this.def, T = TEAM[this.team], b = d.bulk, has = k => d.items.includes(k);
-    const skin = toon(d.skin), hair = toon(d.hairC), acc = toon(d.acc), shoe = toon(d.shoe);
+    const skin = toon(d.skin, null, { gradientMap: GM_SOFT }), hair = toon(d.hairC), acc = toon(d.acc), shoe = toon(d.shoe), tie = toon(d.tie);
     const jersey = toon(null, jerseyTex(d, this.team)), shorts = toon(null, shortsTex(this.team), { side: THREE.DoubleSide });
-    const armSkin = has('tattoo') ? toon(null, tattooTex(d.skin)) : skin;
-    this.armSkin = armSkin;
-    this.mats = [skin, hair, acc, shoe, jersey, shorts, armSkin];
+    this.armSkin = skin;
+    this.mats = [skin, hair, acc, shoe, tie, jersey, shorts];
     const R = this.root = new THREE.Group(); R.scale.setScalar(this.scale);
     const grp = (parent, x, y, z) => { const g = new THREE.Group(); g.position.set(x, y, z); parent.add(g); return g; };
     const J = this.j = {};
     J.hips = grp(R, 0, 1, 0);
-    addMesh(J.hips, PG.pelvis, shorts, 0, -1.0, 0, 1.1 * b, 1, .88 * b, .03);
+    addMesh(J.hips, PF.pelvis, shorts, 0, -1.0, 0, 1.06 * b, 1, .86 * b, .03);
     for (const side of [1, -1]) {
       const s = side > 0 ? 'L' : 'R';
-      const th = J['th' + s] = grp(J.hips, .105 * side * b, -.05, 0);
-      addMesh(th, PG.thigh, skin, 0, 0, 0, b, 1, b, .07);
-      addMesh(th, PG.shortLeg, shorts, 0, .06, 0, b, 1, b, .04);
-      if ((side > 0 && has('legSleeveL')) || (side < 0 && has('legSleeveR'))) addMesh(th, PG.sleeveLeg, acc, 0, -.1, 0, b, 1, b, .03);
+      const th = J['th' + s] = grp(J.hips, .1 * side * b, -.05, 0);
+      addMesh(th, PF.thigh, skin, 0, 0, 0, b, 1, b, .06);
+      addMesh(th, PF.shortLeg, shorts, 0, .05, 0, b, 1, b, .04);
+      if ((side > 0 && has('legSleeveL')) || (side < 0 && has('legSleeveR'))) addMesh(th, PF.sleeveLeg, acc, 0, -.14, 0, b, 1, b, .03);
       const kn = J['kn' + s] = grp(th, 0, -.46, 0);
-      addMesh(kn, PG.shin, skin, 0, 0, 0, b, 1, b, .07);
-      if ((side > 0 && has('legSleeveL')) || (side < 0 && has('legSleeveR'))) addMesh(kn, PG.sleeveLeg, acc, 0, .02, 0, .92 * b, .9, .92 * b, .03);
-      if (has('knee' + s)) addMesh(kn, PG.knee, acc, 0, .06, .005, 1.05 * b, 1, 1.05 * b, .05);
-      addMesh(kn, PG.sock, SH.white, 0, -.27, 0, b, 1, b, .04);
+      addMesh(kn, PF.shin, skin, 0, 0, 0, b, 1, b, .06);
+      if ((side > 0 && has('legSleeveL')) || (side < 0 && has('legSleeveR'))) addMesh(kn, PF.sleeveLeg, acc, 0, .02, 0, .9 * b, .85, .9 * b, .03);
+      if (has('knee' + s)) addMesh(kn, PF.knee, acc, 0, .05, .004, 1.05 * b, 1, 1.05 * b, .04);
+      if (has('socksHi')) { addMesh(kn, PF.sockHi, SH.white, 0, -.12, 0, b, 1, b, .04); for (const yy of [-.15, -.18]) { const r = addMesh(kn, PF.tie, acc, 0, yy, 0, .055 * b, .055 * b, .006, 0, false); r.rotation.x = Math.PI / 2; } }
+      else addMesh(kn, PF.sock, SH.white, 0, -.3, 0, b, 1, b, .04);
       const an = J['an' + s] = grp(kn, 0, -.43, 0);
       const high = has('hightop');
-      addMesh(an, PG.sphere, SH.sole, 0, -.042, .05, .068, .024, .158, .08);
-      addMesh(an, PG.sphere, shoe, 0, -.012, .045, .062, .052, .14, .08);
-      addMesh(an, PG.cyl, shoe, 0, high ? .03 : .0, -.005, .058, high ? .13 : .07, .062, .06);
-      addMesh(an, PG.box, SH.white, .061 * side, -.015, .03, .006, .022, .12, 0, false);
-      addMesh(an, PG.box, SH.white, 0, .034, .085, .03, .012, .07, 0, false);
+      addMesh(an, PG.sphere, SH.sole, 0, -.042, .046, .06, .022, .145, .08);
+      addMesh(an, PG.sphere, shoe, 0, -.014, .042, .055, .047, .128, .08);
+      addMesh(an, PG.cyl, shoe, 0, high ? .028 : 0, -.004, .052, high ? .12 : .065, .056, .06);
+      addMesh(an, PG.box, SH.white, .055 * side, -.016, .03, .006, .02, .11, 0, false);
+      addMesh(an, PG.box, SH.white, 0, .03, .078, .028, .012, .065, 0, false);
     }
     const sp = J.spine = grp(J.hips, 0, .12, 0);
-    addMesh(sp, PG.chest, jersey, 0, -1.12, 0, 1.13 * b, 1, .8 * b, .035);
+    addMesh(sp, PF.chest, jersey, 0, -1.12, 0, 1.05 * b, 1, .8 * b, .035);
     for (const side of [1, -1]) {
       const s = side > 0 ? 'L' : 'R';
-      const sh = J['sh' + s] = grp(sp, .255 * side * b, .48, 0);
-      addMesh(sh, PG.delt, skin, .006 * side, -.02, 0, b, 1.08, b, .06);
-      addMesh(sh, PG.upper, armSkin, 0, 0, 0, b, 1, b, .07);
-      if ((side > 0 && has('sleeveL')) || (side < 0 && has('sleeveR'))) addMesh(sh, PG.sleeveUp, acc, 0, -.01, 0, b, 1, b, .03);
-      const el = J['el' + s] = grp(sh, 0, -.29, 0);
-      addMesh(el, PG.fore, skin, 0, 0, 0, b, 1, b, .07);
-      if ((side > 0 && has('sleeveL')) || (side < 0 && has('sleeveR'))) addMesh(el, PG.sleeveFore, acc, 0, -.005, 0, b, 1, b, .03);
-      if ((side > 0 && has('wristL')) || (side < 0 && has('wristR'))) addMesh(el, PG.wrist, acc, 0, -.19, 0, b, 1, b, .04);
-      const wr = J['wr' + s] = grp(el, 0, -.26, 0);
-      addMesh(wr, PG.sphere, skin, 0, -.05, .004, .022, .052, .036, .1);
-      addMesh(wr, PG.sphere, skin, 0, -.1, .008, .02, .04, .033, .1);
-      const th = addMesh(wr, PG.sphere, skin, -.012 * side, -.04, .03, .013, .03, .013, 0); th.rotation.x = .5;
-      J['hand' + s] = grp(wr, 0, -.075, .01);
+      const sh = J['sh' + s] = grp(sp, .215 * side * b, .47, 0);
+      addMesh(sh, PF.delt, skin, .004 * side, -.02, 0, b, 1.05, b, .05);
+      addMesh(sh, PF.upper, skin, 0, 0, 0, b, 1, b, .06);
+      if ((side > 0 && has('sleeveL')) || (side < 0 && has('sleeveR'))) addMesh(sh, PF.sleeveUp, acc, 0, -.01, 0, b, 1, b, .03);
+      const el = J['el' + s] = grp(sh, 0, -.28, 0);
+      addMesh(el, PF.fore, skin, 0, 0, 0, b, 1, b, .06);
+      if ((side > 0 && has('sleeveL')) || (side < 0 && has('sleeveR'))) addMesh(el, PF.sleeveFore, acc, 0, -.005, 0, b, 1, b, .03);
+      if ((side > 0 && has('wristL')) || (side < 0 && has('wristR'))) addMesh(el, PF.wrist, acc, 0, -.19, 0, b, 1, b, .04);
+      const wr = J['wr' + s] = grp(el, 0, -.25, 0);
+      addMesh(wr, PG.sphere, skin, 0, -.045, .004, .019, .046, .031, .09);
+      addMesh(wr, PG.sphere, skin, 0, -.088, .007, .017, .035, .028, .09);
+      const th = addMesh(wr, PG.sphere, skin, -.011 * side, -.036, .026, .011, .027, .011, 0); th.rotation.x = .5;
+      J['hand' + s] = grp(wr, 0, -.07, .01);
     }
-    addMesh(sp, PG.neck, skin, 0, .7, 0, b, 1, b, .05);
-    const hd = J.head = grp(sp, 0, .64, .005);
-    addMesh(hd, PG.sphere, skin, 0, .105, 0, .107, .123, .114, .06);
-    addMesh(hd, PG.sphere, skin, 0, .035, .03, .078, .062, .08, .06);
-    const brow = toon(d.hairC);
-    for (const side of [1, -1]) {
-      addMesh(hd, PG.sphereLo, skin, .105 * side, .095, -.005, .012, .028, .02, .1);
-      addMesh(hd, PG.sphereLo, SH.eye, .04 * side, .118, .1, .022, .014, .012, 0, false);
-      addMesh(hd, PG.sphereLo, SH.dark, .04 * side, .117, .109, .009, .01, .006, 0, false);
-      const br = addMesh(hd, PG.box, brow, .043 * side, .145, .104, .036, .01, .012, 0, false); br.rotation.z = -.12 * side;
+    addMesh(sp, PF.neck, skin, 0, .69, 0, b, 1, b, .04);
+    // ---- head: soft skull, a small chin, ears, the painted face ----
+    const hd = J.head = grp(sp, 0, .63, .005);
+    const HX = .118, HY = .134, HZ = .12, HC = .118;
+    addMesh(hd, PG.sphere, skin, 0, HC, 0, HX, HY, HZ, .05);
+    for (const side of [1, -1]) addMesh(hd, PG.sphereLo, skin, .114 * side, .1, -.008, .012, .024, .018, .08);
+    this.faceTex = { open: faceTex(d, 'open'), blink: faceTex(d, 'blink'), happy: faceTex(d, 'happy'), sad: faceTex(d, 'sad') };
+    this.faceMat = new THREE.MeshBasicMaterial({ map: this.faceTex.open, transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 });
+    this.mats.push(this.faceMat); this.faceMode = 'open'; this.blinkT = rand(1, 4);
+    const face = new THREE.Mesh(PF.face, this.faceMat); face.position.set(0, HC, 0); face.scale.set(HX * 1.012, HY * 1.012, HZ * 1.012); face.renderOrder = 2; hd.add(face);
+    if (has('earring')) for (const side of [1, -1]) addMesh(hd, PG.sphereLo, toon('#ffd36a'), .112 * side, .066, -.004, .01, .01, .01, 0, false);
+    // ---- hair: cap, back volume, bangs, side locks, then the style ----
+    addMesh(hd, PG.capTop, hair, 0, HC + .006, -.006, HX * 1.07, HY * 1.07, HZ * 1.08, .035).rotation.x = -.16;
+    addMesh(hd, PG.sphere, hair, 0, .1, -.034, HX * 1.1, HY * (d.hairStyle === 'bob' ? .94 : 1.0), HZ * .98, .035);
+    const onHead = (x, y) => { const k = 1 - (x / HX) ** 2 - ((y - HC) / HY) ** 2; return HZ * Math.sqrt(Math.max(0, k)); };
+    const n = d.hairStyle === 'bun' ? 11 : 9;
+    for (let i = 0; i < n; i++) {
+      const f = i / (n - 1) - .5, x = f * .21, y = .2 - Math.abs(f) * .012, z = onHead(x, y) + .008;
+      const len = (d.hairStyle === 'bun' ? .03 : .034 + .01 * Math.cos(i * 2.1)) * (1 - Math.abs(f) * .2);
+      const m = addMesh(hd, PF.strand, hair, x, y - len * .35, z, .026, len, .016, .05);
+      m.rotation.set(-.32, 0, -f * .5 + (i % 2 ? .06 : -.06));
     }
-    const nose = toon(shade(d.skin, .85)), lip = toon(shade(d.skin, .55));
-    this.mats.push(brow, nose, lip);
-    addMesh(hd, PG.sphereLo, nose, 0, .088, .113, .016, .021, .022, 0, false);
-    addMesh(hd, PG.box, lip, 0, .045, .103, .034, .007, .01, 0, false);
-    switch (d.hair) {
-      case 'fade': addMesh(hd, PG.capTop, hair, 0, .107, -.004, .113, .128, .12, .04); break;
-      case 'cap': {
-        const capM = toon(T.trim), btn = toon(T.jersey); this.mats.push(capM, btn);
-        addMesh(hd, PG.capDome, capM, 0, .112, 0, .118, .128, .122, .05);
-        const br = addMesh(hd, PG.box, capM, 0, .155, -.14, .16, .012, .11, .08); br.rotation.x = -.12;
-        addMesh(hd, PG.sphereLo, btn, 0, .238, 0, .02, .01, .02, 0, false);
-        break;
+    for (const side of [1, -1]) { const m = addMesh(hd, PF.strand, hair, .112 * side, .08, .036, .02, d.hairStyle === 'bob' ? .07 : .085, .022, .05); m.rotation.z = .1 * side; }
+    if (has('clip')) { const c = addMesh(hd, PG.box, tie, .075, .205, .095, .035, .01, .012, .3, false); c.rotation.z = .5; }
+    if (has('headband')) { const m = addMesh(hd, PG.band, acc, 0, .19, -.01, HX * 1.1, HZ * 1.1, .18, 0); m.rotation.x = Math.PI / 2 - .32; }
+    // swinging pieces of hair: chains of segments with spring physics (see updateHair)
+    this.hair = [];
+    const chain = (ax, ay, az, rx, rz, nSeg, len, r0, r1, bend = 0) => {
+      const ch = { segs: [], rx, rz, bend, ax: 0, az: 0, vx: 0, vz: 0, ph: rand(0, TAU) };
+      let parent = grp(hd, ax, ay, az); ch.segs.push(parent);
+      for (let k = 0; k < nSeg; k++) {
+        const r = lerp(r0, r1, k / Math.max(1, nSeg - 1));
+        addMesh(parent, PF.strand, hair, 0, -len * .5, 0, r, len * .62, r * .85, .05);
+        if (k < nSeg - 1) { parent = grp(parent, 0, -len * .88, 0); ch.segs.push(parent); }
       }
-      case 'short': addMesh(hd, PG.capTop, hair, 0, .108, -.003, .112, .126, .119, .04); break;
-      case 'mohawk': {
-        const scalp = toon(shade(d.skin, .7)); this.mats.push(scalp);
-        addMesh(hd, PG.capTop, scalp, 0, .106, -.003, .109, .125, .116, .03);
-        for (let i = 0; i < 6; i++) { const a = -.9 + i * .38; const m = addMesh(hd, PG.box, hair, 0, .106 + Math.cos(a) * .13, Math.sin(a) * .125, .028, .07, .045, .1); m.rotation.x = a; }
-        break;
-      }
-      case 'braids': {
-        const rows = toon(null, cornrowTex(d.hairC, d.skin)); this.mats.push(rows);
-        addMesh(hd, PG.capTop, rows, 0, .108, -.004, .113, .128, .12, .04);
-        for (let i = 0; i < 7; i++) { const m = addMesh(hd, PG.cyl, hair, (i - 3) * .03, .02, -.11, .011, .16, .011, .1); m.rotation.x = .3; }
-        break;
-      }
+      this.hair.push(ch); return ch;
+    };
+    const tieAt = (x, y, z, rx = 0, rz = 0) => { const t = addMesh(hd, PF.tie, tie, x, y, z, .026, .026, .02, .25, false); t.rotation.set(rx, 0, rz); };
+    switch (d.hairStyle) {
+      case 'twin': for (const side of [1, -1]) { chain(.104 * side, .17, -.05, .3, .45 * side, 5, .09, .048, .022, -.05); tieAt(.104 * side, .17, -.05, 0, Math.PI / 2); } break;
+      case 'pony': chain(0, .19, -.115, .55, 0, 6, .085, .046, .018, .08); tieAt(0, .19, -.115, .5); break;
+      case 'hipony': chain(0, .235, -.075, 2.3, 0, 6, .085, .05, .02, -.38); tieAt(0, .235, -.075, 2.3); break;
+      case 'braid': { const c = chain(0, .045, -.1, .18, 0, 8, .062, .036, .022, .03); c.braid = true; for (let k = 0; k < c.segs.length; k++) c.segs[k].children.forEach(m => { if (m.isMesh) m.rotation.y = k % 2 ? .5 : -.5; }); const last = c.segs[c.segs.length - 1]; addMesh(last, PF.tie, tie, 0, -.06, 0, .024, .024, .018, .2, false).rotation.x = Math.PI / 2; break; }
+      case 'bun': addMesh(hd, PG.sphere, hair, 0, .225, -.07, .058, .052, .056, .05); tieAt(0, .19, -.06, -.6); for (const side of [1, -1]) chain(.095 * side, .1, .035, -.05, .05 * side, 3, .06, .02, .012); break;
     }
-    if (has('headband')) { const m = addMesh(hd, PG.band, acc, 0, .148, 0, .118, .126, .22, 0); m.rotation.x = Math.PI / 2; }
-    if (has('beard')) addMesh(hd, PG.beard, hair, 0, .07, .015, .1, .1, .1, .03);
-    if (has('goatee')) addMesh(hd, PG.sphereLo, hair, 0, .02, .085, .03, .03, .02, .1);
+    this.hv = new V3(); this.hvy = 0; this.hface = 0;
+    // ---- ground ring, blob shadow, name tag ----
     this.ring = new THREE.Mesh(this.isUser ? PG.ringMe : PG.ring, new THREE.MeshBasicMaterial({ color: this.isUser ? 0x6ff3ff : T.ring, transparent: true, opacity: this.isUser ? .95 : .5, depthWrite: false }));
     this.ring.rotation.x = -Math.PI / 2; scene.add(this.ring);
     this.blob = new THREE.Mesh(PG.plane, new THREE.MeshBasicMaterial({ map: blobTex, transparent: true, depthWrite: false }));
@@ -1211,6 +1279,31 @@ class Player {
     scene.add(R);
     this.updateTag();
     this.applyPose(this.pose);
+  }
+  // hair swings with acceleration, turning and jumping; the face blinks and reacts
+  updateHair(dt, time) {
+    if (!(dt > 0)) return;
+    const v = this.vel, ax = (v.x - this.hv.x) / dt, az = (v.z - this.hv.z) / dt; this.hv.copy(v);
+    const ay = (this.vy - this.hvy) / dt; this.hvy = this.vy;
+    const f = this.face + this.pose.spin, sn = Math.sin(f), cs = Math.cos(f);
+    const fwdV = v.x * sn + v.z * cs, fwdA = ax * sn + az * cs, sideA = ax * cs - az * sn;
+    let turn = f - this.hface; turn = ((turn + Math.PI) % TAU + TAU) % TAU - Math.PI; this.hface = f;
+    for (const ch of this.hair) {
+      const tx = clamp(fwdV * .07 - fwdA * .01 - this.vy * .05 + clamp(ay, -40, 40) * .002, -.9, 1.1) + Math.sin(time * 1.7 + ch.ph) * .03;
+      const tz = clamp(sideA * .012 - turn / dt * .03, -.9, .9) + Math.sin(time * 1.3 + ch.ph) * .03;
+      ch.vx += ((tx - ch.ax) * 70 - ch.vx * 7) * dt; ch.ax += ch.vx * dt;
+      ch.vz += ((tz - ch.az) * 70 - ch.vz * 7) * dt; ch.az += ch.vz * dt;
+      ch.segs[0].rotation.set(ch.rx + ch.ax * .55, 0, ch.rz + ch.az * .5);
+      for (let k = 1; k < ch.segs.length; k++) ch.segs[k].rotation.set(ch.bend + ch.ax * .16, 0, ch.az * .14);
+    }
+  }
+  updateFace(dt) {
+    const A = this.act;
+    let mode = 'open';
+    if (A && (A.type === 'celebrate' || (A.type === 'pose' && A.v !== 2))) mode = 'happy';
+    else if ((A && A.type === 'sad') || this.stunT > 0) mode = 'sad';
+    else { this.blinkT -= dt; if (this.blinkT < 0) { mode = 'blink'; if (this.blinkT < -.12) this.blinkT = rand(2, 5); } }
+    if (mode !== this.faceMode) { this.faceMode = mode; this.faceMat.map = this.faceTex[mode]; this.faceMat.needsUpdate = true; }
   }
   updateTag() {
     const s = (this.isUser ? '你 · ' : '') + this.def.name + (this.ult > 0 ? ' · 爆发' : this.onFire ? ' · 火热' : '');
@@ -1225,6 +1318,7 @@ class Player {
     const mats = new Set(this.mats);
     mats.add(this.ring.material); mats.add(this.tag.material); mats.add(this.blob.material);
     for (const m of mats) { if (m.map && m.map !== blobTex) m.map.dispose(); m.dispose(); }
+    if (this.faceTex) for (const k in this.faceTex) this.faceTex[k].dispose();
   }
   setVisible(v) { this.root.visible = this.ring.visible = this.tag.visible = this.blob.visible = v; }
   fwd() { return [Math.sin(this.face), Math.cos(this.face)]; }
@@ -1254,6 +1348,7 @@ class Player {
     const P = this.pose, k = 1 - Math.exp(-dt * (T._rate || 15));
     for (const key of POSE_KEYS) P[key] = T._snap && T._snap.includes(key) ? T[key] : lerp(P[key], T[key], k);
     this.applyPose(P);
+    this.updateHair(dt, ctx.time); this.updateFace(dt);
     if (this.isUser && this.ring.visible) { const pulse = 1 + Math.sin(ctx.time * 6) * .05; this.ring.scale.set(pulse, pulse, 1); }
     this.place();
   }
@@ -1665,12 +1760,12 @@ function launchShot(p, from, made, pts, info) {
   p.stats.fga++; if (pts === 3) p.stats.tpa++;
   ball.fire = p.onFire;
 }
-function doBlock(shooter, blocker) {
+function doBlock(shooter, blocker, inFlight) {
   const x = shooter.pos.x - blocker.pos.x, z = shooter.pos.z - blocker.pos.z, d = Math.hypot(x, z) || 1;
   ball.state = 'loose'; ball.holder = null; ball.shot = null; ball.pass = null; ball.fromShot = true; ball.lastTouch = blocker.team;
-  ball.pos.copy(shooter.handR); ball.pos.y = Math.max(ball.pos.y, 2.2);
+  if (!inFlight) { ball.pos.copy(shooter.handR); ball.pos.y = Math.max(ball.pos.y, 2.2); }
   ball.vel.set(x / d * rand(4, 6) + rand(-1.5, 1.5), rand(1, 3), z / d * rand(4, 6) + rand(-1.5, 1.5));
-  blocker.stats.blk++; shooter.stats.fga++; addEnergy(blocker, 18); shooter.streak = 0; setFire(shooter, false); ev('block');
+  blocker.stats.blk++; if (!inFlight) shooter.stats.fga++; addEnergy(blocker, 18); blocker.blockTry = null; shooter.streak = 0; setFire(shooter, false); ev('block');
   if (blocker.act && (blocker.act.type === 'block' || blocker.act.type === 'jump')) blocker.act.swat = true;
   sfx('block'); S.slowT = .55; S.shake = .25; S.hype = Math.max(S.hype, .85); sfx('ooh');
   sparks.emit(26, ball.pos.x, ball.pos.y, ball.pos.z, { color: ['#ffffff', '#6ff3ff'], speed: 4 });
@@ -1679,22 +1774,51 @@ function doBlock(shooter, blocker) {
   if (S.shotClock < 6) S.shotClock = 6;
   requestReplay('block', blocker, blocker.isUser || shooter.isUser ? 1 : .35);
 }
-function checkBlock(shooter, mul, radius = 1.3) {
+// a block depends on timing (how close to the top of the jump), distance, reach and the blocker's skill
+const blockApex = o => .5 + .35 * o.st.blk + (o.buff.blk > 0 ? .25 : 0);
+function blockChance(shooter, o, mul) {
+  const d = Math.hypot(o.pos.x - shooter.pos.x, o.pos.z - shooter.pos.z), tw = o.ult > 0 && o.def.id === 'tower';
   const sHand = 2.42 * shooter.scale + shooter.y;
-  let best = null, bestC = 0;
+  const oHand = 2.62 * o.scale + o.y + (o.buff.blk > 0 ? .25 : 0) + (tw ? .2 : 0);
+  const timing = clamp(o.y / Math.max(.3, blockApex(o)), 0, 1), near = clamp(1.3 - d / 1.5, 0, 1);
+  let c = ((.24 + .42 * o.st.blk) * (.3 + .7 * timing) * near + clamp(oHand - sHand, -.4, .4) * .45 + (o.buff.blk > 0 ? .2 : 0) + (tw ? .25 : 0)) * mul;
+  if (!isUserTeam(o.team)) c *= .8 + DIFF[S.diff].blockJump * .2;
+  return clamp(c, 0, .9);
+}
+function checkBlock(shooter, mul, radius = 1.3) {
+  let best = null, bestC = 0, userNote = null;
+  const u = S.user, uTry = u && u.blockTry && u.team !== shooter.team;
   for (const o of opponents(shooter)) {
     if (o.stunT > 0) continue;
-    const d = Math.hypot(o.pos.x - shooter.pos.x, o.pos.z - shooter.pos.z);
-    const tw = o.ult > 0 && o.def.id === 'tower';
-    const r = radius + (o.buff.blk > 0 ? .4 : 0) + (o.buff.contest > 0 ? .2 : 0) + (tw ? .6 : 0);
-    if (d > r || o.y < .08) continue;
-    const oHand = 2.62 * o.scale + o.y + (o.buff.blk > 0 ? .25 : 0);
-    if (oHand < sHand - .3) continue;
-    let c = (.1 + .44 * o.st.blk + (oHand - sHand) * .45 - d * .12 + (o.buff.blk > 0 ? .3 : 0) + (tw ? .3 : 0)) * mul;
-    if (!isUserTeam(o.team)) c *= .85 + DIFF[S.diff].blockJump * .2;
+    const d = Math.hypot(o.pos.x - shooter.pos.x, o.pos.z - shooter.pos.z), tw = o.ult > 0 && o.def.id === 'tower';
+    const r = radius + .15 + (o.buff.blk > 0 ? .4 : 0) + (o.buff.contest > 0 ? .2 : 0) + (tw ? .6 : 0);
+    if (o.y < .08) { if (o === u && uTry) userNote = S.time - u.blockTry.at > .3 ? '起跳太早' : '还没跳起来'; continue; }
+    if (d > r) { if (o === u && uTry) userNote = '离得太远'; continue; }
+    const c = blockChance(shooter, o, mul);
+    if (o === u && uTry) userNote = '差一点 · ' + Math.round(c * 100) + '%';
     if (c > bestC) { bestC = c; best = o; }
   }
-  return best && chance(clamp(bestC, 0, .85)) ? best : null;
+  const ok = best && chance(bestC);
+  if (uTry) { if (!(ok && best === u)) floatAt(userNote || '没盖到', u.pos.x, u.def.h + .9, u.pos.z, 'cn bad'); u.blockTry = null; }
+  return ok ? best : null;
+}
+// a shot that is still rising can be swatted by any airborne hand that reaches the ball
+function flightBlock(dt) {
+  const b = ball, sh = b.shot;
+  if (b.state !== 'flight' || !sh || sh.touched || sh.done || sh.t > .45 || b.vel.y <= 0 || sh.kind === 'dunk') return;
+  for (const o of opponents(sh.shooter)) {
+    if (o.y < .05 || o.stunT > 0 || (sh.tried && sh.tried.has(o))) continue;
+    const hy = o.y + 2.6 * o.scale + (o.buff.blk > 0 ? .2 : 0);
+    const dist = Math.hypot(b.pos.x - o.pos.x, (b.pos.y - Math.min(hy, b.pos.y + .3)) * .9, b.pos.z - o.pos.z);
+    if (dist > .55 + .15 * o.st.blk || hy < b.pos.y - .35) continue;
+    (sh.tried = sh.tried || new Set()).add(o);
+    const c = clamp((.42 + .4 * o.st.blk) * (sh.kind === 'hook' ? .45 : 1) * (isUserTeam(o.team) ? 1 : .85), .15, .88);
+    if (o.isUser) o.blockTry = null;
+    if (chance(c)) { sh.done = true; sh.shooter.streak = 0; setFire(sh.shooter, false); doBlock(sh.shooter, o, true); return; }
+    if (sh.made && chance(.5)) { sh.made = false; b.vel.x += rand(-.7, .7); b.vel.z += rand(-.7, .7); b.vel.y -= .3; }
+    if (isUserTeam(o.team) || sh.shooter.isUser) floatAt('碰到球了', o.pos.x, o.def.h + .9, o.pos.z, 'cn white');
+    ev('tip');
+  }
 }
 function shotProb(p, x, z, kind) {
   const st = p.st, d = dHoopXZ(x, z);
@@ -1734,6 +1858,12 @@ function releaseShot(p, m) {
   const pr = shotProb(p, A.sx, A.sz, kind);
   let contest = pr.contest; if (A.contestMul) contest = 1 - (1 - contest) * A.contestMul;
   let prob = pr.base * mul * contest;
+  const uu = S.user;
+  if (uu && uu.team !== p.team && !S.auto) {
+    const dd = Math.hypot(uu.pos.x - A.sx, uu.pos.z - A.sz);
+    if (dd < 2.2 && uu.stunT <= 0) { let f = (2.2 - dd) / 2.2 * (.32 + .3 * uu.st.blk) * (uu.y > .15 ? 1.4 : 1) * (uu.handsUp ? 1.3 : 1); if (kind === 'hook') f *= .3; floatAt((f > .3 ? '强干扰 −' : '干扰 −') + Math.round(Math.min(f, .65) * 100) + '%', p.pos.x, p.def.h + .75, p.pos.z, 'cn good'); }
+    else if (p.match === uu || guardOf(p) === uu) floatAt('没干扰到', p.pos.x, p.def.h + .75, p.pos.z, 'cn bad');
+  }
   if (p.onFire) prob *= 1.15;
   prob = clamp(prob, .02, label === 'perfect' ? .98 : .95);
   const three = kind === 'jump' && isThree(A.sx, A.sz);
@@ -1742,12 +1872,14 @@ function releaseShot(p, m) {
     const r = ui.meter.getBoundingClientRect(), ar = app.getBoundingClientRect();
     floatScreen(t[0], r.left - ar.left + 20, r.top - ar.top - 12, 'cn ' + t[1]);
     ui.meter.classList.toggle('hit', label === 'perfect'); ui.meter.classList.toggle('miss', label === 'early' || label === 'late');
+    p.showProb = true;
     if (label === 'perfect') sfx('perfect');
   }
   const blocker = checkBlock(p, (kind === 'hook' ? .2 : kind === 'layup' ? 1.1 : three ? .7 : 1) * (A.blockMul || 1), kind === 'layup' ? 1.45 : 1.3);
   if (blocker) { p.holdT = 0; doBlock(p, blocker); return; }
   const from = p.handR.clone().add(tmp.set(0, kind === 'layup' ? .1 : .12, 0));
   const made = chance(prob);
+  if (p.showProb) { p.showProb = false; floatAt('命中率 ' + Math.round(prob * 100) + '%', p.pos.x, p.def.h + .45, p.pos.z, 'cn white'); }
   launchShot(p, from, made, three ? 3 : 2, { kind, label, cleared: A.cleared, short: !made && label === 'late' && dHoopXZ(A.sx, A.sz) > 6.5 && chance(.4) });
   ev(kind + (three ? '3' : '') + (made ? '_in' : '_out')); ev('q_' + (label || 'none'));
 }
@@ -1880,13 +2012,15 @@ function ballUpdate(dt) {
       const d = Math.hypot(o.pos.x - b.pos.x, o.pos.z - b.pos.z);
       const reach = 2.5 * o.scale + o.y;
       const gh = o.ult > 0 && o.def.id === 'ghost';
-      if (d < (gh ? 1.3 : o.handsUp ? .95 : .7) && b.pos.y < reach + (o.handsUp ? .25 : 0) && u > .15 && u < .92) {
+      const lane = gh ? 1.2 : o.handsUp ? .85 : .6;
+      if (d < lane && b.pos.y < reach + (o.handsUp ? .25 : 0) && u > .2 && u < .9) {
         P.checked.add(o);
-        let c = (.14 + .42 * o.st.stl + (o.buff.stl > 0 ? .25 : 0) + (o.handsUp ? .1 : 0) + (gh ? .4 : 0)) * (P.lob ? 1.3 * (o.y > .2 ? 1 : .3) : 1);
+        let c = (.06 + .28 * o.st.stl + (o.buff.stl > 0 ? .15 : 0) + (o.handsUp ? .08 : 0) + (gh ? .35 : 0)) * (P.lob ? (o.y > .2 ? 1.2 : .25) : P.bounce && b.pos.y < .7 ? .6 : 1) * clamp(1.25 - d / lane, .35, 1);
         if (!isUserTeam(o.team)) c *= DIFF[S.diff].stealMul;
         if (chance(c)) {
           o.stats.stl++; setHolder(o, 'steal'); sfx('steal'); ev('intercept'); addEnergy(o, 15);
           callout('抢断!', isUserTeam(o.team) ? 'cyan' : 'red'); feed(o, '断球', P.from);
+          if (P.from.isUser) floatAt('传球线路被封', P.from.pos.x, P.from.def.h + .9, P.from.pos.z, 'cn bad');
           if (P.to.act && P.to.act.type === 'oop') P.to.act = null;
           return;
         }
@@ -1905,6 +2039,8 @@ function ballUpdate(dt) {
     }
   } else if (b.state === 'flight' || b.state === 'loose') {
     ballPhysics(dt);
+    flightBlock(dt);
+    if (b.state !== 'flight' && b.state !== 'loose') { b.mesh.position.copy(b.pos); return; }
     const sp = b.vel.length();
     if (b.state === 'flight') b.mesh.rotateOnWorldAxis(b.spinAxis, b.spin * dt);
     else if (b.pos.y <= BALL_R + .01 && sp > .05) b.mesh.rotateOnWorldAxis(tmp.set(b.vel.z, 0, -b.vel.x).normalize(), sp / BALL_R * dt);
@@ -2022,6 +2158,11 @@ function catchOop(r, passer) {
 /* =========================================================
    Actions
    ========================================================= */
+// tell a defending user an opponent nearby is going up
+function shotCue(p) {
+  const u = S.user; if (!u || u.team === p.team || S.auto) return;
+  if (u.pos.distanceTo(p.pos) < 4.5) { p.warnT = .5; floatAt('出手!', p.pos.x, p.def.h + .55, p.pos.z, 'cn bad'); }
+}
 function shootAuto(p, opt = {}) {
   if (ball.holder !== p || ball.state !== 'held' || (p.act && !['pass', 'call', 'cross'].includes(p.act.type)) || p.stunT > 0) return false;
   const h = dHoop(p);
@@ -2042,17 +2183,20 @@ function contestLevel(p, x = p.pos.x, z = p.pos.z) {
 function startJumper(p, opt = {}) {
   const st = isThree(p.pos.x, p.pos.z) ? p.st.three : p.st.mid, lv = contestLevel(p);
   const ultK = p.ult > 0 && p.def.id === 'ace' ? 2.2 : 1;
+  shotCue(p);
   p.act = { type: 'jumper', t: 0, gather: .12, dur: .7, c: .8, lv, w: Math.min(.3, (.045 + .055 * st) * (opt.wMul || 1) * CONTEST[lv].k * ultK), jv: 3.0, lock: true, jumped: false, released: false, m: 0,
     sx: p.pos.x, sz: p.pos.z, autoRelease: opt.auto == null ? null : opt.auto, tapRelease: !!opt.tap, cleared: S.cleared, contestMul: opt.contestMul, blockMul: opt.blockMul, canFake: !!opt.canFake };
   p.vel.multiplyScalar(.15);
   const [dx, dz] = dirToHoop(p.pos.x, p.pos.z); p.face = Math.atan2(dx, dz);
 }
 function startHook(p) {
+  shotCue(p);
   p.act = { type: 'hook', t: 0, gather: .1, dur: .55, c: .8, w: .2, jv: 3.4, lock: true, jumped: false, released: false, m: 0, sx: p.pos.x, sz: p.pos.z, autoRelease: .8, cleared: S.cleared };
   p.vel.multiplyScalar(.1);
   const [dx, dz] = dirToHoop(p.pos.x, p.pos.z); p.face = Math.atan2(dx, dz) + 1.1;
 }
 function startLayup(p) {
+  shotCue(p);
   const [dx, dz] = dirToHoop(p.pos.x, p.pos.z);
   const h = dHoop(p);
   p.act = { type: 'layup', t: 0, dir: { x: dx, z: dz }, spd: clamp((h - .7) / .34, 0, 5), lock: true, jumped: false, released: false, sx: p.pos.x, sz: p.pos.z, cleared: S.cleared };
@@ -2066,6 +2210,7 @@ function dunkStyle(p, skill) {
   return chance(.6) ? 'one' : 'two';
 }
 function startDunk(p, opt) {
+  shotCue(p);
   const dx = p.pos.x - HOOP.x, dz = p.pos.z - HOOP.z, d = Math.hypot(dx, dz) || 1;
   const end = { x: HOOP.x + dx / d * .5, z: HOOP.z + Math.max(.3, dz / d * .5) };
   const style = dunkStyle(p, opt.skill);
@@ -2076,25 +2221,37 @@ function startDunk(p, opt) {
 }
 function userJump(p) {
   if (p.y > .02 || p.act && p.act.lock || p.stunT > 0 || p.jumpCd > 0 || p.boxLag > 0) return;
-  const defending = S.poss !== p.team && ball.state !== 'loose' && ball.state !== 'flight';
+  const defending = S.poss !== p.team && ball.state !== 'loose' && ball.state !== 'flight' || (ball.state === 'flight' && ball.shot && ball.shot.team !== p.team && !ball.shot.touched);
   if (!defending && (ball.state === 'loose' || ball.state === 'flight') && ball.vel.y < .5 && ball.pos.y > 2.2 && ball.pos.y < 3.9 && Math.hypot(ball.pos.x - p.pos.x, ball.pos.z - p.pos.z) < 1.9) { p.rebT = .5; floatAt('好时机', p.pos.x, p.def.h + .9, p.pos.z, 'cn good'); }
   p.boxT = 0;
+  const hdr = ball.holder, oppShot = ball.state === 'flight' && ball.shot && ball.shot.team !== p.team && !ball.shot.touched;
+  if ((defending && hdr && hdr.pos.distanceTo(p.pos) < 3.5) || oppShot) p.blockTry = { at: S.time, late: oppShot && ball.shot.t > .25, fake: hdr && hdr.act && hdr.act.type === 'fake' };
   p.vy = jumpV(defending ? .5 + .35 * p.st.blk + (p.buff.blk > 0 ? .25 : 0) : .45 + .35 * p.st.reb + (p.buff.reb > 0 ? .2 : 0));
   p.y = .001; p.act = { type: defending ? 'block' : 'jump', t: 0 }; p.jumpCd = .35;
 }
-function attemptSteal(d) {
+// 0 = the handler's body is between you and the ball .. 1 = the ball is right in front of you
+function ballExposure(h, d) {
+  const dh = Math.hypot(d.pos.x - h.pos.x, d.pos.z - h.pos.z), db = Math.hypot(d.pos.x - ball.pos.x, d.pos.z - ball.pos.z);
+  let e = clamp((dh - db + .3) / .7, 0, 1);
+  if (h.act && h.act.type === 'cross') e = Math.max(e, .7);
+  if (h.post) e *= .45;
+  return e;
+}
+function attemptSteal(d, bonus = 0) {
   if (d.stealCd > 0 || d.stunT > 0 || d.y > .1) return;
-  d.stealCd = .75; d.act = { type: 'steal', t: 0, T: .32, lock: true };
+  d.stealCd = 1.0; d.act = { type: 'steal', t: 0, T: .32, lock: true };
   const h = ball.holder;
   if (!h || h.team === d.team || ball.state !== 'held') return;
   const dist = Math.hypot(h.pos.x - d.pos.x, h.pos.z - d.pos.z);
-  if (dist > 1.5 || (h.act && (h.act.type === 'dunk' || h.act.type === 'hang'))) return;
+  if (dist > 1.6 || (h.act && (h.act.type === 'dunk' || h.act.type === 'hang'))) { if (d.isUser) floatAt('太远了', d.pos.x, d.def.h + .9, d.pos.z, 'cn bad'); return; }
   d.face = Math.atan2(h.pos.x - d.pos.x, h.pos.z - d.pos.z);
-  let c = .1 + .32 * d.st.stl - .18 * h.st.hnd + (d.buff.stl > 0 ? .35 : 0) + (d.ult > 0 && d.def.id === 'ghost' ? .4 : 0);
-  if (h.act && h.act.type === 'jumper' && h.y < .1) c += .12;
-  c *= 1.25 - dist / 2;
+  const ex = ballExposure(h, d);
+  let c = .03 + .22 * d.st.stl - .12 * h.st.hnd + ex * (.3 + .2 * d.st.stl) + (d.buff.stl > 0 ? .25 : 0) + (d.ult > 0 && d.def.id === 'ghost' ? .35 : 0) + bonus;
+  if (h.act && h.act.type === 'jumper' && h.y < .1) c += .1;
+  c *= clamp((1.6 - dist) / .6, .35, 1);
   if (!d.isUser && !isUserTeam(d.team)) c *= DIFF[S.diff].stealMul;
-  if (chance(clamp(c, .03, .9))) stealSuccess(d, h);
+  if (chance(clamp(c, .02, .85))) { stealSuccess(d, h); if (h.isUser) floatAt(ex > .5 ? '球护得不好，被掏了' : '被抢断', h.pos.x, h.def.h + .9, h.pos.z, 'cn bad'); }
+  else { d.stealMiss = .5; if (d.isUser) floatAt(ex < .35 ? '扑空 · 球在另一侧' : '扑空', d.pos.x, d.def.h + .9, d.pos.z, 'cn bad'); ev('steal_miss'); }
 }
 function stealSuccess(d, h) {
   d.stats.stl++; sfx('steal'); ev('steal'); addEnergy(d, 15);
@@ -2169,16 +2326,16 @@ function useSkill(p) {
     else if (id === 'ghost') { p.vel.set(0, 0, 0); startJumper(p, { wMul: 2, contestMul: .5, tap: p.isUser && !S.auto, auto: p.isUser && !S.auto ? null : aiReleasePoint(p, .6) }); }
   } else {
     if (id === 'flash') { p.buff.stl = 5; }
-    else if (id === 'ace') { const h = ball.holder; p.buff.contest = 3; if (h && h.team !== p.team) { const [hx, hz] = dirToHoop(h.pos.x, h.pos.z); p.pos.set(lerp(p.pos.x, h.pos.x + hx * .9, .75), 0, lerp(p.pos.z, h.pos.z + hz * .9, .75)); sparks.emit(14, p.pos.x, .4, p.pos.z, { color: '#6ff3ff', speed: 2 }); } }
+    else if (id === 'ace') { const h = ball.holder; p.buff.contest = 3; if (h && h.team !== p.team) { const [hx, hz] = dirToHoop(h.pos.x, h.pos.z), tx = h.pos.x + hx * .9 - p.pos.x, tz = h.pos.z + hz * .9 - p.pos.z, l = Math.hypot(tx, tz) || 1; p.burstDir.set(tx / l, 0, tz / l); p.burstT = Math.min(.4, l / 14); p.burstMul = 2.4; sparks.emit(14, p.pos.x, .4, p.pos.z, { color: '#6ff3ff', speed: 2 }); } }
     else if (id === 'sky') { p.buff.blk = 1.6; const tx = ball.pos.x - p.pos.x, tz = ball.pos.z - p.pos.z, l = Math.hypot(tx, tz) || 1; p.burstDir.set(tx / l, 0, tz / l); p.burstT = .3; p.burstMul = 1.9; p.pendingJump = .26; }
     else if (id === 'tower') { p.buff.blk = 6; p.buff.reb = 6; }
     else if (id === 'rhino') { p.buff.reb = 6; }
     else if (id === 'ghost') {
       const h = ball.holder;
       if (h && h.team !== p.team && h.pos.distanceTo(p.pos) < 3.5 && !(h.act && (h.act.type === 'dunk' || h.act.type === 'hang'))) {
-        const [hx, hz] = dirToHoop(h.pos.x, h.pos.z); p.pos.set(h.pos.x + hx * .7, 0, h.pos.z + hz * .7);
+        const [hx, hz] = dirToHoop(h.pos.x, h.pos.z), tx = h.pos.x + hx * .75 - p.pos.x, tz = h.pos.z + hz * .75 - p.pos.z, l = Math.hypot(tx, tz) || 1;
+        p.burstDir.set(tx / l, 0, tz / l); p.burstT = Math.min(.3, l / 13); p.burstMul = 2.6; p.pendingSteal = p.burstT + .02;
         sparks.emit(18, p.pos.x, .6, p.pos.z, { color: '#c084fc', speed: 2.5 });
-        if (chance(.78 - .3 * h.st.hnd)) stealSuccess(p, h); else p.act = { type: 'steal', t: 0, T: .3, lock: true };
       } else p.buff.stl = 3;
     }
   }
@@ -2191,6 +2348,7 @@ function aiReleasePoint(p, perfectP) {
   return c + (chance(.5) ? 1 : -1) * rand(.24, .3);
 }
 function pumpFake(p) {
+  shotCue(p);
   p.act = { type: 'fake', t: 0, T: .34, lock: true };
   if (p.isUser) floatAt('假动作', p.pos.x, p.def.h + .9, p.pos.z, 'cn white');
   ev('fake');
@@ -2282,7 +2440,8 @@ function physics(p, dt) {
   for (const k in p.buff) if (p.buff[k] > 0) p.buff[k] -= dt;
   if (p.ult > 0) { p.ult -= dt; if (p.ult <= 0) { p.ult = 0; p.updateTag(); } }
   if (S.phase === 'live' && p.ult <= 0) p.energy = Math.min(100, p.energy + dt * .8);
-  p.screenedT -= dt; p.boxT -= dt; p.boxLag -= dt; p.rebT -= dt; p.bumpT -= dt; p.screenCd -= dt;
+  p.screenedT -= dt; p.stealMiss -= dt; p.boxT -= dt;
+  if (p.pendingSteal > 0) { p.pendingSteal -= dt; if (p.pendingSteal <= 0) { p.stealCd = 0; attemptSteal(p, .35); } } p.boxLag -= dt; p.rebT -= dt; p.bumpT -= dt; p.screenCd -= dt;
   p.cd = Math.max(0, p.cd - dt); p.burstCd -= dt; p.burstT -= dt; p.stunT -= dt; p.stealCd -= dt; p.jumpCd -= dt; p.callT -= dt; p.squeakCd -= dt;
   if (p.pendingJump > 0) { p.pendingJump -= dt; if (p.pendingJump <= 0 && p.y < .02 && S.phase === 'live') { p.vy = jumpV(1.1); p.y = .001; p.act = { type: 'block', t: 0 }; } }
   if (p.act) updateAct(p, dt);
@@ -2290,7 +2449,7 @@ function physics(p, dt) {
   const locked = p.stunT > 0 || (A && A.lock);
   if (!(A && (A.type === 'dunk' || A.type === 'hang' || A.type === 'stepback' || A.type === 'charge' || A.type === 'oop' || A.type === 'spin'))) {
     const has = ball.holder === p;
-    const maxS = (4.3 + 2.3 * p.st.spd) * (has ? .9 : 1) * (p.sprint && !has ? 1.2 : 1) * (p.stance ? .93 : 1) * (p.buff.stl > 0 ? 1.08 : 1) * (p.handsUp ? .8 : 1) * (p.screenedT > 0 ? .15 : 1) * (p.post ? .5 : 1) * (p.boxT > 0 ? .55 : 1) * (p.boxLag > 0 ? 0 : 1) * (p.ult > 0 ? ({ flash: 1.22, ghost: 1.1, rhino: 1.08 }[p.def.id] || 1.04) : 1);
+    const maxS = (4.3 + 2.3 * p.st.spd) * (has ? .9 : 1) * (p.sprint && !has ? 1.2 : 1) * (p.stance ? .93 : 1) * (p.buff.stl > 0 ? 1.08 : 1) * (p.handsUp ? .8 : 1) * (p.screenedT > 0 ? .15 : 1) * (p.stealMiss > 0 ? .4 : 1) * (p.post ? .5 : 1) * (p.boxT > 0 ? .55 : 1) * (p.boxLag > 0 ? 0 : 1) * (p.ult > 0 ? ({ flash: 1.22, ghost: 1.1, rhino: 1.08 }[p.def.id] || 1.04) : 1);
     if (p.burstT > 0) p.vel.set(p.burstDir.x * maxS * p.burstMul, 0, p.burstDir.z * maxS * p.burstMul);
     else {
       let wx = locked ? 0 : p.want.x, wz = locked ? 0 : p.want.z;
@@ -2622,7 +2781,7 @@ function aiDefend(p, D, dt) {
     if (!S.cleared) gap += .4;
     tx = man.pos.x + mx * gap; tz = man.pos.z + mz * gap;
     p.stealTry -= dt;
-    if (p.stealTry <= 0 && S.liveT > 1.2) { p.stealTry = rand(.9, 2.0); if (man.pos.distanceTo(p.pos) < 1.45 && chance(D.stealRate * (.6 + p.st.stl))) attemptSteal(p); }
+    if (p.stealTry <= 0 && S.liveT > 1.2) { p.stealTry = rand(.5, 1.2); if (man.pos.distanceTo(p.pos) < 1.4 && ballExposure(man, p) > .45 && chance(D.stealRate * (.8 + p.st.stl))) attemptSteal(p); }
   } else if (hd && hd.team !== p.team && dHoop(hd) < 4.2 && isHelper(p, hd) && chance(D.help)) {
     const [hx, hz] = dirToHoop(hd.pos.x, hd.pos.z); tx = hd.pos.x + hx * 1.1; tz = hd.pos.z + hz * 1.1;
   } else if (ball.state === 'pass' && ball.pass && ball.pass.to === man) {
@@ -2637,10 +2796,11 @@ function aiDefend(p, D, dt) {
   if (p.cd <= 0 && S.liveT > 1.2 && chance(D.skill * dt * 1.2) && aiSkillCond(p)) useSkill(p);
   if (hd && hd.team !== p.team && hd.act && ['jumper', 'layup', 'dunk', 'hook'].includes(hd.act.type) && !hd.act.released) {
     const A = hd.act; A.seen = A.seen || new Set();
-    if (!A.seen.has(p) && A.t >= D.react * rand(.75, 1.25)) {
+    A.jumpAt = A.jumpAt || new Map(); if (!A.jumpAt.has(p)) A.jumpAt.set(p, D.react * rand(.3, 1.9));
+    if (!A.seen.has(p) && A.t >= A.jumpAt.get(p)) {
       A.seen.add(p);
       const dd = hd.pos.distanceTo(p.pos);
-      if (dd < 2.4 && p.y < .02 && chance(D.blockJump) && !(p.act && p.act.lock)) {
+      if (dd < 2.4 && p.y < .02 && chance(D.blockJump * .8) && !(p.act && p.act.lock)) {
         p.vy = jumpV(.5 + .35 * p.st.blk + (p.buff.blk > 0 ? .25 : 0)); p.y = .001; p.act = { type: 'block', t: 0 };
         const x = hd.pos.x - p.pos.x, z = hd.pos.z - p.pos.z, l = Math.hypot(x, z) || 1; p.vel.x += x / l * 1.6; p.vel.z += z / l * 1.6;
       }
@@ -3022,6 +3182,9 @@ function gameUpdate(dt) {
   } else if (!p.isUser) p.ring.scale.setScalar(1);
   for (const p of S.players) if (p.onFire) { p.fireT -= dt; if (p.fireT <= 0) { p.fireT = .05; sparks.emit(2, p.pos.x + rand(-.25, .25), p.y + rand(.2, 1.6) * p.scale, p.pos.z + rand(-.25, .25), { color: ['#ff9a3c', '#ffd27a', '#ff4b5c'], speed: .6, up: 2, grav: -2, life: .6 }); } }
   S.hype = Math.max(0, S.hype - dt * .5);
+  const bu = S.user;
+  if (bu && bu.blockTry && S.time - bu.blockTry.at > 1.1) { const T2 = bu.blockTry; bu.blockTry = null; floatAt(T2.late ? '起跳太晚' : T2.fake || (ball.holder && ball.holder.act && ball.holder.act.type === 'fake') ? '被假动作骗了' : '对手没出手，起跳太早', bu.pos.x, bu.def.h + .9, bu.pos.z, 'cn bad'); }
+  for (const p of S.players) if (p.warnT > 0) p.warnT -= dt;
   REC.on = true; recFrame();
 }
 
@@ -3145,6 +3308,12 @@ function render(rdt) {
   if (rdt > 0) net.update(rdt * (S.slowT > 0 && S.phase !== 'replay' ? S.slowK : S.phase === 'replay' ? .55 : 1), ball.pos);
   if (!ui.landRing) { ui.landRing = new THREE.Mesh(new THREE.RingGeometry(.4, .52, 40), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .6, depthWrite: false })); ui.landRing.rotation.x = -Math.PI / 2; scene.add(ui.landRing); }
   ui.landRing.visible = landing.ok && S.phase === 'live';
+  for (const p of S.players) { const w = p.warnT > 0; if (w !== !!p._warn) { p._warn = w; p.ring.material.color.setHex(w ? 0xff2a3a : p.isUser ? 0x6ff3ff : TEAM[p.team].ring); p.ring.material.opacity = w ? 1 : p.isUser ? .95 : .5; } if (w) p.ring.scale.setScalar(1.2 + .3 * Math.sin(t * 30)); }
+  if (!ui.cArc) { ui.cArc = new THREE.Mesh(new THREE.RingGeometry(.75, 1.05, 32, 1, -.75, 1.5), new THREE.MeshBasicMaterial({ color: 0x3ddc84, transparent: true, opacity: .5, depthWrite: false, side: THREE.DoubleSide })); ui.cArc.rotation.x = -Math.PI / 2; scene.add(ui.cArc); }
+  { const u = S.user, h = ball.holder, show = u && h && h.team !== u.team && ball.state === 'held' && S.phase === 'live' && !S.auto;
+    const dd = show ? Math.hypot(h.pos.x - u.pos.x, h.pos.z - u.pos.z) : 9;
+    ui.cArc.visible = show && dd < 3;
+    if (ui.cArc.visible) { ui.cArc.position.set(u.pos.x, .028, u.pos.z); ui.cArc.rotation.z = Math.atan2(h.pos.z - u.pos.z, h.pos.x - u.pos.x); ui.cArc.material.color.setHex(dd < 1.3 ? 0x3ddc84 : dd < 2.2 ? 0xffc83d : 0x8a8f9c); ui.cArc.material.opacity = (u.handsUp ? .75 : .45) + .1 * Math.sin(t * 8); } }
   if (!ui.matchRing) { ui.matchRing = new THREE.Mesh(new THREE.RingGeometry(.58, .64, 40, 1, 0, Math.PI * 1.6), new THREE.MeshBasicMaterial({ color: 0x6ff3ff, transparent: true, opacity: .55, depthWrite: false })); ui.matchRing.rotation.x = -Math.PI / 2; scene.add(ui.matchRing); }
   const mu = S.user && S.user.match;
   ui.matchRing.visible = !!(mu && S.phase === 'live' && S.poss !== S.user.team && ball.state === 'held');
