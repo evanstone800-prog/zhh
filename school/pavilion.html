@@ -256,7 +256,7 @@ function makeMaterials() {
   MAT.plaster = std({ map: t(TX.plaster, 6, 6), roughness: .95 });
   MAT.fascia = std({ color: 0xf1efe9, roughness: .7 });
   const wn = tex(TX.waterN, { linear: true }); wn.repeat.set(3, 3);
-  MAT.water = std({ color: 0x12333a, roughness: .06, metalness: .15, normalMap: wn, normalScale: new THREE.Vector2(.22, .22), envMapIntensity: .85 });
+  MAT.water = std({ color: 0x0f2b2c, roughness: .07, metalness: 0, normalMap: wn, normalScale: new THREE.Vector2(.25, .25), envMapIntensity: .5 });
   const wn2 = wn.clone(); wn2.needsUpdate = true; wn2.repeat.set(2, 2);
   MAT.waterDark = std({ color: 0x050708, roughness: .02, metalness: .3, normalMap: wn2, normalScale: new THREE.Vector2(.12, .12), envMapIntensity: 1.8 });
   MAT.poolLiner = std({ color: 0x1d2b2c, roughness: .4 });
